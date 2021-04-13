@@ -6,8 +6,8 @@
 
 ## выбрать аптеки
 ```sql
-select * from `object` where `category` regexp 'Аптека' and `address` regexp 'Москва';
-select `category`, count(*) from `object` group by `category`;
+SELECT * FROM `object` WHERE `category` REGEXP 'Аптека' AND `address` REGEXP 'Москва';
+SELECT `category`, COUNT(*) FROM `object` GROUP BY `category`;
 ```
 
 ## все уникальные категории, с сортировкой по кол-ву объектов в каждой
@@ -29,7 +29,7 @@ ORDER BY `quallityobjects` DESC
 
 ## все уникальные категории, с сортировкой по кол-ву объектов в каждой, у которых есть мыла
 ```sql
-SELECT DISTINCT `category`, COUNT(`id`) as `quallityobjects`
+SELECT DISTINCT `category`, COUNT(`id`) AS `quallityobjects`
 FROM `object`
 WHERE LENGTH(`email`)>1
 GROUP BY `category`
