@@ -1,0 +1,6 @@
+{
+  "require": {
+    "facebook/webdriver": "1.7.1",
+    "voku/simple_html_dom": "4.7.28"
+  }
+}
