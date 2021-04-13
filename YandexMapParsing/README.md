@@ -1,16 +1,17 @@
 # Парсинг организаций с Яндекс-Карт по запросам типа "Москва магазины"
 
-Собираются данные: id, имя, адрес, сайт, категория, телефон, расписание, описание, координаты. Данные вставляются в базу.
+- Собираются данные: id, имя, адрес, сайт, категория, телефон, расписание, описание, координаты
+- Данные вставляются в базу.
 
 # Примеры выборок
 
-## выбрать аптеки
+## Выбрать аптеки
 ```sql
 SELECT * FROM `object` WHERE `category` REGEXP 'Аптека' AND `address` REGEXP 'Москва';
 SELECT `category`, COUNT(*) FROM `object` GROUP BY `category`;
 ```
 
-## все уникальные категории, с сортировкой по кол-ву объектов в каждой
+## Все уникальные категории, с сортировкой по кол-ву объектов в каждой
 ```sql
 SELECT DISTINCT `category`, COUNT(`id`) as `quallityobjects`
 FROM `object`
@@ -18,7 +19,7 @@ GROUP BY `category`
 ORDER BY `quallityobjects` DESC;
 ```
 
-## все уникальные категории, с сортировкой по кол-ву объектов в каждой, где объектов больше 1000
+## Все уникальные категории, с сортировкой по кол-ву объектов в каждой, где объектов больше 1000
 ```sql
 SELECT DISTINCT `category`, COUNT(`id`) as `quallityobjects`
 FROM `object`
@@ -27,7 +28,7 @@ HAVING `quallityobjects` >= 1000
 ORDER BY `quallityobjects` DESC
 ```
 
-## все уникальные категории, с сортировкой по кол-ву объектов в каждой, у которых есть мыла
+## Все уникальные категории, с сортировкой по кол-ву объектов в каждой, у которых есть мыла
 ```sql
 SELECT DISTINCT `category`, COUNT(`id`) AS `quallityobjects`
 FROM `object`
@@ -36,35 +37,35 @@ GROUP BY `category`
 ORDER BY `quallityobjects` DESC;
 ```
 
-## все объекты по данной категории
+## Все объекты по данной категории
 ```sql
 SELECT `name`, `address`, `url`
 FROM `object`
 WHERE `category` = 'Банки';
 ```
 
-## все объекты с телефонами
+## Все объекты с телефонами
 ```sql
 SELECT COUNT(*) FROM `object` WHERE LENGTH(`phone`) > 1;
 ```
 
-## количество пройденных запросов
+## Количество пройденных запросов
 ```sql
 SELECT DISTINCT COUNT(*) FROM `city_has_type`;
 SELECT DISTINCT COUNT(*) FROM `city_has_brand`;
 ```
 
-## количество объектов
+## Количество объектов
 ```sql
 SELECT COUNT(*) FROM `object`;
 ```
 
-## все объекты, у которых есть сайты
+## Все объекты, у которых есть сайты
 ```sql
 SELECT COUNT(*) FROM `object` WHERE LENGTH(`url`) > 1;
 ```
 
-## все объекты по данным категориям
+## Все объекты по данным категориям
 ```sql
 SELECT *
 FROM `object`
@@ -74,7 +75,7 @@ AND
 LENGTH(`phone`) > 1;
 ```
 
-## вывод яндекс-карты
+## Вывод яндекс-карты
 ```php
 <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 

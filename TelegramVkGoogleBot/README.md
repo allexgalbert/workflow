@@ -1,20 +1,22 @@
 # Переводчик текстов на основе Google Api Translator
 
-Для чатов Вконтакте. С пересылкой в бота Telegram.
+- Для чатов Вконтакте
+- С пересылкой в бот Telegram
 
 ## Бот вконтакте
-- создать сообщество https://vk.com/clubXXX
-- управление -> работа с api -> создать ключ XXX
-- управление -> работа с api -> callback api: адрес сервера http://XX.XX.XX.XX/index.php, секретный ключ XXX
+
+- Создать сообщество https://vk.com/clubXXX
+- Управление -> работа с api -> создать ключ XXX
+- Управление -> работа с api -> callback api: адрес сервера http://XX.XX.XX.XX/index.php, секретный ключ XXX
 
 ## Бот телеграм
 
-- в телеге идем сюда @BotFather
-- далее команды /start, /newbot выбрать имя "MyNameBot" и урл "MyNameBot"
-- урл бота http://t.me/MyNameBot
-- получить токен XXX:XXX
-- кинуть в консоль хостинга чтобы увидеть id чатов кто писал https://api.telegram.org/botXXX:XXX/getUpdates
-- получить структуру сообщения
+- В телеге идем сюда @BotFather
+- Далее команды /start, /newbot выбрать имя "MyNameBot" и урл "MyNameBot"
+- Урл бота http://t.me/MyNameBot
+- Получить токен XXX:XXX
+- Кинуть в консоль хостинга чтобы увидеть id чатов кто писал https://api.telegram.org/botXXX:XXX/getUpdates
+- Получить структуру сообщения
 ```json
 {
    "ok":true,
