@@ -2,7 +2,7 @@
 
 class Fiosgen {
 
-  private $alfavit = array(
+  private $alfavit = [
     "а" => "a",
     "б" => "b",
     "в" => "v",
@@ -69,7 +69,7 @@ class Fiosgen {
     "Ь" => "",
     "ъ" => "",
     "Ъ" => ""
-  );
+  ];
 
   //генератор имени и фамилии
   public function fio($count) {
@@ -88,7 +88,7 @@ class Fiosgen {
   //генератор логина по имени и фамилии
   public function login($fio) {
 
-    $rands = array(
+    $rands = [
 
       //год рождения
       rand(1960, 1990),
@@ -98,7 +98,7 @@ class Fiosgen {
 
       //имя + год рождения
       strtolower(strtr($fio['name'], $this->alfavit)) . rand(1960, 1990)
-    );
+    ];
 
     //фамилия + вариант
     return strtolower(strtr($fio['surname'], $this->alfavit)) . trim($rands[array_rand($rands)]);
@@ -106,7 +106,7 @@ class Fiosgen {
 
   //генератор пароля по имени и фамилии
   public function password1($fio) {
-    $rands = array(strtolower(strtr($fio['name'], $this->alfavit)));
+    $rands = [strtolower(strtr($fio['name'], $this->alfavit))];
     return trim($rands[array_rand($rands)]) . strtolower(strtr($fio['surname'], $this->alfavit));
   }
 
