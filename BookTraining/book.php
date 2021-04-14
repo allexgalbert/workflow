@@ -35,7 +35,7 @@ foreach ($text as $k => &$item) {
   //удалим лишние пробелы
   $item = preg_replace("~\s{2,}~isu", ' ', $item);
   $item = trim($item);
-  if (empty($item) or in_array($item, array('.', ',', '!', '?', '-'))) {
+  if (empty($item) || in_array($item, ['.', ',', '!', '?', '-'])) {
     unset($text[$k]);
   }
 }
@@ -48,7 +48,7 @@ $count_text = count($text);
 for ($i = 0; $i < $count_text; $i++) {
 
   //пагинация (страницы от, до)
-  //if ($i >= 600 and $i < 700) {
+  //if ($i >= 600 && $i < 700) {
 
   //четные/нечетные страницы
   //if ($i % 2 == 0) {
