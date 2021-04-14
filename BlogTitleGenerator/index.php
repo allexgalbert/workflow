@@ -33,5 +33,5 @@ class Gettitle {
 $titles = new Gettitle();
 
 for ($i = 0; $i < 10; $i++) {
-  echo $title = $titles->title_gen(1) . "\n";
+  echo $titles->title_gen(1) . "\n";
 }
