@@ -15,10 +15,10 @@ if (isset($content['message'])) {
 }
 
 //мессага юзеру
-$TelegramApi->send_message('sendMessage', array(
+$TelegramApi->send_message('sendMessage', [
   'chat_id' => $content['message']['chat']['id'],
   'text' => 'Профиль юзера ' . $tgProfile . ', номер чата ' . $content['message']['chat']['id'] . ' задал вопрос ' . $content['message']['text'],
-));
+]);
 
 //вбита команда типа /start
 if (isset($content['message'])) {
@@ -49,19 +49,19 @@ function handle_command($options) {
 
     ///start
     case '/start':
-      $TelegramApi->send_message('sendMessage', array(
+      $TelegramApi->send_message('sendMessage', [
         'chat_id' => $options['chat_id'],
         'text' => 'Привяжите телеграм к магазину. Залогиньтесь и пройдите по ссылке ' . "URL" . $options['chat_id'],
-      ));
+      ]);
       break;
 
     ///menu
     case '/menu':
-      $TelegramApi->send_message('sendMessage', array(
+      $TelegramApi->send_message('sendMessage', [
         'chat_id' => $options['chat_id'],
         'text' => 'Меню команд',
         'reply_markup' => telegram_reply_markup(),
-      ));
+      ]);
       break;
   }
 
