@@ -73,19 +73,19 @@ function handle_button($options) {
   switch ($options['button']) {
 
     case 'button1':
-      $TelegramApi->send_message('sendMessage', array(
+      $TelegramApi->send_message('sendMessage', [
         'chat_id' => $options['chat_id'],
         'text' => 'text1',
         'reply_markup' => telegram_reply_markup(),
-      ));
+      ]);
       break;
 
     case 'button2':
-      $TelegramApi->send_message('sendMessage', array(
+      $TelegramApi->send_message('sendMessage', [
         'chat_id' => $options['chat_id'],
         'text' => 'text2',
         'reply_markup' => telegram_reply_markup(),
-      ));
+      ]);
       break;
   }
 
@@ -105,18 +105,18 @@ function bind($telegram_chat_id) {
       ->update('users', ['telegram_chat_id' => $telegram_chat_id]
       );
 
-    $TelegramApi->send_message('sendMessage', array(
+    $TelegramApi->send_message('sendMessage', [
       'chat_id' => $telegram_chat_id,
       'text' => 'Привязка телеграма к магазину произведена',
       'reply_markup' => telegram_reply_markup(),
-    ));
+    ]);
 
   } else {
 
-    $TelegramApi->send_message('sendMessage', array(
+    $TelegramApi->send_message('sendMessage', [
       'chat_id' => $telegram_chat_id,
       'text' => 'Привязка телеграма к магазину произведена. Залогиньтесь и нажмите /start',
-    ));
+    ]);
 
   }
 
