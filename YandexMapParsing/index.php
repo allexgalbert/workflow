@@ -37,8 +37,8 @@ for ($i = 1; $i <= 12; $i++) {
 
   $db->insert_objects($result, $city_and_brand['city_id']);
 
-  // $db->insert_city_and_type(array('city_id' => $city_and_type['city_id'], 'type_id' => $city_and_type['type_id']));
-  $db->insert_city_and_brand(array('city_id' => $city_and_brand['city_id'], 'brand_id' => $city_and_brand['brand_id']));
+  //$db->insert_city_and_type(['city_id' => $city_and_type['city_id'], 'type_id' => $city_and_type['type_id']]);
+  $db->insert_city_and_brand(['city_id' => $city_and_brand['city_id'], 'brand_id' => $city_and_brand['brand_id']]);
 
   echo 'запрос отработан';
 

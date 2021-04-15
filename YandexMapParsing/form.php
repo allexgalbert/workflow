@@ -18,7 +18,7 @@ header("Content-Type: text/html; charset=utf-8");
 
 <?php
 if (
-  !isset($_POST['text']) or empty(trim($_POST['text']))
+  !isset($_POST['text']) || empty(trim($_POST['text']))
 ) {
   exit('введите фразу');
 }

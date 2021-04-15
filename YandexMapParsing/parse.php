@@ -6,13 +6,13 @@ class Parse {
 
   public function getdata($phrase) {
 
-    $options = array(
+    $options = [
       //'apikey' => 'XXX',
       'text' => urlencode($phrase),
       'lang' => 'ru_RU',
       'results' => 1000,
       'type' => 'biz',
-    );
+    ];
 
     $options2 = '';
     foreach ($options as $k => $v) {
@@ -38,18 +38,18 @@ class Parse {
       return;
     }
 
-    $result = array();
+    $result = [];
 
     foreach ($content->features as $v) {
 
-      $description = array();
+      $description = [];
       if (isset($v->properties->CompanyMetaData->Features)) {
         foreach ($v->properties->CompanyMetaData->Features as $v2) {
           $description[] = $v2->name;
         }
       }
 
-      $result[] = array(
+      $result[] = [
         'place_id' => $v->properties->CompanyMetaData->id,
         'name' => $v->properties->CompanyMetaData->name,
         'address' => $v->properties->CompanyMetaData->address,
@@ -60,7 +60,7 @@ class Parse {
         'description' => implode(', ', $description),
         'latitude' => $v->geometry->coordinates[1],
         'longitude' => $v->geometry->coordinates[0],
-      );
+      ];
 
     }
 
