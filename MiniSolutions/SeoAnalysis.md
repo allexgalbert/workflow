@@ -40,10 +40,10 @@
 
 - Проверка на отсутствие бана домена, санкций поисковых систем
 - Проверка наличия подключенных систем аналитики
--- Google Console (search.google.com/search-console)
--- Google Analytics (analytics.google.com)
--- Yandex Webmaster (webmaster.yandex.com)
--- Yandex Metrika (metrika.yandex.ru)
+ - Google Console (search.google.com/search-console)
+ - Google Analytics (analytics.google.com)
+ - Yandex Webmaster (webmaster.yandex.com)
+ - Yandex Metrika (metrika.yandex.ru)
 - Проверка наличия указания региона продвижения (в Yandex Webmaster, Google.Business, Яндекс Справочник)
 - Количество страниц в индексе Google, Yandex, Bing
 - Оценка трафика (Google Analytics, Yandex Metrika, SimilarWeb)
