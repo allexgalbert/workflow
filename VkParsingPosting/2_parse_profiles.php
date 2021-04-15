@@ -10,15 +10,15 @@ require_once 'vendor/db.php';
 
 $db = new \Db();
 
-$config = array(
+$config = [
   'app_id' => 123,
   'api_secret' => '123',
-);
+];
 
 // id групп
-$groups = array(
+$groups = [
   'XXX',
-);
+];
 $groups = array_unique($groups);
 
 foreach ($groups as $group) {
@@ -26,20 +26,20 @@ foreach ($groups as $group) {
 }
 
 // id стран
-$countries = array(
+$countries = [
   1 => 'Россия',
-);
+];
 
 // id городов
-$cities = array(
+$cities = [
   1 => 'XXX',
-);
+];
 
 //все найденные юзеры
-$all_users = array();
+$all_users = [];
 
 //юзеры, подходящие под параметры
-$target_users = array();
+$target_users = [];
 
 foreach ($groups as $group) {
 
@@ -48,12 +48,12 @@ foreach ($groups as $group) {
 
     $i = 0;
     do {
-      $users = $vk->api('groups.getMembers', array(
+      $users = $vk->api('groups.getMembers', [
         'group_id' => $group,
         'offset' => $i,
         'count' => 1000,
         'fields' => 'country, city, sex, bdate, last_seen'
-      ));
+      ]);
       $i += 1000;
 
       foreach ($users['response']['users'] as $user) {
@@ -81,7 +81,7 @@ foreach ($groups as $group) {
         //год рождения в промежутке 1980-1997
         if (isset($user['bdate'])) {
           $birth = explode('.', $user['bdate']);
-          if (isset($birth[2]) and ($birth[2] < 1980 or $birth[2] > 1997)) {
+          if (isset($birth[2]) && ($birth[2] < 1980 || $birth[2] > 1997)) {
             continue;
           }
         }

@@ -19,11 +19,11 @@ $driver = RemoteWebDriver::create('http://localhost:4444/wd/hub', DesiredCapabil
 $sleep = 3;
 
 //формируем запросы
-$queries = array(
+$queries = [
   'слово1',
   'слово2',
   'слово3',
-);
+];
 
 //проходим все запросы
 foreach ($queries as $q) {
@@ -60,18 +60,18 @@ foreach ($queries as $q) {
   $html = new \simple_html_dom();
   $html->load($page);
 
-  $result1 = array(); // массив групп
+  $result1 = []; // массив групп
   foreach ($html->find('div.groups_row') as $v1) {
-    $result1[] = array(
+    $result1[] = [
       'href' => 'https://vk.com' . $v1->find('div.labeled a', 0)->href,
       'title' => $v1->find('div.labeled a', 0)->plaintext,
-    );
+    ];
   }
   $html->clear();
   unset($html);
 
   //заходим в каждую группу, и дергаем ее id
-  $result2 = array();
+  $result2 = [];
   foreach ($result1 as $v2) {
 
     //открываем урл группы
@@ -107,11 +107,11 @@ foreach ($queries as $q) {
       $id = $match[1];
     }
 
-    $result2[] = array(
+    $result2[] = [
       'href' => $v2['href'],
       'title' => $v2['title'],
       'id' => $id,
-    );
+    ];
 
     //отображаем для чтения в браузере
     echo

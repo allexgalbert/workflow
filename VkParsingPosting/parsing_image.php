@@ -19,11 +19,11 @@ $driver->get('https://vk.com/fun_troll');
 
 // прокрутка сразу много страниц
 for ($i = 0; $i < 100; $i++) {
-  $driver->findElement(WebDriverBy::tagName('body'))->sendKeys(array(WebDriverKeys::END));
+  $driver->findElement(WebDriverBy::tagName('body'))->sendKeys([WebDriverKeys::END]);
 }
 sleep(120);
 
-$imgs_global = array();
+$imgs_global = [];
 
 for ($i = 0; $i <= 0; $i++) {
   echo '<br>' . $i . '-й скрол' . '<br>';
@@ -32,7 +32,7 @@ for ($i = 0; $i <= 0; $i++) {
   $html = new \simple_html_dom();
   $html->load($page);
 
-  $imgs = array();
+  $imgs = [];
   foreach ($html->find('img.page_post_thumb_sized_photo') as $img) {
 
     if (!in_array($img->src, $imgs_global)) {
@@ -77,7 +77,7 @@ for ($i = 0; $i <= 0; $i++) {
     unset($db);
   }
 
-  $driver->findElement(WebDriverBy::tagName('body'))->sendKeys(array(WebDriverKeys::END));
+  $driver->findElement(WebDriverBy::tagName('body'))->sendKeys([WebDriverKeys::END]);
   sleep(5);
 }
 

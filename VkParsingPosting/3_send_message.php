@@ -41,7 +41,7 @@ for ($i = 0; $i < 200; $i++) {
   $texts = preg_split("~={10}~isu", $text);
   $message = trim($texts[array_rand($texts)]);
 
-  if (!$account or !$profile) {
+  if (!$account || !$profile) {
     $driver->quit();
     exit ('кончились аккаунты или профиля');
   }
