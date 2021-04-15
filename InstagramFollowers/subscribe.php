@@ -8,7 +8,6 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverKeys;
 
-require_once 'include.php';
 require_once 'vendor/autoload.php';
 require_once 'vendor/simple_html_dom.php';
 require_once 'vendor/curl.php';

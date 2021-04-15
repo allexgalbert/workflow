@@ -4,7 +4,6 @@
 
 use voku\helper\HtmlDomParser;
 
-require 'include.php';
 require 'vendor/autoload.php';
 require 'libs/curl.php';
 require 'libs/db.php';
