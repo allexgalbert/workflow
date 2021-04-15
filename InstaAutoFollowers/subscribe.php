@@ -17,13 +17,13 @@ require_once 'vendor/db.php';
 $db = new \Db();
 
 //настройки
-$config = array(
+$config = [
   'esc' => 3, //кол-во нажатий Esc для убирания попапов
   'user' => '',
   'pass' => '',
   'url' => 'https://www.instagram.com/NNN/', //донор фоловеров
   'items' => 700, //нужное кол-во фоловеров из списка фоловеров
-);
+];
 
 //стартуем браузер
 $driver = RemoteWebDriver::create('http://localhost:4444/wd/hub', DesiredCapabilities::chrome(), 5000);

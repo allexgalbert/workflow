@@ -17,7 +17,7 @@ require_once 'vendor/db.php';
 $db = new \Db();
 
 //настройки
-$config = array(
+$config = [
   'esc' => 3, //кол-во нажатий Esc для убирания попапов
   'user' => '',
   'pass' => '',
@@ -27,7 +27,7 @@ $config = array(
   //кол-во подписок и подписчиков. для контроля что скрипт полностью забрал оба списка. ставим цифры на 10 меньше
   'followers' => 1000, //подписчиков
   'following' => 1000, //подписки
-);
+];
 
 //стартуем браузер
 $driver = RemoteWebDriver::create('http://localhost:4444/wd/hub', DesiredCapabilities::chrome(), 5000);
@@ -69,10 +69,10 @@ sleep($sleep);
 
 $links = [];
 foreach (
-  array(
+  [
     'following' => 'a._s53mj[href="/user/following/"]',
     'followers' => 'a._s53mj[href="/user/followers/"]',
-  ) as $k => $v) {
+  ] as $k => $v) {
 
   //открываем урл акка
   try {
@@ -161,7 +161,7 @@ $followers = $links['followers'];
 echo 'фактически. following: ' . count($following) . N;
 echo 'фактически. followers: ' . count($followers) . N;
 
-if (count($following) > $config['following'] and count($followers) > $config['followers']) {
+if (count($following) > $config['following'] && count($followers) > $config['followers']) {
   echo 'списки забрались полные' . N;
 } else {
   echo 'списки забрались не полные' . N;
