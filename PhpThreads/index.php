@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lockfile.php';
+require 'lockfile.php';
 
 //Разблокировка неразблокированных объектов в бд, которым больше N минут
 "UPDATE `objects` SET `lock` = NULL WHERE NOW() > (TIMESTAMP(`objects`.`lock`) + INTERVAL 20 MINUTE)";

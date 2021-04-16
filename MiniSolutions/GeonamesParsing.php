@@ -52,8 +52,8 @@ set_time_limit(0);
 date_default_timezone_set('Europe/Moscow');
 setlocale(LC_ALL, 'en_US.utf-8');
 
-require_once 'simple_html_dom.php';
-require_once 'curl.php';
+require 'simple_html_dom.php';
+require 'curl.php';
 
 //парсим страницу страны, чтобы с селекта собрать все страны
 $page = Curl::getpage('http://www.geonames.org/search.html?q=&country=RU');

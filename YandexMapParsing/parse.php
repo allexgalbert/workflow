@@ -1,6 +1,6 @@
 <?php
 
-require_once 'curl.php';
+require 'curl.php';
 
 class Parse {
 

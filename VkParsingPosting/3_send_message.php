@@ -10,10 +10,10 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverKeys;
 
-require_once 'vendor/autoload.php';
-require_once 'vendor/simple_html_dom.php';
-require_once 'vendor/curl.php';
-require_once 'vendor/db.php';
+require 'vendor/autoload.php';
+require 'vendor/simple_html_dom.php';
+require 'vendor/curl.php';
+require 'vendor/db.php';
 
 function __debug($id, $profile, $status) {
   file_put_contents('3_send_message.log', $id . ' : ' . $profile . ' : ' . $status . "\n", FILE_USE_INCLUDE_PATH | FILE_APPEND | LOCK_EX);

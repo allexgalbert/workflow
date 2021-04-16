@@ -1,7 +1,7 @@
 <?php
 
-require_once 'mysql.php';
-require_once 'replacer.php';
+require 'mysql.php';
+require 'replacer.php';
 $db = new Mysql();
 $config = $db->getconfig();
 

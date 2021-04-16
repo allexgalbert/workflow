@@ -10,9 +10,9 @@ use Facebook\WebDriver\WebDriverKeys;
 
 echo '<html><head><title>1_search_groups</title><head><html>';
 
-require_once 'vendor/autoload.php';
-require_once 'vendor/simple_html_dom.php';
-require_once 'vendor/curl.php';
+require 'vendor/autoload.php';
+require 'vendor/simple_html_dom.php';
+require 'vendor/curl.php';
 
 //стартуем браузер
 $driver = RemoteWebDriver::create('http://localhost:4444/wd/hub', DesiredCapabilities::chrome(), 5000);

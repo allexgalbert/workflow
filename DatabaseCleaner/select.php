@@ -1,6 +1,6 @@
 <?php
 
-require_once 'mysql.php';
+require 'mysql.php';
 $dir = 'results/';
 $db = new Mysql;
 $config = $db->getconfig();

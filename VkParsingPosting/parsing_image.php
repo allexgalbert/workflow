@@ -7,10 +7,10 @@ namespace Facebook\WebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 
-require_once 'vendor/autoload.php';
-require_once 'libs/simple_html_dom.php';
-require_once 'libs/curl.php';
-require_once 'libs/db.php';
+require 'vendor/autoload.php';
+require 'libs/simple_html_dom.php';
+require 'libs/curl.php';
+require 'libs/db.php';
 
 $host = 'http://localhost:4444/wd/hub';
 $capabilities = DesiredCapabilities::chrome();

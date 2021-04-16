@@ -1,7 +1,7 @@
 <?php
 
-require_once 'db.php';
-require_once 'parse.php';
+require 'db.php';
+require 'parse.php';
 
 $date = new DateTime();
 file_put_contents('log.txt', "\n" . $date->format('H:i:s') . "\n", FILE_USE_INCLUDE_PATH | FILE_APPEND | LOCK_EX);

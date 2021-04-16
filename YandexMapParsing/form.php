@@ -23,6 +23,6 @@ if (
   exit('введите фразу');
 }
 
-require_once 'parse.php';
+require 'parse.php';
 $parse = new Parse();
 $result = $parse->getdata($_POST['text']);

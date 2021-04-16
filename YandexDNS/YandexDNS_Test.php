@@ -1,7 +1,7 @@
 <?php
 
-require_once 'vendor/autoload.php';
-require_once 'HTTP/Request2.php';
+require 'vendor/autoload.php';
+require 'HTTP/Request2.php';
 $domain = 'domain.com';
 
 //Получение списка доменов

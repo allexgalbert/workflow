@@ -4,9 +4,9 @@
 
 echo '<html><head><title>2_parse_profiles</title><head><html>';
 
-require_once 'vendor/vk/VK.php';
-require_once 'vendor/vk/VKException.php';
-require_once 'vendor/db.php';
+require 'vendor/vk/VK.php';
+require 'vendor/vk/VKException.php';
+require 'vendor/db.php';
 
 $db = new \Db();
 

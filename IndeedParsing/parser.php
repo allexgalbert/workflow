@@ -5,9 +5,9 @@ set_time_limit(0);
 date_default_timezone_set('Europe/Moscow');
 setlocale(LC_ALL, 'en_US.utf-8');
 
-require_once 'сurl.php';
-require_once 'simple_html_dom.php';
-require_once 'db.php';
+require 'сurl.php';
+require 'simple_html_dom.php';
+require 'db.php';
 
 $db = new Db();
 

@@ -8,10 +8,10 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverKeys;
 
-require_once 'vendor/autoload.php';
-require_once 'vendor/simple_html_dom.php';
-require_once 'vendor/curl.php';
-require_once 'vendor/db.php';
+require 'vendor/autoload.php';
+require 'vendor/simple_html_dom.php';
+require 'vendor/curl.php';
+require 'vendor/db.php';
 
 $db = new \Db();
 

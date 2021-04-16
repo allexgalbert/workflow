@@ -2,9 +2,9 @@
 
 //парсинг форумов phpBB
 
-require_once 'simple_html_dom.php';
-require_once 'curl.php';
-require_once 'cleartext.php';
+require 'simple_html_dom.php';
+require 'curl.php';
+require 'cleartext.php';
 
 class PhpBB {
 
