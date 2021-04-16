@@ -88,7 +88,6 @@ for (let i = 0; i < text.length; i++) {imgs[i].id)} перебор массив�
 
 Модуль
 
-```javascript
 var module = (function () {
   //приватная переменная
   var prvar = 1;
@@ -102,25 +101,20 @@ var module = (function () {
       },
     }
 }());
-```
 
 Самовызывающаяся функция
 
-```javascript
 (function name() {
   return {
     var: 1
   };
 })();
-```
 
 Объект
 
-```javascript
 var obj1 = {
   var: 1,
   method1: function () {
     return this.var;
   }
 };
-```
