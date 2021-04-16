@@ -150,6 +150,6 @@ class YandexDNS {
 $b = new YandexDNS();
 $b->PddToken = 'PddToken';
 $b->Authorization = 'Authorization';
-$b->registrant_adddomain('domain.ru');
-$b->registrant_dellalldns('domain.ru');
-$b->registrar_adddns('domain.ru', ['type' => 'A', 'content' => '127.0.0.1']);
+$b->registrant_adddomain('domain.com');
+$b->registrant_dellalldns('domain.com');
+$b->registrar_adddns('domain.com', ['type' => 'A', 'content' => '127.0.0.1']);

@@ -2,7 +2,7 @@
 
 require_once 'vendor/autoload.php';
 require_once 'HTTP/Request2.php';
-$domain = 'domain.ru';
+$domain = 'domain.com';
 
 //Получение списка доменов
 $request = new HTTP_Request2('https://pddimp.yandex.ru/api2/admin/domain/domains?on_page=20', HTTP_Request2::METHOD_GET);
