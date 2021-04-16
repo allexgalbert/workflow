@@ -1,8 +1,8 @@
-Подключение скриптов
+Подключение
 
 'use strict';
-<script defer></script> для скриптов которым требуется доступ ко всему DOM и важен порядок выполнения
-<script async></script> для независимых скриптов типа счётчиков и рекламы и неважен порядок выполнения
+<script defer></script> для скриптов которым нужен доступ ко всему DOM, важен порядок выполнения
+<script async></script> для скриптов типа счётчиков и рекламы, неважен порядок выполнения
 
 События
 
@@ -29,7 +29,7 @@ $(function() {}) запускается когда DOM готов
 $(window).on('load', function () {}) запускается когда готов DOM, картинки, фреймы
 window.onload = function () {} запускается когда готов DOM, картинки, фреймы
 
-Манипуляции с элементами
+Манипуляции
 
 $('#id').attr('attr', 'attr'); добавить аттрибут
 $('#id').removeAttr('attr'); удалить аттрибут
@@ -118,3 +118,43 @@ var obj1 = {
     return this.var;
   }
 };
+-------------------------------------------------
+
+Axios
+
+Репоз https://github.com/axios/axios
+Установка npm install axios
+Подключение CDN <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+Импорт CommonJS const axios = require('axios');
+Импорт TypeScript import axios from 'axios';
+
+Get запрос
+
+axios.get('/user?id=123').then(function (response) {успех}).catch(function (error) {ошибка}).then(function() {всегда});
+axios.get('/user', {params: {id: 123}}).then(function (response) {}).catch(function (error) {}).then(function () {});
+
+Post запрос
+
+axios.post('/user', {id: 123}).then(function (response) {}).catch(function (error) {});
+
+Методы
+
+get, delete, head, options, post, put, patch
+
+Инстанс со своим конфигом
+
+const instance = axios.create({
+  baseURL: 'https://domain.com',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'},
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+});
+
+Установка конфига другим способом
+
+axios.defaults.baseURL = 'https://domain.com';
+
+Структура ответа
+
+data, status, headers, config, request
