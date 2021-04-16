@@ -18,16 +18,16 @@ event.stopPropagation() остановить распространение со
 event.target источник события
 event.clipboardData.items доступ к буферу обмена
 
-$('#id, #id').on('event event', function (event) {$(this)}) прослушать элементы и события
-$(document).delegate('#id, #id', 'event event', function (event) {}) прослушать элементы и события
-document.addEventListener('event', function) добавить слушателя для события
+$('#id, #id').on('event event', function(event) {$(this)}) прослушать элементы и события
+$(document).delegate('#id, #id', 'event event', function(event) {}) прослушать элементы и события
+document.addEventListener('event event', function(event) {}) добавить слушателя для события
 
 Начальная загрузка
 
-$(document).ready(function () {}) запускается когда DOM готов
+$(document).ready(function() {}) запускается когда DOM готов
 $(function() {}) запускается когда DOM готов
-$(window).on('load', function () {}) запускается когда готов DOM, картинки, фреймы
-window.onload = function () {} запускается когда готов DOM, картинки, фреймы
+$(window).on('load', function() {}) запускается когда готов DOM, картинки, фреймы
+window.onload = function() {} запускается когда готов DOM, картинки, фреймы
 
 Манипуляции
 
@@ -42,7 +42,7 @@ $('#id').trigger('click') сделать клик
 
 Урлы
 
-$.post('url', {'var': 'value'}, function (result) {}); сделать post запрос
+$.post('url', {'var': 'value'}, function(result) {}); сделать post запрос
 window.location.href = 'url' редирект
 window.location массив сегментов урла
 history.pushState(null, null, window.location.origin + window.location.pathname) изменить урл
@@ -88,14 +88,14 @@ for (let i = 0; i < text.length; i++) {imgs[i].id)} перебор массив�
 
 Модуль
 
-var module = (function () {
+var module = (function() {
   //приватная переменная
   var prvar = 1;
   //приватный метод
   function prmethod () {}
     //публичный метод
     return {
-      pumethod: function (values) {
+      pumethod: function(values) {
         return prvar;
 		return prmethod;
       },
@@ -114,7 +114,7 @@ var module = (function () {
 
 var obj1 = {
   var: 1,
-  method1: function () {
+  method1: function() {
     return this.var;
   }
 };
@@ -130,12 +130,12 @@ Axios
 
 Get запрос
 
-axios.get('/user?id=123').then(function (response) {успех}).catch(function (error) {ошибка}).then(function() {всегда});
-axios.get('/user', {params: {id: 123}}).then(function (response) {}).catch(function (error) {}).then(function () {});
+axios.get('/user?id=123').then(function(response) {успех}).catch(function(error) {ошибка}).then(function() {всегда});
+axios.get('/user', {params: {id: 123}}).then(function(response) {}).catch(function(error) {}).then(function() {});
 
 Post запрос
 
-axios.post('/user', {id: 123}).then(function (response) {}).catch(function (error) {});
+axios.post('/user', {id: 123}).then(function(response) {}).catch(function(error) {});
 
 Методы
 
