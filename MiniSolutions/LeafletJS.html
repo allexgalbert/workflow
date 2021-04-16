@@ -37,7 +37,7 @@
       height: 400px;
     }
 
-    /*скроем копирайт на карте*/
+    /*скрыть копирайт на карте*/
     .leaflet-bottom.leaflet-right {
       display: none;
     }
@@ -70,21 +70,21 @@
   //слой для результатов
   var results = new L.LayerGroup().addTo(mymap);
 
-  //прослушивание результатов и добавление на карту
+  //прослушать результаты и добавить на карту
   searchControl.on('results', function (data) {
 
-    //удалим все старые маркеры со слоя результатов
+    //удалить все старые маркеры со слоя результатов
     results.clearLayers();
 
-    //удалим все старые маркеры со всех слоёв
+    //удалить все старые маркеры со всех слоёв
     mymap.eachLayer(function (layer) {
-      //главный слой карты и маркеры лежат в layer. определяем по наличию свойства dragging что это маркеры
+      //главный слой карты и маркеры лежат в layer. определить по наличию свойства dragging что это маркеры
       if (layer.dragging) {
         mymap.removeLayer(layer);
       }
     });
 
-    //добавим результаты
+    //добавить результаты
     for (var i = data.results.length - 1; i >= 0; i--) {
       results.addLayer(L.marker(data.results[i].latlng));
     }
@@ -92,7 +92,7 @@
 
   //-------------------------------------------------
 
-  //добавим поставщика карты
+  //добавить поставщика карты
   L.tileLayer(
     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
     {
@@ -105,7 +105,7 @@
 
   //-------------------------------------------------
 
-  //создадим иконку маркера
+  //создать иконку маркера
   var markericon = L.icon({
     iconUrl: 'icon.png', //иконка. ее левый верхний угол именно на точке
     iconSize: [32, 32], //размер иконки
@@ -113,7 +113,7 @@
     popupAnchor: [0, -16] //положение попапа, относительно точки
   });
 
-  //добавим маркер
+  //добавить маркер
   L.marker(coordinates, {icon: markericon})
     .addTo(mymap)
     .bindPopup('<b>Заголовок</b><br>Описание');
@@ -123,7 +123,7 @@
   //клик на карту добавляет маркер
   function onMapClick(e) {
 
-    //удалим все старые маркеры
+    //удалить все старые маркеры
     mymap.eachLayer(function (layer) {
       //главный слой карты и маркеры лежат в layer. определяем по наличию свойства dragging что это маркеры
       if (layer.dragging) {
@@ -131,12 +131,12 @@
       }
     });
 
-    //добавим маркер
+    //добавить маркер
     L.marker(e.latlng, {icon: markericon})
       .addTo(mymap)
       .bindPopup('<b>Новая точка</b><br>');
 
-    //добавим попап при установке маркера
+    //добавить попап при установке маркера
     L.popup()
       .setLatLng(e.latlng)
       .setContent(e.latlng.toString())
@@ -149,7 +149,7 @@
     console.log(e.latlng.lat, e.latlng.lng);
   }
 
-  //добавим событие клика на карту
+  //добавить событие клика на карту
   mymap.on('click', onMapClick);
 
 </script>
