@@ -15,6 +15,7 @@ substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 3, 5);
 
 ```php
 setlocale(LC_ALL, $langs[$CI->uri->segments[1]][2] . '.UTF8');
+
 //проверить
 var_dump(1.55); var_dump(strftime('%A %B'));
 ```
