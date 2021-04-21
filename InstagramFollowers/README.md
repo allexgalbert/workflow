@@ -5,11 +5,11 @@
 
 ```sql
 CREATE TABLE `insta` (
-`id` INT(11) NOT NULL AUTO_INCREMENT,
-`url` VARCHAR(255) NULL DEFAULT NULL COMMENT 'профиль',
-PRIMARY KEY (`id`),
-UNIQUE INDEX `url_UNIQUE` (`url`)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `url` VARCHAR(255) NULL DEFAULT NULL COMMENT 'профиль',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `url_UNIQUE` (`url`)
 )
-COMMENT='акки от которых отписались'
+COMMENT='аккаунты от которых отписались'
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB;
