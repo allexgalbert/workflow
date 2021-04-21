@@ -1,8 +1,6 @@
-Скачать
-
-Отсюда https://chromium.woolyss.com
+Скачать https://chromium.woolyss.com
 Версия archive, marmaduke, all-codecs+, sync, win64
-Проверить на VirusTotal
+--------------------
 
 Флаги
 
@@ -16,6 +14,7 @@ win64 - версия 64bit
 up-to-date - современная версия как у Chrome
 avx - для новых процессоров с инструкциями AVX
 ungoogled - без интеграции с Google и повышенной конфиденциальностью
+--------------------
 
 Цвет
 
@@ -23,17 +22,18 @@ ungoogled - без интеграции с Google и повышенной кон
 Синий - девелоперский или бета
 Желтый - канари
 Оранжевый - девелоперский официальный
+--------------------
 
 Настройка
 
 Путь до профиля по умолчанию
 C:\Users\user\AppData\Local\Google\Chrome\User Data\Default
 
-Сменить пути в ярлыке, до профиля и кеша
+Сменить в ярлыке путь до профиля и кеша
 Chromium\chrome.exe --user-data-dir=Chromium\Profile --disk-cache-dir=AppData\Local\Temp\ChromiumCache
-проверить тут chrome://version
+проверить chrome://version
 
-Добавить русский язык
+Добавить русский
 chrome://settings/languages
 
 Отключить превьюшки на табах
@@ -48,8 +48,9 @@ chrome://flags/#dns-over-https в enabled
 Удалить пункт меню "Отправить на устройство"
 Settings - Sync and Google services - Manage sync - Turn off "Open Tabs"
 chrome://settings/syncSetup/advanced
+--------------------
 
-Расширения
+Плагины
 
 AdBlock — лучший блокировщик рекламы
 https://chrome.google.com/webstore/detail/adblock-%E2%80%94-best-ad-blocker/gighmmpiobklfepjocnamgkkbiglidom
@@ -86,6 +87,7 @@ https://chrome.google.com/webstore/detail/webrtc-leak-prevent/eiadekoaikejlgdbkb
 
 Xdebug helper
 https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc
+--------------------
 
 Проверка FingerPrint
 
