@@ -1,0 +1,8002 @@
+GETTING STARTED -> INSTALLATION
+GETTING STARTED -> CONFIGURATION
+GETTING STARTED -> DIRECTORY STRUCTURE
+GETTING STARTED -> HOMESTEAD
+GETTING STARTED -> VALET
+GETTING STARTED -> DEPLOYMENT
+
+ARCHITECTURE CONCEPTS -> REQUEST LIFECYCLE
+ARCHITECTURE CONCEPTS -> CONTAINER
+ARCHITECTURE CONCEPTS -> PROVIDERS
+ARCHITECTURE CONCEPTS -> FACADES
+ARCHITECTURE CONCEPTS -> CONTRACTS
+ARCHITECTURE CONCEPTS -> КОНЦЕПТ
+
+THE BASICS -> ROUTING
+THE BASICS -> MIDDLEWARE
+THE BASICS -> CSRF PROTECTION
+THE BASICS -> CONTROLLERS
+THE BASICS -> HTTP REQUESTS
+THE BASICS -> HTTP RESPONSES
+THE BASICS -> VIEWS
+THE BASICS -> URL GENERATION
+THE BASICS -> HTTP SESSION
+THE BASICS -> VALIDATION
+THE BASICS -> ERROR HANDLING
+THE BASICS -> LOGGING
+
+FRONTEND -> BLADE TEMPLATES
+FRONTEND -> LOCALIZATION
+FRONTEND -> SCAFFOLDING
+FRONTEND -> COMPILING ASSETS
+
+SECURITY -> AUTHENTICATION
+SECURITY -> AUTHORIZATION
+SECURITY -> EMAIL VERIFICATION
+SECURITY -> ENCRYPTION
+SECURITY -> HASHING
+SECURITY -> RESETTING PASSWORDS
+
+DIGGING DEEPER -> ARTISAN CONSOLE
+DIGGING DEEPER -> BROADCASTING
+WEBSOCKETS
+DIGGING DEEPER -> CACHE
+DIGGING DEEPER -> COLLECTIONS
+DIGGING DEEPER -> EVENTS
+DIGGING DEEPER -> FILE STORAGE
+DIGGING DEEPER -> HELPERS
+DIGGING DEEPER -> HTTP CLIENT
+DIGGING DEEPER -> MAIL
+DIGGING DEEPER -> NOTIFICATIONS
+DIGGING DEEPER -> PACKAGE DEVELOPMENT
+DIGGING DEEPER -> QUEUES
+DIGGING DEEPER -> TASK SCHEDULING
+
+DATABASE -> REDIS
+NODE.JS, NPM, PACKAGE.JSON
+ЭКСПОРТ ИЗ MYSQL WORKBENCH В LARAVEL MIGRATION
+НЕЙМИНГ
+ЛУЧШИЕ ПРАКТИКИ
+КОРОТКИЙ СИНТАКСИС
+-------------------------------------------------
+
+GETTING STARTED -> INSTALLATION
+
+Homestead
+виртуальная машина для локальной разработки
+
+Расширения PHP
+BCMath, Ctype, Fileinfo, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML
+-------------------------
+
+1. Инсталлер Laravel Installer поставить глобально
+php composer.phar global require laravel/installer
+
+это установит зависимости в C:/Users/u/AppData/Roaming/Composer
+
+
+2. Composer поставить локально
+PhpStorm - Tools - Composer - Init Composer
+
+это установит composer.phar в папку проекта
+
+
+3. Проект поставить локально
+php composer.phar create-project --prefer-dist laravel/laravel /fullpath/myproject
+
+это установит зависимости из composer.json в /vendor
+
+Сгенерит Application Key командой
+php artisan key:generate
+
+Запустить локальный сервер разработки
+php artisan serve
+
+Урл проекта
+http://127.0.0.1:8000
+
+
+4. NodeJS поставить глобально
+
+npm install
+
+это установит зависимости из package.json в /node_modules
+-------------------------
+
+Настройки Webroot хоста на папку /public
+
+1. OpenServer - Настройки - Домены
+прописать что домен смотрит на папку /public
+
+2. создать в корне .htaccess
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule (.*) public/$1
+</IfModule>
+-------------------------
+
+Сделать папки доступными для записи
+storage, bootstrap/cache
+
+Настроить timezone и locale
+config/app.php
+
+Application Key
+Ключи стоят если ставить через Laravel installer или Composer
+Ставятся командой php artisan key:generate
+Переименовать .env.example в .env и вбить ключ руками
+Ключ нужен для шифрования sessions и encrypted data
+
+Убрать index.php в урлах в public/.htaccess
+уже стоит. в мане пример
+-------------------------------------------------
+
+GETTING STARTED -> CONFIGURATION
+
+После работы с конфигами сбрасывать кеш
+php artisan config:clear
+--------------------
+
+Переменные среды
+
+хелпер env()
+строка с пробелами 'в кавычках'
+все переменные загружаются в $_ENV
+
+Конфиг
+.env
+
+Конфиг для тестов
+/.env.testing
+
+Типы
+string, true, false, empty, null
+
+Получить
+env('VARNAME', 'default');
+
+Определить
+if (App::environment() == 'local') {}
+if (App::environment('local')) {}
+if (App::environment(['local', 'staging'])) {}
+
+Скрыть из дебага
+в config/app.php
+'debug_hide' => [
+  '_ENV' => ['VARNAME1', 'VARNAME2'],
+  '_SERVER' => ['VARNAME1', 'VARNAME2'],
+  '_POST' => ['VARNAME1', 'VARNAME2'],
+];
+--------------------
+
+Конфиги
+
+хелпер config()
+
+Папка конфигов
+/config
+
+Получить
+config('file.key', 'default');
+
+Установить
+config(['file.key' => 'newvalue']);
+
+Создать файл кеша
+в bootstrap/cache/config.php
+php artisan config:cache
+--------------------
+
+Выключить приложение
+php artisan down --message='upgrading' --retry=60 --allow=127.0.0.1 --allow=192.168.0.0/16
+
+Включить приложение
+php artisan up
+
+Шаблон заглушки
+resources/views/errors/503.blade.php
+
+Очереди задач (Queues) будут выключены
+Envoyer - продвинутая выключалка приложения
+-------------------------------------------------
+
+GETTING STARTED -> DIRECTORY STRUCTURE
+
+Папка Root
+
+App       код приложения
+Bootstrap начальная загрузка app.php, папка cache кешей
+Config    конфиги
+Database  миграции, посевы, sql базы
+Public    главный index.php, assets, скомпилированные файлы js, css, картинки
+Resources файлы js, css, less, sass, вьюхи, шрифты
+Routes    роуты web.php, api.php, console.php, channels.php
+Storage   скомпилированные вьюхи, файлы сессий, кешей, логи, сгенерированные файлы, картинки
+Tests     тесты PHPUnit
+Vendor    зависимости Composer
+
+Папка App
+
+Broadcasting  вещание
+Console       API консольных Artisan команд, задач по расписанию
+Events        события
+Exceptions    исключения
+Http          API для веб контроллеров, мидлваре, обработка запросов
+Jobs          задачи в очереди
+Listeners     обработка событий
+Mail          почта
+Notifications уведомления
+Policies      политики
+Providers     СП
+Rules         валидация
+-------------------------------------------------
+
+GETTING STARTED -> HOMESTEAD
+
+Vagrant + VirtualBox
+
+Для Windows
+в BIOS включить hardware virtualization (VT-x)
+
+Состав
+Ubuntu, Git, Nginx, PHP, MySQL, PostgreSQL, Redis, Memcached, Node, MariaDB, Sqlite3, Composer, Bower, Grunt, Gulp, Xdebug, Apache, Elasticsearch, Gearman, RabbitMQ, Neo4j, Cassandra, MongoDB, Ngrok
+
+Установка как Vagrant box
+vagrant box add laravel/homestead
+или
+vagrant init laravel/homestead и vagrant up
+
+Установка из репозитария
+git clone https://github.com/laravel/homestead.git ~/Homestead
+bash init.sh/init.bat
+это создаст homestead.yaml
+
+Настройка homestead.yaml
+После изменения, применить
+vagrant reload --provision или vagrant provision
+
+Провайдер
+provider: virtualbox
+
+Монтируем проекты
+folders:
+
+  папка на компе
+  - map: C:/Users/project1
+  
+  папка внутри образа
+  to: /home/project1
+
+Настраиваем nginx
+sites:
+
+  - map: domain.loc
+  to: /home/project1/public
+  
+  php: '7.4' версия php
+
+Включить/выключить сервисы
+services:
+
+    - enabled:
+        - 'postgresql@12-main'
+
+    - disabled:
+        - 'mysql'
+
+Поставить дополнительное ПО
+- cassandra: true
+- gearman: true
+- mysql8: true
+
+Делать бекапы БД при выключении
+backup: true
+
+Включить cron
+schedule: true
+--------------------
+
+Добавить хост в C:/Windows/System32/drivers/etc/hosts
+192.168.10.10 domain.loc
+
+Прописать cron в /etc/cron.d
+
+Включение/выключение Vargant
+vagrant up
+vagrant destroy
+--------------------
+
+Установка Homestead через Composer
+composer require laravel/homestead --dev
+vendor\\bin\\homestead make
+
+Настройка Mailhog для локальной отправки писем
+
+Расшарить проект клиенту
+vagrant ssh
+share domain.loc
+
+Установить версию PHP для CLI
+php74
+--------------------
+
+Профилирование Blackfire
+
+Профилирование XHGui
+sites:
+  xhgui: 'true'
+--------------------
+
+Обновление Homestead
+vagrant destroy
+git fetch
+git pull origin release
+vagrant box update
+bash init.sh/init.bat
+vagrant up
+-------------------------------------------------
+
+GETTING STARTED -> VALET
+
+Виртуальная машина для Homebrew и MacOs
+-------------------------------------------------
+
+GETTING STARTED -> DEPLOYMENT
+
+Выкладка в продакшен
+
+1. Настроить Nginx как в мане
+
+2. Оптимизация автозагрузки composer
+composer.lock положить в гит
+composer install --optimize-autoloader --no-dev
+
+3. Создать файл кеша всех конфигов bootstrap/cache/config.php
+php artisan config:cache
+
+4. Создать файл кеша всех роутов bootstrap/cache/routes.php
+php artisan route:cache
+
+5. Скомпилировать все blade шаблоны storage/framework/views
+php artisan view:cache
+-------------------------------------------------
+
+ARCHITECTURE CONCEPTS -> REQUEST LIFECYCLE
+
+1. Точка входа public/index.php
+в public/index.php загружается автозагрузчик сomposer
+в bootstrap/app.php создается инстанс приложения
+
+2. Запрос передаётся в HTTP Kernel или Console Kernel
+bootstrappers запускается до обработки запроса
+в bootstrappers определяется обработка ошибок, логи, среда выполнения, список МВ, через которые проходит запрос
+метод handle принимает Request (HTTP запросы) и отдаёт Response (HTTP ответы)
+
+3. Загрузка СП
+список в config/app.php в $providers
+у СП сначала вызывается метод register(), а после регистрации всех СП, вызывается метод boot()
+СП отвечают за загрузку всех компонентов фреймворка database, queue, validation, routing
+
+4. Request передаётся на роут
+роут отправляет Request на другой роут или контроллер. запускает МВ роута
+-------------------------------------------------
+
+ARCHITECTURE CONCEPTS -> CONTAINER
+
+Контейнер (СК) - это хранилище, инструмент для внедрения зависимостей. Способ подтянуть другие классы для использования. Реализует PSR-11
+
+UserRepository внедряем в контроллер
+class UserController extends Controller {
+  public function __construct(UserRepository $users) {
+    $this->users = $users;
+  }
+}
+--------------------
+
+Виды привязок к контейнеру
+
+Метод bind
+получаем всегда новый объект из ячейки
+
+$this->app->bind('HelpSpot\API', function ($app) {
+  return new \HelpSpot\API($app->make('HttpClient'));
+});
+
+$this->app - СК
+в bind() передаём класс или интерфейс
+в make() получим объект класса HttpClient
+--------------------
+
+Метод singleton
+получаем всегда один и тотже объект из ячейки
+объект в контейнере создается в момент первого вызова
+
+$this->app->singleton('HelpSpot\API', function ($app) {
+  return new \HelpSpot\API($app->make('HttpClient'));
+});
+--------------------
+
+Метод instance
+получаем всегда один и тотже объект из ячейки
+объект в контейнере создается не в момент первого вызова, а раньше. привязка существующего объекта
+
+$api = new \HelpSpot\API(new HttpClient);
+$this->app->instance('HelpSpot\API', $api);
+--------------------
+
+Метод bind
+привязка интерфейса и реализации
+
+$this->app->bind('Contracts\EventPusher', 'Services\RedisEventPusher');
+--------------------
+
+Метод when
+контекстная привязка на лету. 2 класса, 1 интерфейс, 2 реализации.
+
+$this->app->when(PhotoController::class)
+  ->needs(Filesystem::class)
+  ->give(function () {
+    return Storage::disk('local');
+});
+
+$this->app->when([VideoController::class, UploadController::class])
+  ->needs(Filesystem::class)
+  ->give(function () {
+    return Storage::disk('s3');
+});
+--------------------
+
+Метод when
+привязка примитивов
+
+$this->app->when('Http\Controllers\UserController')
+  ->needs('$variableName')
+  ->give($value);
+--------------------
+
+Метод when
+привязка массива объектов
+
+$this->app->when(ReportAggregator::class)
+  ->needs('$reports')
+  ->giveTagged('reports');
+--------------------
+
+Метод when
+привязка типизированных объектов
+
+$this->app->when(Firewall::class)
+  ->needs(Filter::class)
+  ->give(function ($app) {
+    return [
+      $app->make(NullFilter::class),
+      $app->make(ProfanityFilter::class),
+      $app->make(TooLongFilter::class),
+      ];
+});
+
+$this->app->when(Firewall::class)
+  ->needs(Filter::class)
+  ->give([
+    NullFilter::class,
+    ProfanityFilter::class,
+    TooLongFilter::class,
+]);
+--------------------
+
+Метод when
+вариативная зависимость
+
+$this->app->when(ReportAggregator::class)
+  ->needs(Report::class)
+  ->giveTagged('reports');
+--------------------
+
+Теги и категории для групп связок
+
+Регистрация
+$this->app->bind('SpeedReport', function () {});
+$this->app->bind('MemoryReport', function () {});
+
+Помечаем тегом
+$this->app->tag(['SpeedReport', 'MemoryReport'], 'reports');
+
+Привязываем пачку
+$this->app->bind('ReportAggregator', function ($app) {
+  return new ReportAggregator($app->tagged('reports'));
+});
+--------------------
+
+Расширенные привязки. Когда служба уже привязана, но требует изменения на лету
+
+$this->app->extend(Service::class, function ($service, $app) {
+  return new DecoratedService($service);
+});
+--------------------
+
+Разрешение и использование класса вне СК
+$api = $this->app->make('HelpSpot\API');
+или
+$api = resolve('HelpSpot\API');
+$api = $this->app->makeWith('HelpSpot\API', ['id' => 1]);
+--------------------
+
+Автоматическое внедрение
+в конструктор класса можно внедрять контроллеры, события, слушатели, мидлваре
+
+События СК
+Генерируются при каждом разрешении объекта. Разрешаемый объект передается в калбек, там его можно изменить
+
+Прослушать так
+
+$this->app->resolving(function ($object, $app) {резолвинг объекта любого типа});
+$this->app->resolving(\HelpSpot\API::class, function ($api, $app) {резолвинг объекта 'HelpSpot\API'});
+-------------------------------------------------
+
+ARCHITECTURE CONCEPTS -> PROVIDERS
+
+Провайдеры (СП) - это поставщики услуг
+загружаются по требованию
+
+Регистрация СП
+это добавление в config/app.php в $providers
+
+Создать СП
+php artisan make:provider NameServiceProvider
+
+Метод register
+только привязываем что-то к СК
+Не пишем роуты, прослушиватели событий итд
+
+в СП пишем только регистрации привязки к СК
+В любом методе есть доступ к СК через $app
+В массивы $bindings и $singletons сложить привязки для регистрации
+
+Метод boot
+Метод вызывается после регистрации всех СП
+в этом методе есть доступ ко всем СП
+тут можно указать зависимости, и СК автоматических их загрузит
+
+Обычные СП
+расширяют Support\ServiceProvider
+
+Отложенные СП
+расширяют Contracts\Support\DeferrableProvider
+имеют метод provides который возвращает массив СК
+-------------------------------------------------
+
+ARCHITECTURE CONCEPTS -> FACADES
+
+Фасад (Ф) это статический интерфейс к классам в СК
+дают краткий синтаксис
+
+Фасады и зависимости
+
+Фасады кратки, удобны, не требуется инжектить
+Опасность фасадов в разрастании размера ответственности
+
+Зависимости требуется инжектить
+Зависимости утолщают конструктор и дают визуальную обратную связь
+
+Фасады и хелперы
+
+Многие хелперы выполняют теже функции что и фасады
+между ними нет разницы
+
+View::make('profile'); Ф
+view('profile'); хелпер
+
+Все фасады (46 шт)
+https://laravel.com/docs/8.x/facades#facade-class-reference
+-------------------------------------------------
+
+ARCHITECTURE CONCEPTS -> CONTRACTS
+
+Контракты (К) - это интерфейсы, которые определяют набор СП
+каждый К имеет реализацию
+
+Контракты и Фасады
+
+Фасады и хелперы дают использовать сервисы без разрешения из СК
+
+Фасады не нужно декларировать в конструкторе
+К позволяют определять явные зависимости в конструкторе
+
+Каждый Фасад имеет эквивалентный Контракт
+К и Фасад почти не отличаются
+
+Репоз контрактов
+https://github.com/illuminate/contracts
+
+Все контракты (79 шт)
+https://laravel.com/docs/8.x/contracts#contract-reference
+-------------------------------------------------
+
+ARCHITECTURE CONCEPTS -> КОНЦЕПТ
+
+Шаблон проектировния Dependency Injection
+
+Инъекция зависимостей - это когда в конструктор передаётся зависимость в виде объекта нужного класса или интерфейса. При создании класса, передаем в конструктор объект. А в конструкторе класса уже стоит этот тип объекта. Или указан интерфейс и тогда можно передавать разные объекты на основе этого интерфейса. А в провайдере можно указать привязку интерфейса и класса.
+
+Инверсия зависимостей - это когда в конструктор передаётся зависимость в виде интерфейса, а не в виде конкретного класса. Заменять придется только передаваемые классы или объекты, на основе этого интерфейса. В итоге объект создается не внутри класса, а снаружи, и передаётся в класс.
+
+Пример
+
+рабочий код
+new MailController(new Mailer);
+new MailController(new LocalMailer);
+
+класс MailController
+public function __construct(MailerInterface $mailer) {
+  $this->mailer = $mailer;
+}
+
+классы Mailer и LocalMailer
+class Mailer implements MailerInterface {реализация интерфейса}
+class LocalMailer implements MailerInterface {реализация интерфейса}
+
+сам интрефейс
+interface MailerInterface {public function from();}
+--------------------
+
+Контейнер
+
+Контейнер вызывается так
+App::, app(), $this->app
+
+Кладем в ячейку класс
+$this->app->bind('some', 'App\SomeClass');
+
+Получаем всегда новый объект из ячейки
+$some = $this->app->make('some');
+
+Класс можно настроить как нужно, внутри замыкания
+$this->app->bind('some', function($app){
+  $some = new \App\SomeClass('argument1', 'argument2');
+  $some->setSomething('example');
+  return $some;
+});
+
+Внутри замыкания можно получить любые данные из контейнера, которые там уже есть
+$app->make('someelse');
+
+
+Singleton. получаем всегда один и тотже объект из ячейки
+объект в контейнере создается в момент первого вызова
+$this->app->singleton('some', 'App\SomeClass');
+
+Instance. получаем всегда один и тотже объект из ячейки
+объект в контейнере создается не в момент первого вызова, а раньше
+$some = new Some;
+$this->app->instance('some', $some);
+--------------------
+
+Вызываем несуществующий класс из контейнера, простым методом по имени класса
+$this->app->make('App\SomeClass');
+контейнер пытается создать объект этого класса
+
+Вызываем несуществующий класс из контейнера, но когда есть фасад
+protected static function getFacadeAccessor() {
+  return 'App\SomeClass';
+}
+контейнер создаст объект этого класса, и поместит его в себя, и будет возвращать объект как singleton или instance
+--------------------
+
+Полное описание процесса работы контейнера
+
+1. Когда класс привязан без замыкания. а только по имени класса. или вообще не привязан
+$this->app->bind('some', 'App\SomeClass');
+
+И вызываем класс из контейнера вот так $this->app->make('App\SomeClass');
+
+2. Контейнер использует рефлексию и исследует конструктор класса, пытается понять что хочет получить класс, и разрешить эти зависимости, вызывая много раз метод:
+$this->make('<Класс зависимости>');
+
+3. Контроллеры в ларавел создаются также через этот метод App::make() и идёт попытка разрешить зависимости в конструкторе.
+public function __construct(MailerInterface $mailer) {
+  $this->mailer = $mailer;
+}
+
+но объект интерфейса не может быть создан, поэтому в провайдере пишем привязку интерфейса и реализации
+$this->bind('App\Mailers\Contracts\MailerInterface', 'App\Mailers\LocalMailer');
+
+и теперь везде будет срабатывать класс LocalMailer
+и меняем этот класс только в провайдере
+
+
+4. Но можно обоийтись без интерфейсов вообще, а просто указать конкретный класс
+public function __construct(LocalMailer $mailer) {
+  $this->mailer = $mailer;
+}
+и тогда привязка в провайдере не нужна
+
+5. Также разрешение зависимостей возможна при вызове функций, методов, замыканий
+$this->app->call('<зымыкание>', [#params...])
+$this->app->call([$object, 'method'], [#params...]);
+
+вообще App::call() это обёртка над php call_user_func_array()
+Все методы контроллеров также вызываются через App::call()
+--------------------
+
+Шаблон проектировния Adapter
+
+Есть 2 класса, оба от разных интерфейсов, и оба с разными методами. Например старая либа для работы с картинками, и нужно внедрить новую либу, не меняя код.
+
+Старая либа
+
+интерфейс 1
+interface Interface1 {
+  public function upload() {}
+}
+
+класс 1
+class Class1 implements Interface1 {
+  public function upload() {реализация}
+}
+
+
+Новая либа на которую заменяем
+
+интерфейс 2
+interface Interface2 {
+  public function addMedia() {}
+}
+
+класс 2
+class Class2 implements Interface2 {
+  public function addMedia() {реализация}
+}
+
+
+создаем адаптер
+class Adapter implements Interface1 {
+
+  этот новый класс либы подключаем
+  public function __construct() {$this->adapter = new Class2()}
+  
+  но методы названы как старые, из старой либы. но они вызывают новые методы
+  таким образом можно не менять код по всему проекту
+  public function upload() {$this->adapter->addMedia()}
+}
+
+Особенность класса Adapter такова, что:
+1. объект класса Class2 можно создать в конструкторе
+2. или наследовать сам класс Adapter от класса Class2
+Это какбы 2 варианта работы с адаптером. На основе класса и на основе объекта.
+
+контроллер
+class MyClass extends Controller {
+  public function adapter() {
+  
+    работаем с классом 1. всё ок
+    $var = app(Class1::class);
+	$var->upload();
+	
+	работаем с адаптером. по факту с классом 2. всё ок
+    $var = app(Adapter::class);
+	$var->upload();
+	
+    можно еще улучшить так
+	$var = app(Interface1::class);
+	$var->upload();
+	
+	только в провайдере дописать в $bindings = [Interface1::class => Adapter::class]
+	т.е. укажем ларавелу, что когда идет обращение к интерфейсу, то порождаем такой класс
+  }
+}
+--------------------
+
+Observer - 
+Facade - 
+Repository - 
+Factory - 
+
+-------------------------------------------------
+
+THE BASICS -> ROUTING
+
+Все роуты в группе RouteServiceProvider
+Все роуты с префиксом /api обрабатываются автоматически
+
+Папка роутов
+/routes
+
+web.php - роуты для веба, МВ группа 'web'
+api.php - роуты для api, без состояния, МВ группа 'api'
+--------------------
+
+Роуты
+
+GET    | brands              | brands.index   | BrandController@index   | список ресурсов
+GET    | brands/create       | brands.create  | BrandController@create  | вывод формы создания ресурса
+POST   | brands              | brands.store   | BrandController@store   | сабмит формы создания ресурса
+GET    | brands/{brand}/edit | brands.edit    | BrandController@edit    | вывод формы редактирования ресурса
+PUT    | brands/{brand}      | brands.update  | BrandController@update  | сабмит формы редактирования ресурса
+GET    | brands/{brand}      | brands.show    | BrandController@show    | показать ресурс
+DELETE | brands/{brand}      | brands.destroy | BrandController@destroy | удалить ресурс
+
+
+Контроллер
+
+список ресурсов
+public function index() {}
+
+вывод формы создания ресурса
+public function create() {}
+
+сабмит формы создания ресурса
+public function store(Request $request) {}
+
+вывод формы редактирования ресурса
+public function edit($id) {}
+
+сабмит формы редактирования ресурса
+public function update(Request $request, $id) {}
+
+показать ресурс
+public function show($id) {}
+
+удалить ресурс
+public function destroy($id) {}
+--------------------
+
+HTTP методы (глаголы verb)
+
+Route::get($uri, $callback);
+Route::post($uri, $callback);
+Route::put($uri, $callback);
+Route::patch($uri, $callback);
+Route::delete($uri, $callback);
+Route::options($uri, $callback);
+--------------------
+
+Создать роут
+
+Route::get('user', function () {});
+Route::get('user', 'UserController@index');
+Route::match(['get', 'post'], 'user', function () {});
+Route::any('user', function () {});
+--------------------
+
+Роуты редиректов
+
+Route::redirect('/here', '/there'); код 302
+Route::redirect('/here', '/there', 301);
+Route::permanentRedirect('/here', '/there'); код 301
+--------------------
+
+Роуты возвращающие вьюху
+
+Route::view('url', 'viewname');
+Route::view('url', 'viewname', ['param' => 'value']);
+Route::view('url', 'viewname')->with('param', 'value'));
+--------------------
+
+Параметры роутов
+
+Route::get('user/{id1}/{id2}', function ($id1, $id2) {});
+Route::get('user/{id?}', function ($id = null) {}); необязательный параметр
+--------------------
+
+Регулярки на параметры роутов
+
+Route::get('user/{id}/{name}', function ($id, $name) {})
+  ->where('id', '[A-Za-z]+');
+  ->where(['id' => '[0-9]+', 'name' => '[A-Za-z]+']);
+--------------------
+
+Регулярки на параметры роутов на глобальном уровне  
+
+в RouteServiceProvider
+public function boot() {
+  Route::pattern('id', '[0-9]+');
+  parent::boot();
+}
+--------------------
+
+Позволить косую черту "/" в роутах
+работает только для последнего сегмента
+
+Route::get('user/{id}', function ($id) {})
+  ->where('id', '.*');
+--------------------
+
+Именованные роуты
+
+Route::get('user/profile', function () {})
+  ->name('profile');
+--------------------
+
+Урлы и редиректы на именованные роуты
+
+{{route('profile', $id)}}
+route('profile', ['id' => 1]);
+<form action='{{route('profile', $id)}}'>
+redirect()->route('profile');
+--------------------
+
+Группировка роутов
+
+для задания им одного набора мидлваре или неймспейсов
+метод Route::group
+--------------------
+
+Мидлваре для группы роутов
+
+Route::middleware(['first', 'second'])->group(function () {
+  Route::get('/', function () {});
+  Route::get('user/profile', function () {});
+});
+--------------------
+
+Неймспейсы для группы контроллеров
+
+по умолчанию у контроллеров пространство Http\Controllers
+Route::namespace('Admin')->group(function () {});
+--------------------
+
+Роуты субдоменов
+
+Route::domain('{account}.myapp.com')->group(function () {
+  Route::get('user/{id}', function ($account, $id) {});
+});
+--------------------
+
+Префиксы роутов /admin/users, /admin/models
+
+Route::prefix('admin')->group(function () {
+  Route::get('users', function () {});
+  Route::get('models', function () {});
+});
+
+Префиксы роутов /admin.users, /admin.models
+
+Route::name('admin.')->group(function () {
+  Route::get('users', function () {});
+  Route::get('models', function () {});
+});
+--------------------
+
+Привязка роута и Eloquent модели
+
+Неявная привязка по столбику ID
+Route::get('api/users/{user}', function (User $user) {});
+
+Явная привязка по столбику slug
+Route::get('api/posts/{post:slug}', function (Post $post) {});
+
+Привязка связанных моделей
+Route::get('api/users/{user}/posts/{post:slug}', function (User $user, Post $post) {});
+
+Явная привязка по столбику ID в RouteServiceProvider
+public function boot() {
+  parent::boot();
+  Route::model('user', User::class);
+}
+Route::get('profile/{user}', function (User $user) {});
+
+Задать столбец по умолчанию, отличный от ID. в модели Eloquent
+public function getRouteKeyName() {
+  return 'slug';
+}
+--------------------
+
+Настройка логики привязки
+public function boot() {
+  parent::boot();
+  Route::bind('user', function ($value) {
+    return User::where('name', $value)->firstOrFail();
+  });
+}
+
+или
+
+Изменить метод resolveRouteBinding в Eloquent модели
+public function resolveRouteBinding($value, $field = null) {
+  return $this->where('name', $value)->firstOrFail();
+}
+--------------------
+
+Резервные роуты
+указать роут, когда не совпал ни один роут. обычно это 404. его написать в конце
+
+Route::fallback(function () {});
+--------------------
+
+Лимиты ограничения скорости
+мидлваре throttle для ограничения скорости
+
+Route::middleware('throttle:60,1')->group(function () {
+  Route::get('/user', function () {});
+});
+60 - колво запросов. 1 - минута
+
+Route::middleware('throttle:rate_limit,1')->group(function () {
+  Route::get('/user', function () {});
+});
+rate_limit - атрибут в модели User в БД
+
+Route::middleware('throttle:10|60,1')->group(function () {});
+10 - для гостя. 60 - для авторизованного
+
+Route::middleware('throttle:10|rate_limit,1')->group(function () {
+  Route::get('/user', function () {});
+});
+10 - для гостя. rate_limit - для авторизованного
+--------------------
+
+Для разных сегментов урла default и deletes, разные ограничения
+
+Route::middleware('throttle:60,1,default')->group(function () {
+  Route::get('/servers', function () {});
+});
+
+Route::middleware('throttle:60,1,deletes')->group(function () {
+  Route::delete('/servers/{id}', function () {});
+});
+--------------------
+
+HTML форма
+не имеет методов PUT, PATCH, DELETE. добавить скрытое поле
+
+<form>
+  <input type='hidden' name='_method' value='PUT'> или @method('PUT')
+</form>
+--------------------
+
+Получить текущий роут
+$route = Route::current();
+$name = Route::currentRouteName();
+$action = Route::currentRouteAction();
+if ($request->route()->named('profile')) {}
+-------------------------------------------------
+
+THE BASICS -> MIDDLEWARE
+
+Мидлваре (МВ) это механизм фильтрации HTTP запросов
+Например аутентификации юзеров, чтобы пропустить дальше, или редирект на страницу логина
+МВ как серия слоёв через которые проходит HTTP запрос, до попадания в приложение
+МВ разрешаются через СК, зависимости писать в конструкторе МВ
+
+Папка
+app/Http/Middleware
+
+Глобальный список МВ
+app/Http/Kernel.php в $middleware
+
+Список МВ для назначения отдельным роутам
+app/Http/Kernel.php в $routeMiddleware
+--------------------
+
+Создать МВ
+php artisan make:middleware NameMiddleware
+
+public function handle($request, Closure $next) {
+
+  редирект
+  if (условие) {
+    return redirect('home');
+  }
+
+  пропуск далее в приложение
+  $next($request);
+  }
+}
+--------------------
+
+Выполнение МВ до или после запроса
+
+public function handle($request, Closure $next) {
+  тут действия будут выполняться ДО обработки запроса
+  return $next($request);
+}
+
+public function handle($request, Closure $next) {
+  $response = $next($request);
+  тут действия будут выполняться ПОСЛЕ обработки запроса
+  return $response;
+}
+--------------------
+
+Назначить МВ к роуту
+Route::get('/', function () {})
+  ->middleware('namemiddleware');
+
+Назначить несколько МВ к роуту
+Route::get('/', function () {})
+  ->middleware(['namemiddleware', 'namemiddleware2']);
+
+Назначить МВ к роуту по имени класса
+Route::get('/', function () {})
+  ->middleware(\Http\Middleware\NameMiddleware::class);
+
+Назначить МВ группе роутов, но отменить для одного роута из группы
+Route::middleware([CheckAge::class])->group(function () {
+  Route::get('/', function () {});
+  Route::get('admin', function () {})->withoutMiddleware([CheckAge::class]);
+});
+--------------------
+
+Группы мидлваре
+
+можно положить несколько мидлваре в группу, в app/Http/Kernel.php в $middlewareGroups
+в СП RouteServiceProvider группы 'web' и 'api' уже присоединены к роутам, которые в файлах web.php и api.php
+группы мидлваре присоединяются к роутам также как отдельные мидлвари
+
+Сортировка порядка выполнения мидлвари
+в app/Http/Kernel.php в $middlewarePriority
+--------------------
+
+Передача параметров в мидлварю
+
+Route::get('/', function () {})->middleware('namemiddleware:roleName, roleStatus');
+public function handle($request, Closure $next, $role) {}
+--------------------
+
+Оконечное мидлваре
+
+должно выполнить работу после посылки HTTP в браузер
+сервер должен исполнять FastCGI
+добавить мидлваре в роут, или глобально в app/Http/Kernel.php
+
+public function terminate($request, $response) {
+  код
+}
+
+При вызове terminate(), будет создан новый инстанс мидлваре
+если хотим этот же инстанс - регистрируем мидлваре как singleton
+
+public function register() {
+  $this->app->singleton(TerminableMiddleware::class);
+}
+-------------------------------------------------
+
+THE BASICS -> CSRF PROTECTION
+
+CSRF это Cross Site Request Forgery, от подделки межсайтового запроса
+когда запросы отправляются из левого места, а не из авторизованной админки
+CSRF токен автоматически генерируется на основе сессий и кладётся в куку и сессию
+мидлваре VerifyCsrfToken входит в группу 'web' и проверяет токен
+CSRF отключается на тестах
+--------------------
+
+HTML форма
+<form>
+  @csrf
+</form>
+
+в форме будет вставлено
+<input type="hidden" name="_token" value="aznbfeYbmUCKfO...">
+
+в куке XSRF-TOKEN будет
+eyJpdiI6InBjOWdxYTI...
+--------------------
+
+JavaScript приложения
+
+заголовок X-XSRF-TOKEN
+кука XSRF-TOKEN
+
+js библиотека должна аттачить токен к запросам
+axios и angular делают это автоматически
+--------------------
+
+Заголовок X-CSRF-TOKEN
+
+<meta name='csrf-token' content='{{csrf_token()}}'>
+
+При использовании jQuery для AJAX запросов, руками добавлять заголовок
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content');
+  }
+});
+--------------------
+
+Исключить урлы из проверки CSRF
+
+обычно такие роуты исключаются из группы 'web' в RouteServiceProvider в routes/web.php
+еще можно исключить, добавив такие роуты в $except в мидлваре VerifyCsrfToken
+
+protected $except = [
+  'stripe/*',
+  'http://example.com/foo/*'
+];
+-------------------------------------------------
+
+THE BASICS -> CONTROLLERS
+
+Папка контроллеров
+app/Http/Controllers
+--------------------
+
+Неймспейсы
+
+контроллер
+Http\Controllers\Photos\AdminController
+
+роут
+Route::get('foo', 'Photos\AdminController@method');
+--------------------
+
+Контроллер
+class UserController extends Controller {
+  public function show($id) {}
+}
+
+Роут
+Route::get('user/{id}', 'UserController@show');
+--------------------
+
+Контроллер с 1 методом
+
+Создать
+php artisan make:controller UserController --invokable
+
+Контроллер
+class UserController extends Controller {
+  public function __invoke($id) {}
+}
+
+Роут
+Route::get('user/{id}', 'UserController');
+-------------------------
+
+Мидлваре на Контроллер
+
+Указать в роуте
+Route::get('profile', 'UserController@show')->middleware('auth');
+
+Указать в контроллере
+public function __construct() {
+  $this->middleware('auth');
+  $this->middleware('log')->only('index');
+  $this->middleware('subscribed')->except('store');
+}
+--------------------
+
+Создать мидлваре на лету в контроллере
+
+$this->middleware(function ($request, $next) {
+  return $next($request);
+});
+-------------------------
+
+Контроллеры с готовыми методами
+
+Методы
+index, create, store, show, edit, update, destroy
+
+Обычный Контроллер с привязкой к модели (использовать этот метод)
+php artisan make:controller NameController --model=ModelName
+
+Ресурсный контроллер с привязкой к модели
+php artisan make:controller NameController --model=ModelName --resource
+
+Оба генерят одинаковый код, в методы внедрена модель
+----------
+
+Ресурсный контроллер
+php artisan make:controller NameController --resource
+
+В методах нет модели
+-------------------------
+
+Роуты для ресурсного контроллера(ов), со всеми методами
+Route::resource('brands', BrandController::class);
+Route::resources(['brands' => 'BrandController', 'posts' => 'PostController']);
+
+Роуты для ресурсного контроллера, выбрать или исключить методы
+Route::resource('brands', 'BrandController')->only(['index', 'show']);
+Route::resource('brands', 'BrandController')->except(['create', 'store']);
+
+Роуты для ресурсного контроллера(ов), для Api. без роутов create и edit
+Route::apiResource('brands', 'BrandController');
+Route::apiResources(['brands' => 'BrandController', 'posts' => 'PostController']);
+--------------------
+
+Создать ресурсный контроллер для API
+
+php artisan make:controller api/PhotoController --api
+--------------------
+
+Роуты для вложенных ресурсов
+
+Route::resource('photos.comments', 'PhotoCommentController');
+/photos/{photo}/comments/{comment}
+--------------------
+
+Роуты для вложенных ресурсов неглубоко
+
+Route::resource('photos.comments', 'CommentController')->shallow();
+в урле не нужен ID родителя а только ID потомка
+--------------------
+
+Именованные роуты для ресурсных контроллеров
+
+Route::resource('photos', 'PhotoController')->names(['create' => 'photos.build']);
+Route::resource('users', 'AdminUserController')->parameters(['users' => 'admin_user']);
+/users/{admin_user}
+--------------------
+
+Область видимости роутов для ресурсных контроллеров
+
+Route::resource('users.posts', PostsController::class)->scoped();
+Route::resource('users.posts', PostsController::class)->scoped(['post' => 'slug']);
+--------------------
+
+Локализация ресурсных урлов с English на другой язык
+
+переименовать методы под другой язык: index, create, store, show, edit, update, destroy
+
+в AppServiceProvider
+public function boot() {
+  Route::resourceVerbs(['create' => 'crear', 'edit' => 'editar']);
+}
+Route::resource('fotos', 'PhotoController');
+--------------------
+
+Дополнительные контроллеры ресурсов
+
+когда хотим добавить еще роуты на ресурсный контроллер, кроме роутов по умолчанию
+Их лучше объявлять до вызова Route::resource
+
+Route::get('photos/popular', 'PhotoController@method');
+Route::resource('photos', 'PhotoController');
+--------------------
+
+Внедрение зависимостей в конструктор
+
+public function __construct(UserRepository $users) {
+  $this->users = $users;
+}
+--------------------
+
+Внедрение зависимостей в другие методы
+
+public function store(Request $request, $id) {
+  $name = $request->name;
+}
+Route::put('user/{id}', 'UserController@update');
+--------------------
+
+Кеширование роутов
+
+роуты на основе замыканий не кешируются
+писать роуты на основе классов
+кеширование даёт прибавку скорости в 100 раз
+
+Создать файл кеша всех роутов в bootstrap/cache/routes.php
+php artisan route:cache
+
+Удалить файл кеша всех роутов
+php artisan route:clear
+-------------------------------------------------
+
+THE BASICS -> HTTP REQUESTS
+
+Получить в контроллере
+class UserController extends Controller {
+  public function store(Request $request) {}
+}
+
+Получить в роуте
+Route::get('/', function (Request $request) {});
+--------------------
+
+Параметры
+
+public function update(Request $request, $id) {}
+Route::put('user/{id}', 'UserController@update');
+--------------------
+
+Путь
+$request->path();
+
+Проверка на путь (паттерн * на совпадение)
+if ($request->is('admin/*')) {}
+
+Урл
+$request->url(); без query string
+$request->fullUrl(); с query string
+
+Метод
+$request->method();
+if ($request->isMethod('post')) {}
+-------------------------
+
+Запросы и Ответы стандарта PSR-7
+
+Поставить либы
+composer require symfony/psr-http-message-bridge
+composer require nyholm/psr7
+
+Получить запрос
+use Psr\Http\Message\ServerRequestInterface;
+Route::get('/', function (ServerRequestInterface $request) {});
+-------------------------
+
+Обрезка и нормализация ввода
+
+МВ TrimStrings и ConvertEmptyStringsToNull стоят в глобальном стеке
+Обрезают пробелы строк, пустые строки выставляют в NULL
+Можно убрать это, закоментив классы в Http\Kernel в $middleware
+
+Все данные
+$request->request;
+$request->all();
+$request->input();
+request();
+
+Одно поле
+неважно get, post, query string
+
+$request->input('name'); 
+$request->input('name', 'defaultvalue');
+
+request('name');
+request('name', 'defaultvalue');
+
+$request->name; сначала ищет в теле запроса, потом в параметрах роута
+
+Доступ к массивам
+$request->input('products.0.name');
+$request->input('products.*.name');
+
+Параметры из Query String
+$request->query('name');
+$request->query('name', 'defaultvalue');
+$request->query();
+
+Получить JSON
+Для запросов Content-Type application/json
+$request->input('user.name');
+
+Получить boolean на чекбоксы и радиобуттоны
+$request->boolean('archived');
+вернёт true для 1, "1", true, "true", "on", "yes"
+
+Сабмит чекбокса в базу
+<input name='checkboxName' type='checkbox' value='1'>
+'checkboxName' => $request->has('checkboxName');
+чекбокс стоит - встанет 1. чекбокс не стоит - встанет 0
+
+Получить части данных
+$request->only(['username', 'password']);
+$request->only('username', 'password');
+$request->except(['credit_card']);
+$request->except('credit_card');
+
+Проверка на наличие
+if ($request->has('name')) {}
+if ($request->has(['name', 'email'])) {} должны быть все
+if ($request->hasAny(['name', 'email'])) {} должен быть любой из
+if ($request->filled('name')) {} есть и не равно пустоте
+if ($request->missing('name')) {} нет
+--------------------
+
+Старый ввод в форму
+
+ввод в форму сохраняется в сессию после сабмита формы
+чтобы опять заполнить поля формы когда на форме ошибки
+
+Это автоматический механизм, если используем встроенную валидацию Validation
+
+Сохранение текущего ввода
+
+$request->flash();
+$request->flashOnly(['username', 'email']);
+$request->flashExcept('password');
+
+Сохранение текущего ввода и редирект
+
+redirect('form')->withInput();
+redirect('form')->withInput(
+  $request->except('password')
+);
+--------------------
+
+Получить старый ввод
+$request->old('username');
+
+Вставка старого ввода на форму
+хелпер old()
+
+<input name='name' value='{{old('name')}}'>
+<input name='name' value='{{$data->name || old('name', 0) == 1 ? 'checked'}}'>
+--------------------
+
+Получить куки
+куки зашифрованы и подписаны кодом аутентификации
+их не может изменить клиент
+
+$request->cookie('name');
+Cookie::get('name'); используя Ф
+--------------------
+
+Добавить куки
+response('HelloWorld')->cookie('name', 'value', $minutes);
+response('HelloWorld')->cookie('name', 'value', $minutes, $path, $domain, $secure, $httpOnly);
+
+Добавить куки в очередь
+Куки будут прикреплены к Ответу перед отправкой в ​​браузер.
+Cookie::queue(Cookie::make('name', 'value', $minutes));
+Cookie::queue('name', 'value', $minutes);
+
+Создание куки
+$cookie = cookie('name', 'value', $minutes);
+response('Hello World')->cookie($cookie); прикрепляем к ответу
+
+Удалить истёкшую куку
+Cookie::queue(Cookie::forget('name'));
+
+Прикрепить к Ответу истёкшую куку
+$cookie = Cookie::forget('name');
+return response('Hello World')->withCookie($cookie);
+--------------------
+
+Получить загруженные файлы
+$request->file('photo');
+$request->photo;
+
+Проверка на наличие файла
+if ($request->hasFile('photo')) {}
+
+Проверка что файл корректно загружен
+if ($request->file('photo')->isValid()) {}
+--------------------
+
+Путь и расширение файла
+$request->photo->path();
+$request->photo->extension(); угадывает расширение по контенту
+--------------------
+
+Сохранение загруженных файлов
+Уникальное имя файла генерится автоматически.
+
+$request->photo->store('pathtofolder'); переносит файл в папку
+$request->photo->store('pathtofolder', 'dickname'); укажем диск
+
+Задать имя файла
+$request->photo->storeAs('pathtofolder', 'filename.jpg');
+$request->photo->storeAs('pathtofolder', 'filename.jpg', 'dickname');
+
+Настройка доверенных прокси для балансировщиков нагрузки типа AWS Elastic Load
+МВ TrustProxies массив прокси в $proxies.
+protected $proxies = ['192.168.1.1', '192.168.1.2'];
+protected $headers = Request::HEADER_X_FORWARDED_AWS_ELB;
+
+Для других балансировщиков нагрузки типа Amazon AWS где нет IP адресов
+protected $proxies = '*'; доверять всем прокси
+-------------------------------------------------
+
+THE BASICS -> HTTP RESPONSES
+
+Хелпер Response
+роуты и контроллеры возвращают Ответ в браузер
+возвращается полный инстанс Ответа Response или вьюха
+полный Response позволяет задать свои коды ответа и заголовки
+
+Route::get('home', function () {
+
+  return response('Hello', 200)
+    ->header('Content-Type', 'text/plain');
+
+  return response($content)
+    ->header('Content-Type', $type)
+    ->header('X-Header-One', 'Header Value');
+
+  return response($content)
+    ->withHeaders([
+      'Content-Type' => $type,
+      'X-Header-One' => 'Header Value'
+    ]);
+
+});
+--------------------
+
+Мидлваре Cache-Control
+
+для кеширования
+можно кеширование группы роутов
+если задан etag, то MD5 хеш содержимого будет автоматически установлен в ETag
+
+Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
+  Route::get('privacy', function () {});
+  Route::get('terms', function () {});
+});
+--------------------
+
+Прикрепление кук к Ответу
+
+response($content)
+  ->cookie('name', 'value', $minutes);
+
+response($content)
+  ->cookie($name, $value, $minutes, $path, $domain, $secure, $httpOnly);
+
+Прикрепление кук к Ответу, используя Фасад Cookie для установки в очередь
+
+Cookie::queue(Cookie::make('name', 'value', $minutes));
+Cookie::queue('name', 'value', $minutes);
+--------------------
+
+Шифрование кук
+куки зашифрованы и подписаны соответствующим мидлваре
+защиту можно отключить, добавив куку в массив
+
+в Http\Middleware\EncryptCookies
+protected $except = ['cookie_name'];
+--------------------
+
+Редиректы
+
+return redirect('home/dashboard');
+
+на предыдущую страницу
+return back()
+return back()->withInput();
+return Redirect::back()
+
+на именованный роут
+return redirect()->route('login');
+
+на именованный роут с параметром
+return redirect()->route('profile', ['id' => 1]); выдаст profile/{id}
+--------------------
+
+Заполнение параметров роута моделями Eloquent
+редирект на роут с ID юзера и привязкой к модели $user. выдаст profile/{id}
+
+redirect()->route('profile', [$user]);
+
+Указать свой столбик вместо ID
+redirect()->route('profile/{id:slug}', [$user]);
+
+В модели Eloquent написать
+public function getRouteKey() {
+  return $this->slug;
+}
+
+Редирект на метод контроллера
+redirect()->action('HomeController@index');
+redirect()->action('UserController@profile', ['id' => 1]);
+
+для лары 8
+redirect()->action([UserController::class, 'index']);
+
+Редирект на другой домен
+redirect()->away('https://www.google.com');
+
+Редирект со старым вводом
+редирект на новый урл и запись данных в сессию
+
+Редирект с сообщением
+Route::post('user/profile', function () {
+  return redirect('dashboard')->with('message', 'ok');
+});
+
+Потом на другой странице вывести
+@if (session('message'))
+  <div class='alert alert-success'>
+    {{session('message')}}
+  </div>
+@endif
+--------------------
+
+Вернуть вьюху
+использовать хелпер View если не нужно задавать заголовки и коды ответа
+response()->view('hello', $data, 200);
+--------------------
+
+Вернуть JSON
+автоматически вернёт Content-Type application/json
+response()->json(['name' => 'Abigail', 'state' => 'CA']);
+
+JSON метод можно комбинировать с колбеком
+response()
+  ->json(['name' => 'Abigail', 'state' => 'CA'])
+  ->withCallback($request->input('callback'));
+--------------------
+
+Скачать файл
+создание Ответа который заставит браузер скачать файл
+
+response()->download($pathToFile);
+response()->download($pathToFile, $customfilename, $customheaders);
+response()->download($pathToFile)->deleteFileAfterSend();
+--------------------
+
+Потоковые загрузки
+отправить строковый ответ, как загружаемый ответ, без записи на диск
+
+response()->streamDownload(function () {
+  echo GitHub::api('repo')
+    ->contents()
+    ->readme('laravel', 'laravel')['contents'];
+}, 'laravel-readme.md');
+--------------------
+
+Файловый ответ (PDF, image) без скачивания
+просто отобразит в браузере
+
+response()->file($pathToFile);
+response()->file($pathToFile, $headers);
+--------------------
+
+Макросы для Ответа
+написать макрос Ответа и аттачить его к роутам и контроллерам
+
+в ResponseMacroServiceProvider
+public function boot() {
+  Response::macro('macroname1', function ($value) {
+    return Response::make(strtoupper($value));
+  });
+}
+
+Вызвать так
+response()->macroname1('foo');
+-------------------------------------------------
+
+THE BASICS -> VIEWS
+
+Вьюхи содержат HTML, Blade, PHP
+Хелпер View
+Фасад View
+
+Папка вьюх
+resources/views
+
+Вьюха
+resources/views/greeting.blade.php
+
+Переменная
+{{$name}} (аналог <?= $test ?>)
+
+Любой php код
+{{var_dump(1)}}
+
+Все переменные
+{{dd($__data)}}
+--------------------
+
+Вывод вьюхи
+
+Route::get('/', function () {
+  return view('greeting', ['name' => 'James']);
+  return View::make('greeting', ['name' => 'James']);
+});
+
+Пути до вьюх
+view('admin.profile');
+resources/views/admin/profile.blade.php
+
+Проверка наличия вьюхи
+if (View::exists('admin')) {}
+
+Выбрать первую существующую вьюху из массива
+view()->first(['admin1', 'admin2']);
+View::first(['admin1', 'admin2']);
+
+Передача данных во вьюху
+
+массив
+view('greetings', $dataarray);
+
+поштучно
+view('greeting')
+  ->with('name1', 'Victoria1')
+  ->with('name2', 'Victoria2');
+
+
+Передача данных всем вьюхам
+
+AppServiceProvider
+public function boot() {
+  View::share('key', 'value');
+}
+-------------------------
+
+Композиторы Вьюх
+
+На основе замыканий или классов
+Вызываются когда рендерится вьюха
+Когда нужно вставлять данные при каждом рендеринге
+Когда вьюха выводится на разных роутах и требует данные
+
+Создать СП
+php artisan make:provider NameServiceProvider
+
+в config/app.php в $providers добавить \Providers\NameServiceProvider::class
+
+class NameServiceProvider extends ServiceProvider {
+
+  public function register() {}
+
+  Композиторы
+  public function boot() {
+
+    для вьюхи
+    View::composer('signup', function ($view) {
+      $view->with('param', 'value');
+    });
+
+    для нескольких вьюх
+    View::composer(['signup', 'signin'], function ($view) {
+      $view->with('param', 'value');
+    });
+
+    для всех вьюх
+    View::composer('*', function ($view) {
+      $view->with('param', 'value');
+    });
+
+    на основе класса
+    View::composer('signup', NameComposer::class);
+	View::composer(['signup', 'signin'], NameComposer::class);
+  }
+
+  
+  Креаторы
+  public function boot() {
+
+    для вьюхи
+    View::creator('signup', function ($view) {
+      $view->with('param', 'value');
+    });
+	
+    на основе класса
+    View::creator('signup', NameCreator::class);
+  }
+	
+}
+--------------------
+
+Папка композиторов
+app/Http/View/Composers
+
+Папка креаторов
+app/Http/View/Creators
+--------------------
+
+Создать композитор
+class NameComposer {
+  public function compose(View $view) {
+    $view->with('param', 'value');
+  }
+}
+
+Создать креатор
+class NameCreator {
+  public function create(View $view) {
+    $view->with('param', 'value');
+  }
+}
+
+Вывод во вьюхе
+{{$param}}
+
+Посмотреть все переменные во вьюхе
+dd($view->getData());
+-------------------------
+
+Креаторы Вьюх
+
+Креаторы выполняются после создания экземпляра вьюхи
+Композиторы выполняются после отображения вьюхи
+
+Чем они отличаются на примере одинаковых переменных:
+
+в Контроллере переменная
+в Композиторе и Создателе такая же переменная
+Композитор и Создатель перезаписывают переменные в Контроллере
+
+если в Контроллере нет переменной, то берется из Композитора или Создателя
+когда переменная есть в Композиторе и Создателе, то берется из Композитора
+-------------------------
+
+Оптимизация
+Blade вьюхи компилируются на лету когда происходит запрос
+
+Скомпилировать все blade шаблоны в storage/framework/views
+php artisan view:cache
+
+Удалить все скомпилированные blade шаблоны
+php artisan view:clear
+-------------------------------------------------
+
+THE BASICS -> URL GENERATION
+
+Генерация урлов
+Хелпер Url
+Фасад URL
+--------------------
+
+Мои примеры
+
+http://400.loc/catalog?category_id=10&brand_id=12&feature_id=
+
+Эти методы:
+в контроллере вызывать как $request->
+во вьюхах вызывать как Request::
+
+Request::segments(); массив сегментов
+Request::segment(1); сегмент по индексу
+
+Request::route(); объект роута
+Request::route()->named('frontend.catalog.index'); проверка что имя роута такое
+Request::routeIs('frontend.catalog.index'); проверка что имя роута такое
+
+Request::getUri(); полный урл
+Request::getBaseUrl(); пусто
+Request::getRequestUri(); /catalog
+
+Request::path(); catalog
+Request::is('catalog'); проверка что в урле есть это
+Request::url(); http://400.loc/catalog
+Request::fullUrl(); http://400.loc/catalog
+Request::method(); GET
+
+Route::current()->named('frontend.catalog.index'); true
+Route::currentRouteName(); frontend.catalog.index
+Route::getCurrentRoute(); объект роута
+
+Когда нужно чтобы пункт меню подсвечивался:
+- на списке
+- на формах создания и редактирования
+
+@if(Request::routeIs($route) || Request::segment(2) == explode('.', $route)[1]) active @endif
+--------------------
+
+Создать урл
+$post = Post::find(1);
+url('posts/{$post->id}');
+выдаст http://domain.com/posts/1
+--------------------
+
+Текущий урл
+
+url()->current(); без query string
+url()->full(); с query string
+url()->previous(); предыдущий урл
+
+URL::current();
+URL::full();
+URL::previous();
+--------------------
+
+Урлы на именованные роуты
+Route::get('/post/{post}', function () {})->name('post.show');
+route('post.show', ['post' => 1]);
+
+Урлы на именованные роуты, на основе модели Eloquent
+route('post.show', ['post' => $post]);
+
+Урлы на именованные роуты, на основе модели Eloquent, с дополнительными параметрами
+Route::get('/post/{p}/comment/{c}', function () {})->name('comment.show');
+route('comment.show', ['p' => 1, 'c' => 3]);
+--------------------
+
+Подписанные урлы с хешем на именованные роуты
+URL::signedRoute('unsubscribe', ['user' => 1]);
+
+Подписанные временые урлы с хешем на именованные роуты
+URL::temporarySignedRoute('unsubscribe', now()->addMinutes(30), ['user' => 1]);
+
+Проверка подписанных урлов
+if ($request->hasValidSignature()) {}
+--------------------
+
+Проверка подписанных урлов через мидлваре
+
+Регистрируем мидлваре
+$routeMiddleware = ['signed' => \Illuminate\Routing\Middleware\ValidateSignature::class];
+
+Присоединяем к роуту
+Route::post('/unsubscribe/{user}', function (Request $request) {})->name('unsubscribe')->middleware('signed');
+--------------------
+
+Урлы на методы контроллера
+action('HomeController@index');
+action([HomeController::class, 'index']);
+action('UserController@profile', ['id' => 1]);
+
+для лары 8
+action([UserController::class, 'index']);
+Redirect::action([UserController::class, 'index']);
+--------------------
+
+Глобальные параметры для роутов
+
+параметр locale укажем в мидлваре
+
+public function handle($request, Closure $next) {
+  URL::defaults(['locale' => $request->user()->locale]);
+}
+
+Route::get('/{locale}/posts', function () {})->name('post.index');
+-------------------------------------------------
+
+THE BASICS -> HTTP SESSION
+
+протокол HTTP не сохраняет состояние между запросами
+сессии обеспечивают это сохранение
+можно свои драйверы (хранилища) сессий
+работа с сессиями одинакова через хелпер Session или объект запроса Request
+--------------------
+
+Конфиг
+config/session.php
+
+file(по умолчанию) - в storage/framework/sessions
+cookie - в зашифрованных куках
+database - в базе
+memcached
+redis
+array - хранятся в php массиве и не сохраняются (этот драйвер для тестирования)
+--------------------
+
+Драйвер database
+
+Таблица
+Schema::create('sessions', function ($table) {
+  $table->string('id')->unique();
+  $table->foreignId('user_id')->nullable();
+  $table->string('ip_address', 45)->nullable();
+  $table->text('user_agent')->nullable();
+  $table->text('payload');
+  $table->integer('last_activity');
+});
+
+Запустить миграцию
+php artisan session:table
+php artisan migrate
+--------------------
+
+Драйвер redis
+composer predis/predis
+в конфиге в параметре connection указать тип соединения
+--------------------
+
+Получить данные через Request
+
+public function show(Request $request, $id) {
+  $value = $request->session()->get('key');
+  $value = $request->session()->get('key', 'defaultvalue');
+  $value = $request->session()->get('key', function () {return 'defaultvalue';});
+}
+--------------------
+
+Получить данные через Session
+
+Route::get('home', function () {
+  $value = session('key'); получить
+  $value = session('key', 'defaultvalue');
+  session(['key' => 'value']); сохранить
+});
+--------------------
+
+Получить все данные
+$request->session()->all();
+
+Проверка наличия данных
+if ($request->session()->has('users')) {} данные есть, и не null
+if ($request->session()->exists('users')) {} ключ есть, даже если данные null
+
+Сохранить в сессию
+$request->session()->put('key', 'value');
+session(['key' => 'value']);
+
+Сохранить в массив
+$request->session()->push('user.teams', 'developers');
+
+Получить и удалить данные
+$request->session()->pull('key', 'defaultvalue');
+
+Сохранить в сессию до следующего запроса
+$request->session()->flash('status', 'temporary');
+
+Сохранить в сессию для нескольких запросов
+$request->session()->reflash(); пересохранит данные дальше на следующий запрос
+$request->session()->keep(['username', 'email']); сохранит только определенные данные дальше на следующий запрос
+
+Удалить данные
+$request->session()->forget('key');
+$request->session()->forget(['key1', 'key2']);
+$request->session()->flush(); удалит всё
+--------------------
+
+Пересоздать Session ID
+
+Для предотвращения атаки session fixation
+$request->session()->regenerate();
+--------------------
+
+Блокировка сессии
+в пределах 1 сеанса не допускать паралельной записи в сессию с разных мест
+для драйверов типа atomic locks: memcached, dynamodb, redis, database
+
+На роуты ставим блокировку
+Route::post('/route1', function () {})->block($lockSeconds = 10, $waitSeconds = 10)
+Route::post('/route2', function () {})->block($lockSeconds = 10, $waitSeconds = 10)
+
+Запросы к роутам будут строго последовательны
+$lockSeconds - максимальная длительность блокировки.
+$waitSeconds - сколько секунд ждать, после попытки получить блокировку.
+-------------------------------------------------
+
+THE BASICS -> VALIDATION
+
+Фасад Validator
+метод validate в Http\Request
+если валидация не прошла, будет исключение и сформирован Ответ
+для html формы будет редирект, для AJAX запроса будет ответ как JSON массив
+--------------------
+
+public function store(Request $request) {
+
+  правила валидации через разделитель
+  $validatedData = $request->validate(['title' => 'required|unique']);
+
+  правила валидации массивом
+  $validatedData = $request->validate(['title' => ['required', 'unique']]);
+
+  сохранить сообщения об ошибках в именованном пакете ошибок
+  $validatedData = $request->validateWithBag('post', ['title' => ['required', 'unique']]);
+
+  bail остановит на первом правиле которое не прошло. остальные не проверяются. порядок строго как записано
+  $request->validate(['title' => 'bail|required|unique:posts|max:255']);
+
+  для вложенных полей
+  $request->validate(['author.name' => 'required']);
+
+  тут код после валидации
+}
+--------------------
+
+Вывод ошибок
+
+если валидация не прошла, то редирект назад и сохранение ошибок в Flash Session (FS)
+ошибки в $errors инстанса Support\MessageBag
+$errors связана с вьюхами через мидлваре ShareErrorsFromSession, доступна в вьюхах
+
+мидлваре TrimStrings и ConvertEmptyStringsToNull всегда включены в классе Http\Kernel
+--------------------
+
+Правило nullable
+publish_at может быть null или корректной датой
+
+$request->validate(['publish_at' => 'nullable|date']);
+--------------------
+
+AJAX запросы
+
+метод validate отдаст массив JSON с ошибками и код ответа 422
+--------------------
+
+Форма Запроса
+
+это отдельный класс с правилами валидации. запускается ДО запуска метода Контроллера store
+если валидация не прошла, то редирект назад или массив JSON с кодом 422, сохранение ошибок во FS
+-------------------------
+
+Класс формы запроса
+
+любые зависимости разрешается через СК
+добавить Форму Запроса в метод в Контроллер
+
+Создать
+app/Http/Requests/BrandRequest.php
+
+php artisan make:request BrandRequest
+
+Правила валидации
+public function rules() {
+  return [
+    'title' => 'required|unique'
+  ];
+}
+
+BrandRequest импорить в контроллер вместо стандартного Request
+public function store(BrandRequest $request) {
+
+  тут валидация уже прошла
+  
+  получим валидированные данные
+  $validated = $request->validated();
+}
+--------------------
+
+Хук after
+
+позволяет дописать следующую проверку или добавить сообщения об ошибках
+метод withValidator получает инстанс Validator со всеми методами, до валидации правил
+
+public function withValidator($validator) {
+  $validator->after(function ($validator) {
+    if ($this->somethingElseIsInvalid()) {
+      $validator->errors()->add('field', 'error message');
+    }
+  });
+}
+-------------------------
+
+Авторизация Формы Запросов
+логика проверки что авторизованный юзер имеет право на действия с ресурсами
+или просто вернуть true
+
+Route::post('comment/{comment}');
+
+public function authorize() {
+
+  получим комммент по id из роута
+  $comment = Comment::find($this->route('comment'));
+
+  если вернулся false то вернется код HTTP 403 и метод Контроллера не будет выполнен
+  return $comment && $this->user()->can('update', $comment);
+
+  тут добавить любые зависимости, ибо разрешается через СК
+}
+-------------------------
+
+Создать валидатор вручную
+
+public function store(Request $request) {
+
+  передаем данные и правила валидации
+  $validator = Validator::make($request->all(), [
+    'title' => 'required|unique',
+  ]);
+
+  проверяем
+  if ($validator->fails()) {
+  
+    ошибки
+    $validator->errors
+	
+    return redirect('post/create')
+	  
+	  кладем ошибки во FS. метод принимает $validator, MessageBag, массив
+      ->withErrors($validator)
+      ->withInput();
+  }
+}
+--------------------
+
+Редирект
+
+Validator::make($request->all(), [
+  'title' => 'required|unique'
+])->validate();
+
+Редирект и ошибки в именованный пакет
+
+Validator::make($request->all(), [
+    'title' => 'required|unique'
+])->validateWithBag('post');
+-------------------------
+
+Очистить подготовить изменить данные перед валидацией
+protected function prepareForValidation() {
+  $this->merge([
+    'slug' => Str::slug($this->slug)
+  ]);
+}
+-------------------------
+
+Именованные пакеты ошибок
+
+когда много форм на 1 странице
+разложить ошибки на подмассивы каждый для своей формы
+
+redirect('register')->withErrors($validator, 'bagname1');
+
+Получить доступ к пакету
+{{$errors->bagname->first('email')}}
+-------------------------
+
+Работа с сообщениями об ошибках
+
+После вызова инстанса Validator метода errors, получаем инстанс MessageBag
+MessageBag содержит много методов для работы с ошибками
+$errors доступна во вьюхах и является инстансом MessageBag
+
+Проверка на наличие сообщениЙ для Поля
+if ($errors->has('email')) {}
+
+Получить первое сообщение для Поля
+$errors = $validator->errors();
+$errors->first('email');
+
+Получить все сообщения для Поля
+foreach ($errors->get('email') as $error) {}
+
+Получить все сообщения для Поля которое является массивом
+foreach ($errors->get('emails.*') as $error) {}
+
+Получить все сообщения для всех Полей
+foreach ($errors->all() as $error) {}
+
+@if ($errors->any())
+  @foreach ($errors->all() as $error)
+    {{$error}}
+  @endforeach
+@endif
+-------------------------
+
+Свои сообщения об ошибках
+
+заполнитель :attribute будет заменен именем поля из attributes()
+public function messages() {
+  return [
+    формат 'имя.правило'
+    'name.required' => 'Название бренда обязательно :attribute',
+  ];
+}
+--------------------
+
+Заполнители полей
+
+public function attributes() {
+  return [
+    'name' => 'Заголовок',
+  ];
+}
+
+Заполнители
+:attribute :other :size :input :min :max :values
+--------------------
+
+Установка сообщения в языковых файлах
+
+в языковой файл resources/lang/xx/validation.php добавить сообщение в $custom
+'custom' => [
+  'email' => [
+    'required' => 'We need to know your e-mail address'
+  ]
+];
+--------------------
+
+Установка заполнителей в языковых файлах
+
+в языковой файл resources/lang/xx/validation.php добавить заполнители в $attributes
+'attributes' => [
+  'email' => 'email address'
+];
+--------------------
+
+Установка заполнителей в валидаторах созданных вручную
+
+$customAttributes = ['email' => 'email address'];
+$validator = Validator::make($input, $rules, $messages, $customAttributes);
+-------------------------
+
+Сложный пример
+
+$request->validate([
+  creditCard обязателен если payment установлен в cc
+  'creditCard' => 'required_if:payment,cc',
+]);
+
+
+Заполнитель для cc
+
+в языковой файл resources/lang/xx/validation.php добавить в $values
+
+'values' => [
+  'payment' => [
+    'cc' => 'credit card'
+  ],
+];
+-------------------------
+
+Условное добавление правил валидации
+
+field2 и field3 не будут валидироваться, если поле field1 false
+
+[
+  'field1' => 'bool',
+  'field2' => 'exclude_if:field1,false',
+  'field3' => 'exclude_if:field1,false',
+];
+
+[
+  'field1' => 'bool',
+  'field2' => 'exclude_unless:field1,true',
+  'field3' => 'exclude_unless:field1,true',
+];
+
+Валидация поля, если оно присутствует
+если поле sometimes есть в выходных данных
+
+[
+  'email' => 'sometimes|required',
+];
+--------------------
+
+Комплексная условная проверка
+
+сложные проверки
+например required для поля, если другое поле > 100
+два поля должны иметь значение, если другое поле присутствует
+
+[
+  'email' => 'required|email',
+  'games' => 'required|numeric',
+];
+
+$v->sometimes('reason', 'required|max:500', function ($input) {
+  return $input->games >= 100;
+});
+
+В sometimes передаем условно-проверяемое поле 'reason' и его правила валидации
+
+Если в замыкании возвращается true, то правила валидации будут добавлены.
+
+Для нескольких полей
+
+$v->sometimes(['reason', 'cost'], 'required', function ($input) {
+  return $input->games >= 100;
+});
+
+$input - инстанс класса Support\Fluent, там есть доступ к вводу и файлам.
+-------------------------
+
+Валидация массивов
+
+На форме массив инпутов. валидация 1 элемента
+[
+  'photos.profile' => 'required|image',
+];
+
+На форме массив инпутов. валидация всех элементов
+[
+  'person.*.email' => 'email|unique:users',
+  'person.*.first_name' => 'required_with:person.*.last_name',
+];
+
+Свои сообщения об ошибках при валидации массивов
+'custom' => [
+  'person.*.email' => [
+    'unique' => 'Each person must have a unique e-mail address',
+  ]
+];
+-------------------------
+
+Свои правила валидации
+
+1. Создать класс правил валидации
+
+php artisan make:rule NameRule
+app/Rules/NameRule.php
+
+Метод passes
+логика проверки
+вернуть true или false
+
+Метод message
+сообщения об ошибках
+хелпер trans даст локализованное сообщение об ошибке
+
+Прикрепляем класс
+$request->validate([
+  'name' => ['required', 'string', new NameRule],
+]);
+
+2. Замыкания
+
+$validator = Validator::make($request->all(), [
+  'title' => [ 'required', function ($attribute, $value, $fail) {
+      if ($value === 'foo') {
+        $fail($attribute.' is invalid');
+      }
+    }
+  ]
+]);
+
+3. Расширения
+
+Метод extend в Фасаде Validator
+использовать в СП
+
+public function boot() {
+
+  передадим замыкание
+  Validator::extend('foo', function ($attribute, $value, $parameters, $validator) {
+    return $value == 'foo';
+  });
+
+  передадим класс и метод
+  Validator::extend('foo', 'FooValidator@validate');
+  
+  добавим свои сообщения об ошибках
+  Validator::replacer('foo', function ($message, $attribute, $rule, $parameters) {
+    return str_replace(...);
+  });
+}
+
+4. Неявные Расширения
+
+Когда поля нет или значение пустое, то валидация не запускаются
+
+$rules = ['name' => 'unique:users,name'];
+$input = ['name' => ''];
+Validator::make($input, $rules)->passes(); отдаст true
+
+Чтобы валидация запускалась на пустом поле
+
+Validator::extendImplicit('foo', function ($attribute, $value, $parameters, $validator) {
+  return $value == 'foo';
+});
+
+Неявные объекты правил
+
+Чтобы валидация вида Объект Rule запускался на пустых полях, реализовать интерфейс
+Contracts\Validation\ImplicitRule
+-------------------------------------------------
+
+THE BASICS -> ERROR HANDLING
+
+Обработка и логирование ошибок и исключений
+локально APP_DEBUG = true, для продакшена false
+метод Exceptions\Handler
+
+Конфиг
+в config/app.php в $debug
+--------------------
+
+Метод Report()
+для логирования исключений и отправки в сторонние сервисы Flare, Bugsnag, Sentry
+
+public function report(Throwable $exception) {
+  if ($exception instanceof CustomException) {свой ответ}
+  parent::report($exception);
+}
+--------------------
+
+Контекст журнала
+
+дополнительная контекстная инфа типа ID юзера
+в методе context() добавить свой набор
+эта инфа будет включена в логи.
+
+protected function context() {
+  return array_merge(parent::context(), ['foo' => 'bar']);
+}
+--------------------
+
+Хелпер Report
+
+логировать исключение, но продолжить приложение дальше, не отображая страницу ошибки
+
+try {
+  валидация данных
+} catch (Throwable $e) {
+  report($e);
+  return false;
+}
+--------------------
+
+Игнорирование исключений по типу
+
+в массиве $dontReport сложить эти исключения. они не будут логироваться
+исключение 404 не логируется. можно добавить свои типы исключений
+--------------------
+
+Метод Render()
+
+конверт исключения в HTTP Ответ для браузера
+
+public function render($request, Throwable $exception) {
+
+  проверяем тип исключения и отдаём свой Ответ
+  if ($exception instanceof CustomException) {
+    return response()->view('errors.custom', [], 500);
+  }
+
+  return parent::render($request, $exception);
+}
+--------------------
+
+Отчетные и отображаемые исключения
+
+abort(404);
+abort(401);
+abort(403, 'мессага');
+abort(500);
+
+Создать шаблоны для всех кодов ошибок
+php artisan vendor:publish --tag=laravel-errors
+
+из папки \vendor\laravel\framework\src\Illuminate\Foundation\Exceptions\views]
+будет скопировано в resources/views/errors
+
+Свои страницы ошибок для HTTP Исключений
+лежат в resources/views/errors/404.blade.php
+
+Внутри доступна переменная $exception как инстанс HttpException
+<h2>{{$exception->getMessage()}}</h2>
+-------------------------------------------------
+
+THE BASICS -> LOGGING
+
+Ведение логов на файлах
+на основе библиотеки Monolog
+конфиг config/logging.php
+по умолчанию канал stack
+фасад Log
+
+Имя канала
+по умолчанию имя канала равно значению среды - local, production
+
+зададим своё
+
+'stack' => [
+  'driver' => 'stack',
+  'name' => 'channel-name',
+  'channels' => ['single', 'slack']
+];
+
+Драйверы
+stack, single, daily, slack, papertrail, syslog, errorlog, monolog, custom
+
+Настройка каналов Single и Daily
+параметры bubble, permission, locking
+
+Настройка канала Papertrail
+параметры url, port
+
+Настройка канала Slack
+параметры url
+
+Построение логов Stacks
+драйвер stack позволяет комбинировать много каналов в один канал
+
+'channels' => [
+
+  'stack' => [
+    'driver' => 'stack',
+    'channels' => ['syslog', 'slack'] канал stack агреггирует 2 канала: syslog и slack
+  ],
+
+  'syslog' => [
+    'driver' => 'syslog',
+    'level' => 'debug'
+  ],
+
+  'slack' => [
+    'driver' => 'slack',
+    'url' => env('LOG_SLACK_WEBHOOK_URL'),
+    'username' => 'Laravel Log',
+    'emoji' => ':boom:',
+    'level' => 'critical'
+    ]
+];
+--------------------
+
+Уровень логов
+emergency, alert, critical, error, warning, notice, info, debug
+
+Пишем в лог
+Log::emergency($message);
+Log::alert($message);
+Log::critical($message);
+Log::error($message);
+Log::warning($message);
+Log::notice($message);
+Log::info($message);
+Log::debug($message);
+
+Все мессаги будут записаны в дефолтовый канал который указан в config/logging.php
+
+Контекстная инфа
+передать дополнительную инфу
+Log::info('User failed to login.', ['id' => $user->id]);
+
+Запись в нужный канал
+записать мессагу в канал отличный от канала по умолчанию
+
+Log::channel('slack')->info('Something happened');
+Log::stack(['single', 'slack'])->info('Something happened'); в несколько каналов
+
+Свои каналы Monolog
+
+Создать свою реализацию FormatterInterface
+Создать каналы обработчика Monolog
+Создать каналы через Фабрику
+-------------------------------------------------
+
+FRONTEND -> BLADE TEMPLATES
+
+Blade это движок PHP шаблонов, можно писать внутри PHP код
+шаблоны компилируются в PHP и кешируются
+шаблоны основаны на регулярных выражениях
+
+Папка вьюх
+resources/views
+--------------------
+
+Лайот
+resources/views/layouts/app.blade.php
+
+<html>
+
+  переменная
+  <title>@yield('title')</title>
+  
+  <body>
+  
+    вьюха
+    @yield('content')
+
+  </body>
+<html>
+--------------------
+
+Вьюха
+resources/views/child.blade.php
+
+расширились от лайота
+@extends('layouts.app')
+
+переменная
+@section('title')
+    титл
+@endsection
+
+сама вьюха
+@section('content')
+  контент
+@endsection
+--------------------
+
+@yield для определения раздела в лайоте
+вьюха расширяется от лайота через @extends
+во вьюхе вставляем в раздел @section
+@parent присоединит контент к контенту а не заменит
+--------------------
+
+Вьюха по умолчанию если нет вставки во вьюхе
+@yield('content', View::make('viewname'));
+--------------------
+
+Отображение данных
+
+экранирует через htmlspecialchars против XSS атак
+{{$name}}
+
+без экранирования
+{{!! $name !!}}
+
+Отобразить JSON
+@json принимает все аргументы PHP json_encode
+
+<script>
+  var app = @json($array);
+  var app = @json($array, JSON_PRETTY_PRINT);
+</script>
+--------------------
+
+HTML Entity кодирование
+
+Blade и хелпер E автоматически делают двойное кодирование double encode HTML entities
+
+Это можно отключить в AppServiceProvider
+public function boot() {
+  Blade::withoutDoubleEncoding();
+}
+--------------------
+
+Blade и JavaScript фреймворки
+
+{{}}
+JS фреймворки тоже используют эту конструкцию для переменных
+
+@{{}}
+в Blade писать так
+символ @ отбрасывается и в JS фреймворк придет {{}}
+
+Символ @ также используется для выхода из директив
+@@json() будет выведен как @json()
+--------------------
+
+Директива @verbatim
+Для показа js переменных в большом шаблоне
+Для оборачивания HTML, чтобы внутри каждой переменной не приставлять символ @
+
+@verbatim
+  {{name}}
+@endverbatim
+--------------------
+
+Операторы IF
+
+Аналог IF(){} ELSEIF(){} ELSE{}
+@if (условие) код @elseif (условие) код @else код @endif
+
+Аналог IF(!){}
+@unless (условие) код @endunless
+
+Аналог PHP isset
+@isset(условие) код @endisset
+
+Аналог PHP empty
+@empty(условие) код @endempty
+--------------------
+
+Директивы аутентификации
+
+@auth код @endauth
+@auth('guardName') код @endauth
+@guest код @endguest
+@guest('guardName') код @endguest
+--------------------
+
+Проверка на наличие и отсутствия раздела
+
+@hasSection('navigation') @yield('navigation') @endif
+@sectionMissing('navigation') @include('defaultNavigation') @endif
+--------------------
+
+Директивы переменных среды
+
+@production код @endproduction
+@env('staging') код @endenv
+@env(['staging', 'production']) код @endenv
+--------------------
+
+Операторы Switch
+
+@switch($i)
+
+  @case(1)
+    код
+  @break
+
+  @case(2)
+    код
+  @break
+
+  @default
+    код
+
+@endswitch
+--------------------
+
+Циклы
+
+@for ($i = 0; $i < 10; $i++) {{$i}} @endfor
+@foreach ($users as $user) {{$user->id}} @endforeach
+@forelse ($users as $user) {{$user->name}} @empty пусто @endforelse
+@while (true) код @endwhile
+--------------------
+
+Пропустить итерацию
+
+@continue
+@continue(условие)
+
+Завершить цикл
+
+@break
+@break(условие)
+--------------------
+
+Переменная внутри цикла
+
+свойства
+index, iteration, remaining, count, first, last, even, odd, depth, parent
+
+@foreach ($users as $user)
+
+  $loop->first
+  
+  @foreach ($user->posts as $post)
+    $loop->parent->first
+  @endforeach
+  
+@endforeach
+--------------------
+
+Комменты в коде Blade
+удаляются при компилировании
+{{--коммент--}}
+--------------------
+
+Вставка PHP в шаблон Blade
+@php
+  код
+@endphp
+--------------------
+
+Шаблон скомпилировать 1 раз
+для скриптов
+
+@once
+  @push('scripts')
+    <script>
+      код
+    </script>
+  @endpush
+@endonce
+
+
+Формы
+
+Поле CSRF
+скрытое поле для токена
+
+<form>
+  @csrf
+</form>
+
+
+Метод отправки формы
+у аттрибута method нет методов PUT, PATCH, DELETE
+поэтому указываем в скрытом поле _method
+
+<form method="POST">
+  @method('PUT')
+</form>
+
+
+Вывод ошибок валидации
+
+Поле
+<input class="@error('title') is-invalid @enderror">
+
+Ошибка
+@error('title')
+  {{$message}}
+@enderror
+
+
+Поле
+<input class="@error('title', 'createpostform') is-invalid @enderror">
+
+Ошибка в именованном пакете ошибок
+когда на 1 странице много форм
+
+@error('title', 'createpostform')
+  {{$message}}
+@enderror
+--------------------
+
+Компоненты
+
+компоненты на базе замыканий и классов
+компоненты это аналог @include
+компоненты позволяют привязку данных
+Зависимости автоматически внедряются в СК
+
+Папки компонентов
+app/View/Components - класс
+resources/views/components - вьюха
+--------------------
+
+Компонент на базе класса
+php artisan make:component Alert
+
+будет создано
+app/View/Components/Alert.php
+resources/views/components/alert.blade.php
+-------------------------
+
+Отображение компонентов во вьюхах
+
+<x-alert/>
+<x-user-profile/>
+<x-inputs.button/>
+
+Пути
+точка как разделитель папок
+View\Components\Inputs\Button.php
+<x-inputs.button/>
+-------------------------
+
+Передача данных в компоненты
+
+<x-alert type1="type1" type2="type2" id="id1" class='class1'/>
+<x-dynamic-component component="alert"/>
+
+Параметры компонента
+
+class Footer extends Component {
+
+  свойства компонента
+  public function __construct($type1, $type2) {
+
+    $this->type1 = $type1;
+    $this->type2 = $type2;
+  
+    нейминг стиль camelCase
+    $this->alertType = $alertType;
+  }
+  
+  метод компонента
+  public function method1($option) {
+    return $option;
+  }
+}  
+
+Вывод во вьюхе компонента
+{{$type1}}
+{{$type2}}
+{{$method1(3)}}
+{{$attributes}}
+{{$id}}
+{{$class}}
+{{$attributes->merge(['class'=>'class2'])}}
+{{$attributes->merge(['class' => $attributes->prepends('class2')])}}
+{{$attributes->filter(fn ($value, $key) => $key == 'class')}}
+{{$attributes->whereStartsWith('i')}}
+{{$attributes->whereStartsWith('i')->first()}}
+
+Сверху вьюхи
+@props(['class'])
+то что в массиве считать переменными. остальное упадет в {{$attributes}}
+
+нейминг стиль kebab-case
+<x-alert alert-type="danger"/>
+-------------------------
+
+Доступ к имени компонента, аттрибутам, слотам
+внутри класса компонента
+
+public function render() {
+  return function (array $data) {
+    dd($data);
+  };
+}
+-------------------------
+
+Дополнительные аттрибуты
+
+Атрибуты не указанные в конструкторе компонента, будут в общем пакете $attributes
+внутри аттрибутов не работают @директивы
+
+тег
+<x-alert type="error" :message="$message" class="aaa"/>
+
+вьюха
+<div {{$attributes}}></div>
+
+вывод
+<div class="aaa"></div>
+-------------------------
+
+Аттрибуты по умолчанию и объединение
+
+для аттрибутов можно указать значения по умолчанию
+можно добавить дополнительные значения в аттрибуты
+
+тег
+<x-alert class='aaa'/>
+
+вьюха
+{{$attributes->merge(['class'=>'bbb'])}}
+
+вывод
+class="bbb aaa"
+-------------------------
+
+Слияние аттрибутов, всех которые не class
+
+
+Не будет перезаписан
+
+тег
+<x-alert id="100"/>
+
+вьюха
+{{$attributes->merge(['id'=>200])}}
+
+вывод
+id="100"
+
+
+Будет добавлен
+
+тег
+<x-alert id="100"/>
+
+вьюха
+{{$attributes->merge(['id' => $attributes->prepends('200')])}}
+
+вывод
+id="200 100"
+-------------------------
+
+Фильтрация аттрибутов
+
+вернуть true чтобы оставить аттрибут в $attributes
+
+тег
+<x-alert class='aaa' id="100"/>
+
+вьюха
+{{$attributes->filter(fn ($value, $key) => $key == 'id')}}
+{{$attributes->filter(fn ($value, $key) => $key == 'class')}}
+
+вывод
+id="100"
+class="aaa"
+
+
+получить аттрибуты начинающиеся с заданной строки
+{{$attributes->whereStartsWith('string')}}
+
+показать значение 1го аттрибута в массиве аттрибутов
+{{$attributes->whereStartsWith('string')->first()}}
+--------------------
+
+Слоты
+
+Слот это способ передать контент из тега компонента во вьюху компонента
+можно много слотов в разных местах компонента
+можно получить внутри слота доступ к данным компонента
+
+Слот
+
+тег
+<x-alert>
+  slotslot
+</x-alert>
+
+вьюха
+{{$slot}}
+
+вывод
+slotslot
+
+
+Именованный слот
+
+тег
+<x-alert>
+
+  <x-slot name="xslot1">
+    xslot1
+  </x-slot>
+
+  <x-slot name="xslot2">
+    xslot2
+  </x-slot>
+  
+</x-alert>
+
+вьюха
+{{$xslot1}}
+{{$xslot2}}
+
+вывод
+xslot1 xslot2
+-------------------------
+
+Из слота получить методы и свойства компонента
+
+метод компонента
+public function method2($option) {
+  return $option;
+}
+
+слот внутри тега компонента
+<x-slot name="xslot3">
+  {{$component->method2('method2')}}
+</x-slot>
+
+вьюха компонента
+{{$xslot3}}
+
+вывод
+method2
+-------------------------
+
+Инлайновые компоненты
+для малых компонентов
+только класс без вьюхи
+
+Создать компонент
+php artisan make:component Alert --inline
+app/View/Components/Alert.php
+
+метод
+public function render() {
+  return '<div>Alert</div>';
+}
+
+тег
+<x-alert/>
+-------------------------
+
+Анонимные компоненты
+это компоненты с одной вьюхой и без класса
+
+создать вьюху
+resources/views/components/alert.blade.php
+
+тег
+<x-alert/>
+
+тег с аттрибутами
+<x-alert a1="a1" a2="a2" class='a3'/>
+
+в вьюхе указать что есть переменные а что "всё остальное"
+@props(['a1', 'a2'])
+
+всё что в массиве - станет переменными и будет доступно как {{$a1}}
+остальное упадет в {{$attributes}}
+
+задать значение по умолчанию
+@props(['a1' => 'a11'])
+-------------------------
+
+Динамические компоненты
+
+вывести компонент на лету как имя переменной
+
+<x-dynamic-component component="alert"/>
+-------------------------
+
+Директива @include
+подключать вьюху в другую вьюху
+все переменные родительской вьюхи доступны для подключаемой вьюхи
+@include для многоразового использования HTML как PHP include
+
+передать данные во вьюху
+@include('signup', ['param' => 'value'])
+
+подключить вьюху которой может не быть
+@includeIf('signup')
+
+выводить вьюху по условию
+@includeWhen($boolean, 'signup')
+@includeUnless($boolean, 'signup')
+
+включить 1ю существующую вьюху из массива
+@includeFirst(['signup', 'signin'])
+--------------------
+
+Директива @inject
+
+получить в переменную сервис из СК
+
+@inject('metrics', 'Services\MetricsService')
+{{$metrics->monthlyRevenue()}}
+--------------------
+
+Создание директивы
+
+в AppServiceProvider 
+public function boot() {
+  Blade::directive('datetime1', function ($param) {
+    return "<?= $param ?>";
+  });
+}
+
+выполнить
+view:clear
+
+вывод
+@datetime1($param)
+--------------------
+
+Создание директивы типа IF
+
+в AppServiceProvider
+public function boot() {
+  Blade::if('disk', function ($value) {
+    return config('filesystems.default') === $value;
+  });
+}
+
+вывод
+@disk('local')
+  код
+@elsedisk('s3')
+  код
+@else
+  код
+@enddisk
+
+@unlessdisk('local')
+  код
+@enddisk
+-------------------------
+
+Алиас для вьюхи для быстрого доступа
+Blade::include('includes.input', 'input');
+
+вывод массивов
+@each('view', $jobs, 'job', 'viewempty')
+не наследуют переменные родительской вьюхи
+
+@push
+@stack
+@prepend
+-------------------------
+
+Написание пакетов
+
+1. View Components автоматически обнаруживаются в папках:
+app/View/Components
+resources/views/components
+
+2. Blade Components регистрируются в СП
+или View Components расположенные в других папках
+
+public function boot() {
+  Blade::component('package-alert', AlertComponent::class);
+}
+
+<x-package-alert/>
+
+3. Компонент загружаемый автоматически
+используя вендорный неймспейс
+пакет Nightshade
+компоненты Calendar и ColorPicker
+
+public function boot() {
+  Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
+}
+
+<x-nightshade::calendar />
+<x-nightshade::color-picker />
+-------------------------
+
+Стеки
+
+именованные стеки
+для вывода в лайотах и вьюхах
+js для отдельных вьюх
+
+добавить вниз
+@push('name1')
+  <script src="/js.js"></script>
+@endpush
+
+добавить вверх
+@prepend('name1')
+  <script src="/js.js"></script>
+@endprepend
+
+вывод
+@stack('name1')
+-------------------------------------------------
+
+FRONTEND -> LOCALIZATION
+
+Фасад App
+Хелпер __()
+
+Папка языковых файлов
+resources/lang
+
+resources/lang/en/messages.php
+resources/lang/ru/messages.php
+resources/lang/es/messages.php
+
+Языковые файлы возвращают массив
+return [
+  'welcome' => 'Welcome',
+];
+
+Все языковые файлы
+https://github.com/Laravel-Lang/lang
+https://github.com/caouecs/lang
+--------------------
+
+Разделение на регионы
+
+называть по стандарту ISO 15897
+resources/lang/en_GB/messages.php
+--------------------
+
+Настройка локали
+в config/app.php указать 'locale'
+
+Локаль по умолчанию, когда для текущей нет строки перевода
+в config/app.php указать 'fallback_locale'
+--------------------
+
+Установка локали
+App::setLocale('ru');
+
+Определить текущую локаль
+$locale = App::currentLocale()
+$locale = App::getLocale()
+if (App::isLocale('en')) {}
+--------------------
+
+Создать перевод
+в resources/lang/es.json
+{"Привет": "Hello"}
+--------------------
+
+Получить перевод
+
+Формат "файл.ключ"
+__('messages.welcome');
+{{__('messages.welcome')}}
+
+Формат "файл.мессага"
+__('messages.Привет');
+{{__('messages.Привет')}}
+
+@lang('messages.welcome')
+@lang('messages.Привет')
+--------------------
+
+Заполнители внутри строк перевода
+регистр важен
+
+'welcome' => 'Welcome, :name'
+'welcome' => 'Welcome, :Name'
+'welcome' => 'Welcome, :NAME'
+
+вывод строки
+__('messages.welcome', ['name' => 'dayle']);
+--------------------
+
+Плюрализация (множественное число)
+
+Форматы строк
+'apples' => 'There is one apple|There are many apples',
+'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',
+
+Вывод
+trans_choice('messages.apples', 10);
+
+С заполнителями
+'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',
+trans_choice('time.minutes_ago', 5, ['value' => 5]);
+
+Сторонние пакеты с языковыми файлами
+эти файлы можно менять, перенеся сюда
+resources/lang/vendor/{packagename}/{en|ru|uk}/messages.php
+-------------------------------------------------
+
+FRONTEND -> SCAFFOLDING
+
+Легкий старт с Bootstrap, React, Vue
+Laravel Mix компилирует SASS, Less, Vue
+либы Lodash и Axios уже стоят
+webpack обрабатывает инструкции из webpack.mix.js
+
+Установка
+composer require laravel/ui
+php artisan ui bootstrap
+php artisan ui vue
+php artisan ui bootstrap --auth
+php artisan ui vue --auth
+
+появится файл package.json
+в нём писать все js зависимости как в composer.json
+
+Установить зависимости из package.json
+npm install
+
+Запуск компиляции
+npm run dev
+
+Поставить наблюдателя для перекомпиляции
+npm run watch
+
+Компоненты Vue
+в папке resources/js/components
+компоненты регистрируются в app.js
+-------------------------------------------------
+
+FRONTEND -> COMPILING ASSETS
+
+Laravel Mix использует Webpack для компиляции css и js
+
+Конфиг
+webpack.mix.js
+--------------------
+
+Установка NodeJS
+https://nodejs.org/en/download
+
+В корне проекта package.json (аналог composer.json)
+
+Запуск mix команд
+npm run dev
+
+Запуск mix команд и минификация
+npm run production
+
+Поставить наблюдателя для перекомпиляции
+npm run watch
+
+Папки
+public/css
+public/js
+--------------------
+
+Less в css
+
+mix.less('resources/less/app.less', 'public/css')
+   .less('resources/less/admin.less', 'public/css/admin');
+
+своё имя файла
+mix.less('resources/less/app.less', 'public/css/styles.css');
+
+свои настройки
+mix.less('resources/less/app.less', 'public/css', {
+  strictMath: true
+});
+--------------------
+
+Sass в css
+
+mix.sass('resources/sass/app.scss', 'public/css')
+   .sass('resources/sass/admin.scss', 'public/css/admin');
+
+своё имя
+mix.sass('resources/sass/app.scss', 'public/css/styles.css');
+
+свои настройки
+mix.sass('resources/sass/app.scss', 'public/css', {
+  precision: 5
+});
+--------------------
+
+Stylus в css
+
+mix.stylus('resources/stylus/app.styl', 'public/css');
+
+плагин
+npm install rupture
+
+mix.stylus('resources/stylus/app.styl', 'public/css', {
+  use: [
+    require('rupture')()
+  ]
+});
+--------------------
+
+PostCSS преобразователь css
+
+плагин Autoprefixer добавляет префиксы css3
+mix.sass('resources/sass/app.scss', 'public/css')
+  .options({
+    postCss: [
+      require('postcss-css-variables')()
+    ]
+});
+--------------------
+
+Объединение css в 1 файл
+
+mix.styles([
+  'public/css/vendor/normalize.css',
+  'public/css/vendor/videojs.css'
+  ], 
+  'public/css/all.css'
+);
+--------------------
+
+Работа с относительными url
+
+было
+{background: url('images/example.png');}
+
+example.png перемещается в public/images
+
+стало
+{background: url(images/example.png?d41d8);}
+
+Отключить перезапись url
+
+mix.sass('resources/sass/app.scss', 'public/css')
+  .options({
+    processCssUrls: false
+});
+--------------------
+
+Source Maps
+
+включить
+mix.js('resources/js/app.js', 'public/js')
+  .sourceMaps();
+--------------------
+
+Синтаксис ES2015, модули, компиляция vue, минификацию
+
+mix.js('resources/js/app.js', 'public/js');
+--------------------
+
+Убрать js вендоров из объединения в 1 файл
+
+mix.js('resources/js/app.js', 'public/js')
+  .extract(['vue']);
+
+public/js/manifest.js
+public/js/vendor.js либы
+public/js/app.js код
+
+подключить
+<script src="/js/manifest.js"></script>
+<script src="/js/vendor.js"></script>
+<script src="/js/app.js"></script>
+--------------------
+
+React
+пропустил
+--------------------
+
+Vanilla JS
+
+минификация и объединение в 1 файл
+mix.scripts([
+  'public/js/admin.js',
+  'public/js/dashboard.js'
+  ], 'public/js/all.js'
+);
+
+минификация и объединение в 1 файл, старый код в новый ES2015
+mix.babel([
+  'public/js/admin.js',
+  'public/js/dashboard.js'
+  ], 'public/js/all.js'
+);
+--------------------
+
+Настройка Webpack
+
+Слить несколько конфигов
+mix.webpackConfig({
+  resolve: {
+    modules: [
+      path.resolve(__dirname, 'vendor/laravel/spark/resources/assets/js')
+    ]
+  }
+});
+
+Скопировать в корень node_modules/laravel-mix/setup/webpack.config.js
+в package.json проставить все настройки с флагом --config чтобы ссылались на этот файл в корне
+--------------------
+
+Копирование папок и файлов в другое место
+
+mix.copy('node_modules/foo/bar.css', 'public/css/bar.css');
+mix.copyDirectory('resources/img', 'public/img');
+--------------------
+
+Кеширование
+
+Добавить хеш чтобы скинуть кеш браузеров
+mix.js('resources/js/app.js', 'public/js')
+  .version();
+
+Вьюха
+<script src="{{mix('/js/app.js')}}"></script>
+<link href='{{mix("/css/app.css")}}' rel='stylesheet'>
+
+Проверка
+public/mix-manifest.json
+{ "/js/app.js": "/js/app.js?id=539...", "/css/app.css": "/css/app.css?id=5eb..."}
+
+Кеширование только для продакшена
+mix.js('resources/js/app.js', 'public/js');
+if (mix.inProduction()) {
+  mix.version();
+}
+--------------------
+
+Скомпилированные ресурсы в CDN
+
+в config/app.php урл до CDN
+'mix_url' => env('MIX_ASSET_URL', null)
+
+урлы будут такие
+https://cdn.example.com/js/app.js?id=196
+--------------------
+
+BrowserSync
+
+плагин для браузера
+автоматический f5
+
+установить
+npm install -g browser-sync
+
+включить
+mix.browserSync('my-domain.test');
+
+Поставить наблюдателя для перекомпиляции
+npm run watch
+--------------------
+
+Переменные среды
+
+вставка переменных в Mix
+такие переменные с префиксом MIX_
+
+получить доступ
+process.env.MIX_SENTRY_DSN_PUBLIC
+
+если переменная меняется, то перезапустить
+npm run watch
+--------------------
+
+Уведомления ОС
+
+Системные уведомления в ОС когда выполняются задачи
+
+Отключить
+mix.disableNotifications();
+-------------------------------------------------
+
+SECURITY -> AUTHENTICATION
+
+Фасад Auth, Session
+
+Провайдеры - из какого хранилища извлекать юзеров. база
+Гуарды - как определять залогиненность. сессия, токены
+Проверку аутентификации делать в мидлваре и прикреплять к роутам
+
+Конфиг
+config/auth.php
+
+Поле password
+60-255 символов
+
+Поле remember_token
+галка "запомнить меня"
+
+Редирект после логина
+в RouteServiceProvider
+public const HOME = '/adminpanel';
+
+Для логина используется почта
+это можно поменять в LoginController
+public function username() {
+  return 'username';
+}
+
+Свой гуард
+protected function guard() {
+  return Auth::guard('NameGuard');
+}
+
+для юзеров модель Models\User.php
+она используется для аутентификации
+модель можно заменить на 'database' и юзать query builder
+
+Логинимся
+если логин пароль прошел то ставится сессионная кука в браузер
+
+Залогиненный юзер
+Auth::user();
+Auth::id();
+$request->user();
+if (Auth::check()) {}
+--------------------
+
+Мидлваре Auth для определения залогиненности
+'auth' => 'Illuminate\Auth\Middleware\Authenticate'
+
+Гуарды
+в auth.php в $guards
+к роуту прикрепить гуард
+
+Укажем auth
+Route::get('profile', function () {})->middleware('auth');
+
+Укажем auth и гуард
+Route::get('profile', function () {})->middleware('auth:admins');
+
+Укажем auth в контроллере
+public function __construct() {
+  $this->middleware('auth');
+}
+--------------------
+
+Редирект незалогиненного на страницу логина
+app/Http/Middleware/Authenticate.php
+
+protected function redirectTo($request) {
+  return route('login');
+}
+--------------------
+
+Проверка пароля
+на важных страницах, например биллинге
+
+Укажем мидлваре password.confirm
+Route::get('/settings/security', function () {})->middleware(['auth', 'password.confirm']);
+
+Проверка не делается 3 часа. Это можно изменить в auth.password_timeout
+--------------------
+
+Контроль попыток логина
+
+трейт ThrottlesLogins
+после N попыток логина, бан на 1 мин
+--------------------
+
+Ручная аутентификация
+
+public function authenticate(Request $request) {
+
+  данные из формы
+  $credentials = $request->only('email', 'password'); 
+
+  проверка выборкой из БД
+  if (Auth::attempt($credentials)) {
+  
+    в intended урл редиректа который открыли до логина
+    return redirect()->intended('dashboard');
+  }
+
+  дополнительные условия
+  if (Auth::attempt(['email' => $email, 'password' => $password, 'ban' => 0])) {}
+}
+--------------------
+
+Укажем какой гуард юзать при логине
+Auth::guard('admins')->attempt($credentials)
+--------------------
+
+Галка "запомнить меня"
+стирание основной куки больше не разлогинивает
+
+Логиним
+Auth::login($user, $remember = true);
+
+Логиним и укажем гуард
+Auth::guard('admin')->login($user);
+
+Логиним по ID юзера
+Auth::loginUsingId(1, $remember = true);
+--------------------
+
+Разлогин
+
+Auth::logout();
+$request->session()->invalidate();
+$request->session()->regenerateToken();
+return redirect('/');
+--------------------
+
+Свой гуард добавить
+в AuthServiceProvider в методе boot()
+
+Свой провайдер добавить
+в AuthServiceProvider в методе boot()
+--------------------
+
+Доступ к гуардам
+разные гуарды для разных частей приложения
+
+Логин
+Auth::guard('admins')->attempt($credentials);
+
+Разлогин
+Auth::logout();
+$request->session()->invalidate();
+$request->session()->regenerateToken();
+return redirect('/');
+--------------------
+
+Галочка "Запомнить меня"
+в таблице users поле remember_token
+$remember ставить в true
+
+логинимся
+Auth::attempt(['email' => $email, 'password' => $password], $remember = true))
+
+ставится кука вида
+remember_web_59ba* = eyJpdiI6IlJXTXZGMF*
+
+Проверка на наличие того, что юзер поставил галочку "Запомнить меня"
+по факту проверка специальной куки
+
+if (Auth::viaRemember()) {}
+--------------------
+
+Другие методы АУ
+
+Логиним экземпляр юзера
+Auth::login($user);
+Auth::login($user, true); с галочкой Запомнить меня
+
+Auth::guard('admin')->login($user); с указанием гуарда
+
+Auth::loginUsingId(1); по ID юзера
+Auth::loginUsingId(1, true); по ID юзера и с галочкой
+
+if (Auth::once($credentials)) {} логин для 1 запроса. без кук и сессий
+--------------------
+
+Аутентификация HTTP Basic
+
+без сохранения состояния
+нужна для Api
+добавить мидлваре auth.basic к роуту
+по умолчанию используется поле email как username
+для FastCGI дополнительные настройки в .htaccess
+
+Route::get('profile', function () {})->middleware('auth.basic');
+--------------------
+
+Разлогин для других устройств, кроме текущего
+По факту инвалидация всех других сессий, кроме текущей
+
+раскоментить мидлваре в app/Http/Kernel.php
+'web' => [\Illuminate\Session\Middleware\AuthenticateSession::class];
+
+Auth::logoutOtherDevices($password); этот метод требует вбива пароля.
+--------------------
+
+Добавление своих гуардов
+пропустил
+
+Добавление своих провайдеров
+пропустил
+--------------------
+
+События
+Добавить прослушиватели на события аутентификации в EventServiceProvider
+события Registered, Attempting, Authenticated, Login, Failed, Validated, Verified, Logout, CurrentDeviceLogout, OtherDeviceLogout, Lockout, PasswordReset.
+-------------------------------------------------
+
+SECURITY -> AUTHORIZATION
+
+Авторизация (АВ) это разрешение юзеру действий над ресурсом
+политики это как контроллеры, применяются на модель или ресурс
+гейты это как роуты, основаны на замыканиях, применяются к действиям
+фасад Gate
+
+передаем юзера $user и опционально модель в AuthServiceProvider
+
+Gate::define('update-post', function ($user) {
+  return $user->isAdmin;
+});
+
+Gate::define('update-post', function ($user, $post) {
+  return $user->id === $post->user_id;
+});
+
+Gate::define('update-post', 'Policies\PostPolicy@update');
+--------------------
+
+Разрешаем или запрещаем действия
+
+if (Gate::allows('update-post')) {}
+if (Gate::allows('update-post', $post)) {}
+if (Gate::denies('update-post', $post)) {}
+$user передаётся туда сам
+--------------------
+
+Разрешаем или запрещаем действия массово
+
+if (Gate::any(['update-post', 'delete-post'], $post)) {}
+if (Gate::none(['update-post', 'delete-post'], $post)) {}
+--------------------
+
+Проверка разрешения юзер-действие
+if (Gate::forUser($user)->allows('update-post', $post)) {}
+if (Gate::forUser($user)->denies('update-post', $post)) {}
+--------------------
+
+Авторизовать или выбросить исключение
+если юзеру не разрешено действие то выплюнет HTTP 403
+
+Gate::authorize('update-post', $post);
+--------------------
+
+Передать дополнительный контекст
+
+Gate::define('create-post', function ($user, $category, $extraFlag) {
+  return $category->group > 3 && $extraFlag === true;
+});
+
+if (Gate::check('create-post', [$category, $extraFlag])) {}
+--------------------
+
+Методы Гейта
+allows, denies, check, any, none, authorize, can, cannot
+--------------------
+
+Директивы Blade
+@can, @cannot, @canany
+--------------------
+
+Ответ Гейта
+
+возвращает boolean
+можно вернуть ответ Response с текстом ошибки
+
+Gate::define('edit-settings', function ($user) {
+  return $user->isAdmin
+    ? Response::allow()
+    : Response::deny('You must be a super administrator.');
+});
+--------------------
+
+Gate::allows вернет boolean
+поэтому поймать такой ответ можно
+
+$response = Gate::inspect('edit-settings', $post);
+
+if (!$response->allowed()) {
+  echo $response->message();
+}
+--------------------
+
+Метод before
+запускается ДО всех проверок
+
+Gate::before(function ($user, $ability) {
+  if ($user->isSuperAdmin()) {
+    return true;
+  }
+});
+--------------------
+
+Метод after
+запускается ПОСЛЕ всех проверок
+
+Gate::after(function ($user, $ability, $result, $arguments) {
+  if ($user->isSuperAdmin()) {
+    return true;
+  }
+});
+
+Если before и after возвращают true, то проверка прошла глобально
+--------------------
+
+Политики
+
+это классы которые организуют логику доступа для модели или ресурса
+в блоге модель Post и политика PostPolicy
+
+Папка политик
+app/Policies
+
+Создать политику
+php artisan make:policy NamePolicy
+
+Создать политику с CRUD
+php artisan make:policy NamePolicy --model=Post
+методы viewAny, view, create, update, delete, restore, forceDelete
+--------------------
+
+Регистрация политики
+
+в AuthServiceProvider в $policies = [Post::class => NamePolicy::class];
+тут связь Eloquent Модели и Политики
+--------------------
+
+Автопоиск политики
+
+политики зареганные явно, имеют приоритет над автонайденными политиками
+альтернатива регистрации руками
+через наименования User и UserPolicy
+можно написать свою логику автопоиска политики в методе Gate::guessPolicyNamesUsing
+--------------------
+
+В политику добавляем методы для каждого действия, которое оно разрешает или запрещает
+методы viewAny, view, create, update, delete, restore, forceDelete
+
+class NamePolicy {
+  public function update(User $user, Post $post) {
+    
+	проверка что юзер может редактировать пост
+	return $user->id === $post->user_id;
+  }
+}
+--------------------
+
+Что политика возвращает в Ответ
+
+вернем не boolean а полный ответ
+public function update(User $user, Post $post) {
+  return $user->id === $post->user_id
+    ? Response::allow()
+    : Response::deny('You do not own this post.');
+}
+
+Ловим ответ
+
+$response = Gate::inspect('update', $post);
+if ($response->allowed()) {} else {
+  echo $response->message();
+}
+--------------------
+
+Все гейты и политики возвращают false если запрос от неаутентифицированного юзера
+
+такие запросы можно пропускать тоже
+public function update(?User $user, Post $post) {
+  return optional($user)->id === $post->user_id;
+}
+--------------------
+
+Фильтры политик
+
+полный доступ для админа. метод before как в гейтах
+public function before($user, $ability) {
+  if ($user->isSuperAdmin()) {
+    return true;
+	return false; полный запрет
+	return NULL; авторизация будет выполняться методами политики
+  }
+}
+--------------------
+
+Авторизация действий используя Политики
+
+1. Через модель User. модель User содержит эти 2 метода
+
+if ($user->can('update', $post)) {} метод update модели post
+if ($user->cant('update', $post)) {}
+
+Если для данной модели зарегистрирована политика, метод can автоматически вызовет соответствующую политику и вернет результат
+
+Если для модели не зарегистрирована политика, метод can попытается вызвать гейт на основе замыкания, соответствующий заданному имени действия
+
+Действия не требующие моделей
+if ($user->can('create', Post::class)) {}
+
+2. через МВ
+мидлваре авторизует действия, до того как запрос достигнет роута или контроллера
+в Http\Kernel мидлваре Illuminate\Auth\Middleware\Authorize стоит с ключом can
+
+Route::put('/post/{post}', function (Post $post) {})->middleware('can:update,post');
+
+can это мидлваре
+update это действие которое хотим авторизовать
+post это параметр маршрута который передаем политике. по факту передадим модель Post
+
+Если юзер не авторизован для выполнения этого действия, то вернется ответ HTTP 403
+
+Действия не требующие моделей
+
+Route::post('/post', function () {})->middleware('can:create,Post');
+
+3. через метод контроллера authorize()
+вернет HTTP 403 если нет авторизации. Как и метод can, этот метод принимает имя действия, которое вы хотите разрешить, и соответствующую модель. Если действие не авторизовано
+
+public function update(Request $request, Post $post) {
+  $this->authorize('update', $post);
+}
+
+Действия не требующие моделей
+
+public function create(Request $request) {
+  $this->authorize('create', Post::class);
+}
+--------------------
+
+Авторизация ресурсных контроллеров
+
+использовать метод authorizeResource в конструкторе контроллера ресурсов
+этот метод прикрепляет мидлваре can к методам контроллера ресурсов
+
+public function __construct() {
+  $this->authorizeResource(Post::class, 'post'); прикрепили модель и роут
+}
+
+ресурсный контроллер должен быть создан с флагом --model
+--------------------
+
+4. через шаблоны Blade
+директивы @can, @cannot
+
+@can('update', $post)
+  юзер может изменять пост
+@elsecan('create', Post::class)
+  юзер может создавать пост
+@endcan
+
+@cannot('update', $post)
+  юзер НЕможет изменять пост
+@elsecannot('create', Post::class)
+  юзер НЕможет создавать пост
+@endcannot
+
+@canany(['update', 'view', 'delete'], $post)
+  юзер может изменять, просматривать, удалять пост
+@elsecanany(['create'], \Post::class)
+  юзе может создавать пост
+@endcanany
+--------------------
+
+@can, @cannot это аналог @if и @unless
+можно переписать так
+
+@if (Auth::user()->can('update', $post))
+  юзер может изменять пост
+@endif
+
+@unless (Auth::user()->can('update', $post))
+  юзер НЕможет изменять пост
+@endunless
+
+Действия не требующие моделей
+@can('create', Post::class)
+  юзер может создавать пост
+@endcan
+
+@cannot('create', Post::class)
+  юзер Неможет создавать пост
+@endcannot
+--------------------
+
+Передача дополнительного контекста
+
+public function update(User $user, Post $post, int $category) {
+  return $user->id === $post->user_id && $category > 3;
+}
+
+и потом вызвать политику так
+$this->authorize('update', [$post, $request->input('category')]);
+-------------------------------------------------
+
+SECURITY -> EMAIL VERIFICATION
+
+Есть готовые методы отправки и верификации пользователей, при реге по почте
+модель User должна расширять контракт Contracts\Auth\MustVerifyEmail
+новые юзеры получают на почту письмо со ссылкой
+в EventServiceProvider к событию Auth\Events\Registered присоединен слушатель SendEmailVerificationNotification 
+столбик users.email_verified_at с датой верификации юзера
+
+Добавить роут Auth::routes(['verify' => true]);
+Класс Auth\VerificationController содержит всю логику верификации по почте
+
+Мидлваре verified разрешает доступ к роуту только проверенным юзерам
+Route::get('profile', function () {})->middleware('verified');
+
+Вьюхи
+composer require laravel/ui
+php artisan ui vue --auth
+
+Шаблон
+resources/views/auth/verify.blade.php
+
+Редирект после верификации
+в VerificationController в $redirectTo = 'dashboard';
+
+События
+набор событий при отправке почты юзеру и дальнейшей верификации
+-------------------------------------------------
+
+SECURITY -> ENCRYPTION
+
+Методы OpenSSL с AES-256, AES-128, AES-256-CBC с подписью MAC
+фасад Crypt
+
+Сгенерировать application key
+в config/app.php в 'key' вбить руками
+
+или командой
+php artisan key:generate
+--------------------
+
+Зашифровать
+Crypt::encryptString($value);
+
+Расшифровать
+Crypt::decryptString($value);
+
+если не удалось, будет выброшено исключение DecryptException
+-------------------------------------------------
+
+SECURITY -> HASHING
+
+Для хеширования паролей
+фасад Hash
+
+Конфиг
+config/hashing.php
+
+Драйверы
+Bcrypt, Argon2 (Argon2i (требует PHP 7.2), Argon2id (требует PHP 7.3))
+
+Хешируем
+
+Hash::make($value);
+Hash::make($value, ['rounds' => 12]); сложность для Bcrypt
+
+Hash::make($value, ['memory' => 1024, 'time' => 2, 'threads' => 2]); сложность для Argon2
+
+Проверка хеша
+if (Hash::check('passwordfromForm', $passwordfromDBasHash)) {}
+
+Проверка необходимости повторного хеширования пароля
+Это нужно когда изменилась "сложность" и требуется перехешировать пароль на новый хеш
+
+if (Hash::needsRehash($hashed)) {
+  Hash::make($value);
+}
+-------------------------------------------------
+
+SECURITY -> RESETTING PASSWORDS
+
+Готовый набор для сброса пароля
+composer require laravel/ui
+php artisan ui vue --auth
+php artisan migrate
+
+база должна сохранять password reset токен
+токен годен 1 час
+изменить в config/auth.php в 'expire'
+
+контракт Contracts\Auth\CanResetPassword
+класс User
+вьюхи resources/views/auth/passwords
+
+вся логика тут
+Auth\ForgotPasswordController
+Auth\ResetPasswordController
+
+редирект после сброса пароля
+в ResetPasswordController в $redirectTo = 'dashboard';
+--------------------
+
+Настройка Гуарда Аутентификации
+в auth.php в ResetPasswordController указать свой гуард
+
+protected function guard() {
+  return Auth::guard('guard-name'); мой гуард
+}
+
+Брокеры паролей
+в auth.php в ForgotPasswordController и ResetPasswordController
+
+public function broker() {
+  return Password::broker('name'); свой брокер
+}
+
+Класс уведомлений для отправки почты юзеру
+
+модель User
+public function sendPasswordResetNotification($token) {
+  $this->notify(new ResetPasswordNotification($token));
+}
+-------------------------------------------------
+
+DIGGING DEEPER -> ARTISAN CONSOLE
+
+Artisan это command line interface (CLI)
+фасад Artisan
+команды обрабатываются в одном месте, а вызваны могут быть из многих
+
+список всех команд
+php artisan list
+
+хелп по команде
+php artisan help commandName
+--------------------
+
+Tinker это пакет REPL (read-eval-print-loop) на базе пакета PsySH
+уже стоит
+писать код в консоли как php -a
+
+установка Tinker вручную
+composer require laravel/tinker
+
+войти в Tinker
+php artisan tinker
+
+опубликовать файл конфига
+php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+
+Белый список команд
+clear-compiled, down, env, inspire, migrate, optimize, up
+
+в tinker.php добавить свои команды в свойство 'commands'
+
+Чтобы Tinker не присваивал классам псевдонимы
+в tinker.php добавить классы в свойство 'dont_alias'
+
+Классы команд разрешаются через СК, поэтому можно любые зависимости.
+--------------------
+
+Папка комманд
+app/Console/Commands
+
+Создать команду
+php artisan make:command CommandName
+
+заполнить свойства
+$signature = 'email:send {user}';
+$description = 'description description';
+
+исполнение в методе
+public function handle(DripEmailer $drip) {
+  $drip->send(User::find($this->argument('user')));
+}
+--------------------
+
+Команды на базе Замыканий
+
+Роуты на основе замыканий это альтернатива контроллерам
+Команды на основе замыканий это альтернатива командам на классах
+
+в app/Console/Kernel.php в методе commands грузим routes/console.php
+в этом файле определять роуты на базе замыканий но только через Artisan::command
+--------------------
+
+Сигнатура метода
+
+Artisan::command('build {project}', function ($project) {
+
+  в замыкании получаем аргументы и опции команды
+  $this->info("Building {$project}!");
+});
+
+Artisan::command('email:send {user}', function (DripEmailer $drip, $user) {
+  $drip->send(User::find($user));
+});
+--------------------
+
+Описание
+
+Artisan::command('build {project}', function ($project) {
+  $this->info("Building {$project}!");
+})->describe('Build the project');
+--------------------
+
+Аргументы
+
+$signature = 'email:send {user}'; аргумент user обязателен
+email:send {user?} аргумент user НЕобязателен
+email:send {user=foo} аргумент user со значением по умолчанию
+--------------------
+
+Опции
+идут с дефисами --
+
+$signature = 'email:send {user} {--queue}'; опция без значения это флаг
+php artisan email:send 1 --queue; запуск
+
+'email:send {user} {--queue=}'; опция со значением
+php artisan email:send 1 --queue=default; запуск
+
+email:send {user} {--queue=default}; опция со значением по умолчанию
+
+Шорткат для опции
+email:send {user} {--Q|queue}; --Q это краткая запись опции --queue
+
+Ввод массивов
+
+email:send {user*}
+php artisan email:send foo bar
+
+email:send {user} {--id=*}
+php artisan email:send --id=foo --id=bar
+--------------------
+
+Описание для аргументов и опций
+
+$signature = 'email:send
+  {user : The ID of the user}
+  {--queue= : Whether the job should be queued}';
+
+Получить аргументы и опции
+
+public function handle() {
+
+  $userId = $this->argument('user');
+  $arguments = $this->arguments();
+
+  $queueName = $this->option('queue');
+  $options = $this->options();
+}
+--------------------
+
+Запрос на ввод
+
+public function handle() {
+  $name = $this->ask('What is your name?');
+  $password = $this->secret('What is the password?');
+}
+
+Запрос на подтверждение
+
+if ($this->confirm('Do you wish to continue?')) {}; ввести y или yes
+--------------------
+
+Автозаполнение ввода
+
+$this->anticipate('What is your name?', ['Taylor', 'Dayle']);
+
+замыкание будет вызываться при печатании каждой буквы
+$this->anticipate('What is your name?', function ($input) {});
+
+Множественный выбор из вариантов
+
+$this->choice(
+  'What is your name?',
+  ['Taylor', 'Dayle'],
+  $defaultIndex, значение выбора по умолчанию
+  $maxAttempts = null, колво попыток выбора
+  $allowMultipleSelections = false позволить множественный выбор
+);
+--------------------
+
+Вывод результата
+каждый будет своим цветом
+
+public function handle() {
+  $this->line('Display this on the screen'); без цвета
+  $this->info('Display this on the screen'); синий
+  $this->comment('Display this on the screen');
+  $this->question ('Display this on the screen');
+  $this->error('Display this on the screen'); красный
+}
+
+Вывод результата таблицей
+
+$headers = ['Name', 'Email'];
+$users = User::all(['name', 'email'])->toArray();
+$this->table($headers, $users);
+--------------------
+
+Прогресс бар
+
+$bar = $this->output->createProgressBar(count($users));
+$bar->start();
+
+foreach ($users as $user) {
+  $this->performTask($user);
+  $bar->advance();
+}
+
+$bar->finish();
+--------------------
+
+Регистрация команд
+
+команды в app/Console/Commands зареганы автоматически.
+Для других папок сделать так
+
+protected function commands() {
+  $this->load(__DIR__.'/Commands');
+  $this->load(__DIR__.'/MoreCommands');
+}
+
+или
+
+добавить в app/Console/Kernel.php
+$commands = [
+  Commands\SendEmails::class
+];
+
+Вызов команд вне CLI
+из роута или контроллера
+Artisan::call принимает команду, класс, параметры
+
+Route::get('/foo', function () {
+
+  $exitCode = Artisan::call('email:send', [
+    'user' => 1,
+	'--queue' => 'default'
+  ]);
+
+});
+
+или
+
+Artisan::call('email:send 1 --queue=default');
+--------------------
+
+Поставить команду в очередь чтобы работало в фоновом режиме
+
+Route::get('/foo', function () {
+
+  Artisan::queue('email:send', [
+    'user' => 1,
+	'--queue' => 'default'
+  ]);
+
+});
+
+Указать соединение и очередь
+
+Artisan::queue('email:send', [
+  'user' => 1,
+  '--queue' => 'default'
+])->onConnection('redis')
+  ->onQueue('commands');
+
+Передать опции как массивы
+
+Route::get('/foo', function () {
+
+  $exitCode = Artisan::call('email:send', [
+    'user' => 1,
+	'--id' => [5, 13]
+  ]);
+
+});
+
+Передать булево значение
+
+$exitCode = Artisan::call('migrate:refresh', [
+  '--force' => true
+]);
+
+Вызов команд из других команд
+
+public function handle() {
+
+  $this->call('email:send', [
+    'user' => 1,
+	'--queue' => 'default'
+  ]);
+
+}
+
+Подавить вывод в консоль
+$this->callSilent('email:send', [
+  'user' => 1,
+  '--queue' => 'default'
+]);
+--------------------
+
+Кастомизация Stub
+чтобы править рутовые команды Artisan
+папка /stubs
+править сами шаблоны
+все изменения сделанные руками, отразятся во всех командах Artisan::make
+
+php artisan stub:publish
+-------------------------------------------------
+
+DIGGING DEEPER -> BROADCASTING
+
+Вещание событий через вебсокеты
+Изменения c сервера приходят (вещаются) через вебсокеты в клиентскую js либу Laravel Echo
+Вещание событий происходит через создание события через создание задачи в очереди
+События вещаются по каналам, публичным или приватным
+Хелпер broadcast
+
+Конфиг
+config/broadcasting.php
+
+Драйверы вещания на стороне сервера
+платные Pusher Channels, Ably
+бесплатный laravel-websockets, Redis
+для отладки log
+для выключения Null
+
+СП
+в config/app.php в $providers
+раскоментить Providers\BroadcastServiceProvider
+в этом файле роуты
+--------------------
+
+Установка Laravel Echo и Pusher JS
+
+npm install laravel-echo
+npm install pusher-js
+npm run dev
+--------------------
+
+Концепт
+
+Запуск события
+EventName::dispatch($user);
+
+В классе события EventName
+интерфейс ShouldBroadcast
+
+В классе события EventName
+укажем канал
+public function broadcastOn() {
+  return new PrivateChannel('users.'.$this->user->id);
+}
+
+Укажем как авторизовывать приватные каналы
+в routes/channels.php
+
+Прослушиваем событие
+метод private для приватных каналов
+метод listen прослушивает событие EventName
+
+Echo.private(`users.${userId}`)
+  .listen('EventName', (event) => {
+    console.log(event);
+});
+--------------------
+
+Класс события EventName, метод broadcastOn
+должен возвращать канал или массив каналов
+
+public function broadcastOn() {
+
+  публичный канал
+  return new Channel('users.' . $this->user->id);
+  
+  приватный канал
+  return new PrivateChannel('users.' . $this->user->id);
+  
+  канал присутствия
+  return new PresenceChannel('users.' . $this->user->id);
+}
+
+--------------------
+
+Название вещания
+
+по умолчанию равно имени класса EventName
+
+задать свой в классе события
+public function broadcastAs() {
+  return 'server.created';
+}
+
+.listen('.server.created', function (event) {});
+--------------------
+
+Данные для вещания
+
+модель User передается в js как массив
+можно дополнительно добавить данные
+
+public function broadcastWith() {
+  return ['data' => $data];
+}
+--------------------
+
+Очередь и Соединение для События
+
+Событие помещается в очередь по умолчанию в соединение по умолчанию, определенное в конфиге:
+queue.php
+
+Задать свои очередь и соединение, в классе События
+public $connection = 'redis';
+public $queue = 'default';
+--------------------
+
+Запустить событие в очередь sync
+
+Событие отправится сразу, без постановки в очередь
+Класс события должен реализовать интерфейс ShouldBroadcastNow, вместо ShouldBroadcast
+
+class EventName implements ShouldBroadcastNow {}
+--------------------
+
+Вещание по условию
+
+public function broadcastWhen() {
+  return false | true;
+}
+--------------------
+
+Авторизация приватных каналов
+
+Роуты для авторизации приватных каналов
+в BroadcastServiceProvider.php
+
+Это создаст роут /broadcasting/auth в группе МВ 'web'
+Broadcast::routes();
+Broadcast::routes($attributes);
+Broadcast::routes(['middleware'=>['web', 'another']]);
+
+Можно поменять роут /broadcasting/auth
+window.Echo = new Echo({
+  broadcaster: 'pusher',
+  authEndpoint: '/broadcasting/auth2'
+});
+
+Логика авторизации
+в routes/channels.php
+
+Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+  return (int)$user->id === (int)$id;
+});
+
+можно передать зависимости
+Broadcast::channel('App.Models.User.{id}', function (User $user, Order $order) {});
+
+Назначить гуарды
+
+Broadcast::channel('channel', function () {}, ['guards' => ['web', 'admin']]);
+--------------------
+
+Каналы на основе замыкания
+
+в routes/channels.php
+--------------------
+
+Каналы на основе классов
+
+Создать канал
+php artisan make:channel ChannelName
+
+Папка каналов
+App/Broadcasting
+
+Регистрация канала
+в routes/channels.php
+Broadcast::channel('users.{user}', ChannelName::class);
+
+Логика авторизации в методе join
+public function join(User $user, Order $order) {
+  return $user->id === $order->user_id;
+}
+--------------------
+
+Вещание события
+
+Класс События должен быть с интерфейсом ShouldBroadcast
+Событие ставится в очередь
+
+Отправить событие
+EventName::dispatch($user));
+
+Отправить событие "всем другим"
+broadcast(new EventName($user))->toOthers();
+
+Номер сокета соединения в Laravel Echo
+var socketId = Echo.socketId();
+
+в Axios номер сокета автоматически передается из заголовка X-Socket-ID со всеми запросами к серверу
+--------------------
+
+Прослушивание события
+
+метод .channel получает публичный канал
+метод .private получает приватный канал
+
+метод .listen прослушивает событие
+
+Echo.channel(`users.${this.user.id}`)
+  .listen('EventName', (event) => {
+    console.log(event.user.name);
+});
+
+
+Прослушивание нескольких событий на 1 канале
+Echo.private(`users.${this.user.id}`)
+  .listen(...)
+  .listen(...)
+  .listen(...);
+--------------------
+
+Покинуть канал
+Echo.leaveChannel(`users.${this.user.id}`);
+
+Покинул канал и связанные каналы
+Echo.leave(`users.${this.user.id}`);
+--------------------
+
+Пространство имен для классов Событий
+
+По умолчанию
+Events
+
+Задать своё
+window.Echo = new Echo({
+  broadcaster: 'pusher',
+  namespace: 'App.Events2'
+});
+
+Указывать полный путь
+Echo.channel('orders')
+  .listen('.Namespace\\Event\\Class', (e) => {
+});
+--------------------
+
+Каналы присутствия
+
+каналы присутствия являются приватными
+но все знают кто подписан на канал
+для создания комнат в чате
+
+далее пропустил
+--------------------
+
+События на клиенте
+
+Создать событие
+Echo.private(`chat.${roomId}`)
+  .whisper('typing', {
+    name: this.user.name
+});
+
+Прослушать событие
+Echo.private(`chat.${roomId}`)
+  .listenForWhisper('typing', (event) => {
+    console.log(event.name);
+});
+--------------------
+
+Уведомления
+
+это связь вещания событий с Уведомлениями
+для создания уведомлений без обновления страницы
+
+соответствующий раздел Уведомлений
+https://laravel.com/docs/8.x/notifications#broadcast-notifications
+
+Echo.private(`App.Models.User.${userId}`)
+  .notification((notification) => {
+    console.log(notification.type);
+});
+-------------------------------------------------
+
+WEBSOCKETS
+
+Вебсокеты это постоянный канал браузер<->сервер
+Браузер и сервер друг другу асинхронно отправляют сообщения
+
+Вебсокеты работают по протоколу WS, он похож на HTTP
+Урлы ws:// или wss://
+Порты 80 и 443
+
+Сначала установка соединения по HTTP GET запросу (заголовки upgrade: websocket, уникальный ключ)
+Ответ сервера будет HTTP с кодом 101 (заголовки upgrade: websocket, уникальный ключ)
+Потом устанавливается прямое TCP соединение между браузером и сервером
+
+Для поддержания соединения используются запросы ping-pong (кадры типа ping, pong)
+
+Данные передаются кадрами (фреймами). Типы кадров: текстовые, бинарные, управляющие
+Заголовки сокетов передаются в бинарном нетекстовом виде
+Соединение разрывается любой из сторон, передачей управляющего кадра close
+--------------------
+
+1. Laravel-websockets
+
+это сервер вебсокетов на php, на основе библиотеки Ratchet
+сервер вебсокетов это Ratchet на порту 6001
+это альтернатива использованию Node.JS и Javascript
+в нём реализован протокол сервиса Pusher и Pusher API
+он заменяет платный Pusher
+по умолчанию вещание событий из Ларавел идёт на платные сервера Pusher
+канал присутствия не позволяет отправку сообщений, только уведомляет присутствует ли пользователь на канале
+
+Установить
+composer require beyondcode/laravel-websockets
+
+Установится
+beyondcode/laravel-websockets
+cboden/ratchet
+evenement/evenement
+paragonie/random_compat
+paragonie/sodium_compat
+pusher/pusher-php-server
+ratchet/rfc6455
+react/cache
+react/dns
+react/event-loop
+react/http
+react/promise
+react/promise-stream
+react/promise-timer
+react/socket
+react/stream
+ringcentral/psr7
+symfony/psr-http-message-bridge
+
+
+Опубликовать миграцию
+будет создан файл миграции 0000_00_00_000000_create_websockets_statistics_entries_table.php
+
+php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"
+
+Накатить миграцию
+будет создана таблица для статистики для панели отладки вебсокетов websockets_statistics_entries
+
+php artisan migrate
+
+Опубликовать конфиг
+будет создан файл config\websockets.php
+
+php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"
+
+
+Настройки
+
+Драйвер вещания
+в .env BROADCAST_DRIVER=pusher
+
+Сервер вебсокетов куда будут вещаться события
+в config/broadcasting.php
+
+'host' => '127.0.0.1',
+'port' => 6001,
+'scheme' => 'http'
+
+Настройки SSL
+в /config/websockets.php в блоке 'ssl'
+в config/broadcasting.php в блоке 'pusher' => 'scheme' => 'https'
+
+Авторизация в Puser
+в .env добавить любые данные
+PUSHER_APP_ID=123
+PUSHER_APP_KEY=123
+PUSHER_APP_SECRET=123
+
+Поддержка сообщений клиент<->клиент
+сообщения вебсокетов работают как клиент->сервер->другие клиенты
+прямая связь клиент<->клиент используется вместо отправки событий на сервер, для событий типа "юзер печатает..."
+в /config/websockets.php 'enable_client_messages' => true
+
+Включить статистику
+в /config/websockets.php
+'enable_statistics' => true
+
+Очистить статистику
+php artisan websockets:clean
+
+Панель отладки
+https://beyondco.de/docs/laravel-websockets/debugging/dashboard
+
+урл панели отладки
+/laravel-websockets
+изменить в config/websockets.php в $path на 'ru/laravel-websockets'
+открыть http://domain.loc/ru/laravel-websockets
+
+в .env должно быть
+APP_ENV=local
+APP_URL=http://domain.com
+
+Установить супервизор
+apt install supervisor
+--------------------
+
+2. Laravel Echo
+
+это js библиотека на стороне браузера
+реализован протокол сервиса Pusher
+библиотека получает вещаемые события с сервера
+
+Установка
+npm install laravel-echo
+npm install pusher-js
+
+Настройки
+
+Хост и порт
+в resources/js/bootstrap.js
+
+добавить
+wsHost: window.location.hostname,
+wsPort: 6001,
+
+true для SSL
+forceTLS: false,
+
+отключить отправку статистики в сервис Pusher
+disableStats: true,
+--------------------
+
+3. Рабочий процесс
+
+Посмотреть роуты
+php artisan route:list
+
+Поставить наблюдателя для перекомпиляции
+npm run watch
+
+Сброс кеша конфигов
+php artisan config:cache
+
+Запустить сервер вебсокетов
+php artisan websockets:serve
+
+Запустить обработчик очереди задач
+php artisan queue:listen
+--------------------
+
+4. Понимание процесса
+
+"Сервер на php (Laravel)" отправляет Сообщение на "Сервер вебсокетов (Laravel-websockets)"
+
+Сообщение отправляется в какой-то канал
+3 типа каналов: публичный, приватный, присутствия
+
+"Либа на js (Laravel Echo)" забирает Сообщения с "Сервера вебсокетов (Laravel-websockets)"
+
+Если канал приватный, то "Сервер вебсокетов (Laravel-websockets)" отправляет post http запрос на "Сервер на php (Laravel)" для проверки аутентификации на урл broadcasting/auth
+
+Аутентификация канала работает на связке session + csrf
+
+
+Создать событие
+php artisan make:event NameEvent
+
+Добавить к классу события, интерфейс:
+ShouldBroadcast для постановки события в очередь (в таблицу jobs)
+ShouldBroadcastNow для мгновенной отправки события
+
+Событие рассылается на какой-то канал или массив каналов
+
+Задать очередь
+метод broadcastQueue()
+свойство broadcastQueue
+свойство queue
+
+Задать драйвер
+свойство connection
+
+Метод broadcastAs()
+задать имя вещания. или это будет имя класса NameEvent
+
+Метод broadcastOn()
+задать имя канала ChatChannel. или задать массив каналов
+
+публичный канал return new Channel('ChatChannel');
+приватный канал return new PrivateChannel('ChatChannel.' . $this->user->id);
+
+
+Передача данных в событие, через публичные свойства:
+public $user;
+public $message;
+public function __construct(User $user, $message) {
+  $this->user = $user;
+  $this->message = $message;
+}
+
+Передача данных в событие, через метод broadcastWith()
+
+
+Отправляем событие
+NameEvent::dispatch($user, $message);
+broadcast(new NameEvent($user, $message))->toOthers(); - это проверить
+event(new NameEvent($user, $message));
+
+ID юзера на странице
+<input name='user_id' type='hidden' value='{{$user->id}}'>
+
+Слушаем публичный канал
+window.Echo
+  .channel('ChatChannel')
+  .listen('ChatEvent', (event) => {
+});
+
+ChatChannel из метода broadcastOn()
+ChatEvent из метода broadcastAs()
+
+
+Слушаем приватный канал
+window.Echo
+  .private('ChatChannel.' + document.querySelector('form input[name=user_id]').value)
+  .listen('ChatEvent', (event) => {
+});
+
+Создание роута
+для урла broadcasting/auth
+этот урл для post http запроса для проверки аутентификации для приватного канала
+app/Providers/BroadcastServiceProvider.php
+Broadcast::routes();
+
+Проверка аутентификации для приватного канала
+routes/channels.php
+Broadcast::channel('ChatChannel.{id}', function ($user, $id) {
+  return (int)$user->id === (int)$id;
+});
+--------------------
+
+5. Панель отладки
+
+урл
+http://400.loc/ru/laravel-websockets
+
+канал
+ChatChannel
+
+событие
+Events\ChatEvent
+
+нагрузка 
+{
+  "array": [1],
+  "boolean": true,
+  "string": "hello",
+  "null": null,
+  "number": 123,
+  "object": {"a": "b"}
+}
+
+в другом окне открываем страницу чата
+--------------------
+
+6. Роуты пакета
+
+GET|POST
+broadcasting/auth
+Illuminate\Broadcasting\BroadcastController@authenticate 
+web
+
+GET
+laravel-websockets
+BeyondCode\LaravelWebSockets\Dashboard\Http\Controllers\ShowDashboard  
+web, BeyondCode\LaravelWebSockets\Dashboard\Http\Middleware\Authorize
+
+GET
+laravel-websockets/api/{appId}/statistics
+BeyondCode\LaravelWebSockets\Dashboard\Http\Controllers\DashboardApiController@getStatistics
+web, BeyondCode\LaravelWebSockets\Dashboard\Http\Middleware\Authorize
+
+POST
+laravel-websockets/auth
+BeyondCode\LaravelWebSockets\Dashboard\Http\Controllers\AuthenticateDashboard
+web, BeyondCode\LaravelWebSockets\Dashboard\Http\Middleware\Authorize
+
+POST
+laravel-websockets/event
+BeyondCode\LaravelWebSockets\Dashboard\Http\Controllers\SendMessage
+web, BeyondCode\LaravelWebSockets\Dashboard\Http\Middleware\Authorize
+
+POST
+laravel-websockets/statistics
+BeyondCode\LaravelWebSockets\Statistics\Http\Controllers\WebSocketStatisticsEntriesController@store
+web, BeyondCode\LaravelWebSockets\Statistics\Http\Middleware\Authorize
+-------------------------------------------------
+
+DIGGING DEEPER -> CACHE
+
+фасад Cache
+хелпер Cache
+
+Конфиг
+config/cache.php
+
+драйверы
+Memcached, Redis, File, Database
+--------------------
+
+Драйвер Database
+
+Schema::create('cache', function ($table) {
+  $table->string('key')->unique();
+  $table->text('value');
+  $table->integer('expiration');
+});
+
+Создать миграцию для таблицы cache для кеша
+php artisan cache:table
+--------------------
+
+Драйвер Memcached
+
+https://pecl.php.net/package/memcached
+
+конфиг
+config/cache.php
+
+'memcached' => [
+  [
+    'host' => '127.0.0.1',
+    'port' => 11211,
+    'weight' => 100
+  ],
+];
+--------------------
+
+драйвер Redis
+composer predis/predis
+--------------------
+
+Доступ к разным хранилищам
+
+Cache::store('file')->get('foo');
+Cache::store('redis')->get('foo');
+Cache::store('database')->get('foo');
+--------------------
+
+Получить данные
+
+Cache::get('key');
+Cache::get('key', 'defaultvalue');
+Cache::get('key', function () {
+  return DB::table(...)->get(); тут свою логику писать
+});
+--------------------
+
+Проверка на наличие
+
+if (Cache::has('key')) {}
+--------------------
+
+Инкремент и декремент значения
+на 1 или $amount
+
+Cache::increment('key');
+Cache::increment('key', $amount);
+Cache::decrement('key');
+Cache::decrement('key', $amount);
+--------------------
+
+Получить данные, а если нет, то сохранить и получить
+Cache::remember('users', $seconds, function () {
+  return DB::table('users')->get();
+});
+
+Получить данные, а если нет, то сохранить навсегда и получить
+Cache::rememberForever('users', function () {
+  return DB::table('users')->get();
+});
+
+Получить данные и удалить
+$value = Cache::pull('key');
+--------------------
+
+Cохранить данные
+Cache::put('key', 'value'); на бесконечно
+Cache::put('key', 'value', $seconds); на N секунд
+Cache::put('key', 'value', now()->addMinutes(10)); на N секунд
+
+Сохранить данные, если их нет
+Cache::add('key', 'value', $seconds);
+
+Сохранить данные навсегда
+Cache::forever('key', 'value');
+--------------------
+
+Удалить данные
+Cache::forget('key');
+
+Удалить данные, указав 0 или отрицательное значение TTL
+Cache::put('key', 'value', 0);
+Cache::put('key', 'value', -5);
+
+Удалить все данные
+Cache::flush();
+--------------------
+
+Хелпер Cache
+
+Получить данные
+cache('key');
+
+Сохранить данные
+cache(['key' => 'value'], $seconds);
+cache(['key' => 'value'], now()->addMinutes(10));
+--------------------
+
+Функция Cache
+cache()->remember('users', $seconds, function () {
+  return DB::table('users')->get();
+});
+--------------------
+
+Теги кеша
+
+тегами группировать связанные элементы
+не поддерживаются драйверами file, dynamodb, database
+
+Сохранить
+Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
+Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
+
+Получить
+Cache::tags(['people', 'artists'])->get('John');
+Cache::tags(['people', 'authors'])->get('Anne');
+
+Удалить
+Cache::tags(['people', 'authors'])->flush();
+Cache::tags('authors')->flush();
+--------------------
+
+Атомарная блокировка
+
+чтобы гарантировать последовательность операций над кешем
+на драйверах memcached, dynamodb, redis, database, array
+
+Для драйвера database
+
+Schema::create('cache_locks', function ($table) {
+  $table->string('key')->primary();
+  $table->string('owner');
+  $table->integer('expiration');
+});
+
+
+$lock = Cache::lock('foo', 10);
+if ($lock->get()) {
+  лок на 10сек
+  $lock->release();
+}
+
+Cache::lock('foo')->get(function () {
+  тут лок, пока идёт работа
+});
+
+Если блокировка недоступна на постановку, то указать сколько секунд ждать
+
+$lock = Cache::lock('foo', 10);
+
+try {
+  $lock->block(5);
+  тут код если блокировка получена
+} catch (LockTimeoutException $e) {
+  блокировка не получена
+} finally {
+  optional($lock)->release();
+}
+
+Cache::lock('foo', 10)->block(5, function () {
+  тут код если блокировка получена
+});
+--------------------
+
+Поставить блокировку в одном процессе а снять в другом
+токен $this->owner
+
+1 процесс
+$podcast = Podcast::find($id);
+$lock = Cache::lock('foo', 120);
+if ($result = $lock->get()) {
+  ProcessPodcast::dispatch($podcast, $lock->owner());
+}
+
+2 процесс
+Cache::restoreLock('foo', $this->owner)->release();
+
+Снять блокировку без токена
+Cache::lock('foo')->forceRelease();
+--------------------
+
+Свой драйвер кеша
+
+реализовать контракт Contracts\Cache\Store
+
+зарегать драйвер
+Cache::extend('mongo', function ($app) {
+  return Cache::repository(new MongoStore);
+});
+
+События кеша
+CacheHit, CacheMissed, KeyForgotten, KeyWritten
+-------------------------------------------------
+
+DIGGING DEEPER -> COLLECTIONS
+
+Класс Support\Collection для работы с массивами
+хелпер Collect
+коллекции неизменяемы, каждый метод возвращает новый инстанс коллекции, исходный массив не изменяется
+модели Eloquent возвращают коллекции
+--------------------
+
+В класс Collection можно добавлять свои методы
+
+Collection::macro('toUpper', function () {
+  return $this->map(function ($value) {
+    return Str::upper($value);
+  });
+});
+
+$collection = collect(['first', 'second'])->toUpper();
+--------------------
+
+Ленивые коллекции
+
+основаны на генераторах PHP
+чтобы работать с большими коллекциями без потребления памяти
+перерабатывая массив частями
+почти все методы класса Collection доступны для класса LazyCollection
+кроме методов которые изменяют саму коллекцию (shift, pop, prepend, итд)
+--------------------
+
+Создать ленивую коллекцию
+
+LazyCollection::make(function () {
+  $handle = fopen('log.txt', 'r');
+  while (($line = fgets($handle)) !== false) {
+    yield $line;
+  }
+});
+--------------------
+
+Прочитать 10к моделей Eloquent
+
+Используя обычные коллекции. 1 запрос к бд и получение всех объектов
+User::all()->filter(function ($user) {
+  return $user->id > 500;
+});
+
+Используя ленивые коллекции. 1 запрос к бд, но получение по 1 объекту
+$users = User::cursor()->filter(function ($user) {
+  return $user->id > 500;
+});
+--------------------
+
+Отдельные методы ленивых коллекций
+tapEach() - аналог each()
+remember() - вернет новую ленивую коллекцию которая будет помнить все значения которые уже были перечислены
+-------------------------------------------------
+
+DIGGING DEEPER -> EVENTS
+
+На 1 событие N слушателей
+шаблон Observer (наблюдатель)
+хелпер Event
+слушатели разрешаются через СК, поэтому любые зависимости
+события вызываются в одном месте, а обработаны могут быть во многих
+
+Папка событий (СОБ)
+app/Events
+
+Папка слушателей (СЛУ)
+app/Listeners
+--------------------
+
+Регистрация СОБ и СЛУ
+
+1. в EventServiceProvider.php в $listen = ['EventName' => ['ListenerName']];
+ключи это СОБ, значения это СЛУ
+
+2. в EventServiceProvider.php в методе
+public function boot() {
+
+  на базе класса
+  Event::listen(EventName::class, [ListenerName::class, 'handle']);
+  
+  на базе замыкания
+  Event::listen(function (EventName $event) {});
+  
+  слушать много СОБ одним СЛУ
+  Event::listen('event.*', function ($eventName, array $data) {});
+  
+  поставить в очередь
+  Event::listen(queueable(function (EventName $event) {}));
+  
+  задать соединение и очередь
+  Event::listen(queueable(function (EventName $event) {})
+    ->onConnection('connectionName')
+	->onQueue('queueName')
+	->delay(now()->addSeconds(10)));
+
+  если задача не выполнена
+  Event::listen(queueable(function (EventName $event) {})
+    ->catch(function (EventName $event, Throwable $e) {
+	  queued listener failed
+	}));
+}
+
+3. в EventServiceProvider.php включить автоматическое обнаружение
+public function shouldDiscoverEvents() {
+  return true;
+}
+сканируется папка СОБ и СЛУ. можно добавить свою папку СЛУ
+--------------------
+
+Посмотреть все СОБ и СЛУ
+
+php artisan event:list
+--------------------
+
+Создать СОБ и СЛУ
+1. сначала вбить в EventServiceProvider.php
+2. потом php artisan event:generate
+
+Создать СОБ
+php artisan make:event EventName
+
+Создать СЛУ
+php artisan make:listener ListenerName --event=EventName
+--------------------
+
+На продакшене
+
+Создать кеш списка событий и слушателей
+php artisan event:cache
+
+Удалить кеш списка событий и слушателей
+php artisan event:clear
+--------------------
+
+Класс События
+это контейнер данных, который держит нужные событию, данные
+
+Класс Слушателя
+получает объект События, в своём методе handle
+--------------------
+
+Остановить распространение СОБ среди других СЛУ
+в СЛУ в методе handle() вернуть false
+--------------------
+
+СЛУ в очереди
+класс СЛУ должен реализовать интерфейс ShouldQueue
+--------------------
+
+Настройка очереди
+в классе СЛУ свойства: $connection, $queue, $delay
+--------------------
+
+Задать очередь на лету
+public function viaQueue() {
+  return 'listeners';
+}
+--------------------
+
+Поставить в очередь по условию
+public function shouldQueue(EventName $event) {
+  return true | false;
+}
+--------------------
+
+Получить доступ к очереди вручную
+методы delete, release
+--------------------
+
+Обработка неудачных задач
+public function failed(EventName $event, $exception) {}
+--------------------
+
+Максимальное колво попыток выполнить задачу
+в классе СЛУ $tries = 5;
+--------------------
+
+Максимальное время в течении которого будут попытки
+public function retryUntil() {
+  return now()->addMinutes(N);
+}
+--------------------
+
+Отправка события
+EventName::dispatch($user);
+event(new EventName($user));
+--------------------
+
+Подписчики на события
+
+класс Подписчика
+в котором много методов-подписчиков на разные события
+чтобы несколько СЛУ были в 1 классе
+класс подписчика регистрировать в EventServiceProvider.php в $subscribe
+-------------------------------------------------
+
+DIGGING DEEPER -> FILE STORAGE
+
+Абстракция файловой системы
+на основе либы PHP Flysystem
+хелпер Asset
+фасад Storage
+
+Конфиг
+config/filesystems.php
+
+Диски
+local, public, s3
+
+Драйвера
+local, s3
+
+Места хранения
+storage_path('app'), storage_path('app/public')
+	
+Папка публичного доступа
+storage/app/public
+
+Урл хоста
+в конфиге 'url' => env('APP_URL').'/storage'
+--------------------
+
+Символическая ссылка public/storage => storage/app/public
+php artisan storage:link
+
+в папке /public появится папка storage, которая смотрит на папку storage/app/public. Т.е. всё класть в storage/app/public, и это автоматически появится в public/storage
+
+Символические ссылки в конфиге
+'links' => [
+  public_path('storage') => storage_path('app/public'),
+  public_path('images') => storage_path('app/images'),
+];
+--------------------
+
+Вывести в шаблоне
+<img src="{{asset('storage/'. $brand->file)}}">
+<img src="{{Storage::url($brand->file)}}">
+--------------------
+
+драйвер Local
+все операции проводятся относительно root установленного в конфиге
+по умолчанию это storage/app
+пермишены на папки 0755 на файлы 0644 настраивается в конфиге
+
+Storage::disk('local')->put('file.txt', 'Contents');
+
+драйверы FTP, SFTP, Amazon S3
+примеры конфигов в мане
+
+composer league/flysystem-sftp
+composer league/flysystem-aws-s3-v3
+composer league/flysystem-cached-adapter - для увеличения производительности
+
+Кеширование для диска
+настройки конфига: cache, disk, expire, prefix
+--------------------
+
+Сохранить
+Storage::put('avatars/1', $file);
+Storage::disk('s3')->put('avatars/1', $file);
+
+Получить
+Storage::get('file.jpg');
+
+Проверка на наличие или отсутствие
+Storage::disk('s3')->exists('file.jpg'); 
+Storage::disk('s3')->missing('file.jpg');
+
+Скачать
+Storage::download('file.jpg');
+Storage::download('file.jpg', $name, $headers);
+
+Создать урл
+Storage::url('file.jpg');
+
+Создать временный урл для Amazon S3
+Storage::temporaryUrl(
+  'file.jpg', now()->addMinutes(5),
+  ['ResponseContentType' => 'application/octet-stream']
+);
+--------------------
+
+Инфо по файлу
+Storage::size('file.jpg');
+Storage::lastModified('file.jpg');
+
+Потоковый стриминг
+Storage::putFile('photos', new File('/path/photo'));
+Storage::putFileAs('photos', new File('/path/photo'), 'photo.jpg');
+Storage::putFile('photos', new File('/path/photo'), 'public');
+
+Писать в начало или конец файла
+Storage::prepend('file.log', 'Text');
+Storage::append('file.log', 'Text');
+
+Копировать, переместить
+Storage::copy('old/file.jpg', 'new/file.jpg');
+Storage::move('old/file.jpg', 'new/file.jpg');
+--------------------
+
+Удалить непечатаемые и недопустимые символы из путей и имен файлов
+League\Flysystem\Util::normalizePath
+
+указать диск при сохранении
+
+$request->file('avatar')->store(
+  'avatars/'.$request->user()->id,
+  's3'
+);
+
+$request->file('avatar')->storeAs(
+  'avatars',
+  $request->user()->id,
+  's3'
+);
+
+Оригинальное имя и расширение загруженного файла
+$request->file('avatar')->getClientOriginalName();
+$request->file('avatar')->extension();
+
+Видимость файла
+это абстракция за которой простой пермишен ФС
+public, private
+
+Storage::put('file.jpg', $contents, 'public'); установить при сохранении
+Storage::getVisibility('file.jpg'); получить для уже сохраненных
+Storage::setVisibility('file.jpg', 'public'); установить для уже сохраненных
+
+сохранить с видимостью public
+
+$request->file('avatar')->storePublicly('avatars', 's3');
+
+$request->file('avatar')->storePubliclyAs(
+  'avatars',
+  $request->user()->id,
+  's3'
+);
+
+удалить файлы
+Storage::delete('file.jpg');
+Storage::delete(['file.jpg', 'file2.jpg']);
+Storage::disk('s3')->delete('folder_path/file_name.jpg'); с указанием диска
+
+получить файлы в папке
+Storage::files($directory); только файлы
+Storage::allFiles($directory); файлы из подпапок тоже
+
+получить папки в папке
+$directories = Storage::directories($directory); папки
+$directories = Storage::allDirectories($directory); папки из подпапок тоже
+
+создать папку
+Storage::makeDirectory($directory);
+
+удалить папку
+Storage::deleteDirectory($directory);
+
+Свой адаптер
+например dropbox
+composer require spatie/flysystem-dropbox
+
+создать СП
+
+public function boot() {
+  Storage::extend('dropbox', function ($app, $config) {
+    $client = new DropboxClient(
+      $config['authorization_token']
+    );
+  return new Filesystem(new DropboxAdapter($client));
+  });
+}
+
+зарегать СП в config/app.php
+прописать драйвер в config/filesystems.php
+-------------------------------------------------
+
+DIGGING DEEPER -> HELPERS
+
+Хелперы это глобальные вспомогательные функции
+-------------------------------------------------
+
+DIGGING DEEPER -> HTTP CLIENT
+
+для внешних HTTP запросов
+на либе Guzzle
+фасад Http
+
+Установить
+composer require guzzlehttp/guzzle
+--------------------
+
+Делать запросы
+
+Http::get('http://test.com');
+Http::get('http://test.com/users/1')['name']; если возвращается JSON то сразу получить элемент массива
+Http::post
+Http::put
+Http::patch
+Http::delete
+--------------------
+
+Возвращается объект ответа Response, у которого есть методы
+
+$response->body();
+$response->json();
+$response->status();
+$response->ok();
+$response->successful();
+$response->failed();
+$response->serverError();
+$response->clientError();
+$response->header($header);
+$response->headers();
+--------------------
+
+Передать данные в Запрос
+
+Http::get('http://test.com/users', ['name' => 'Taylor']);
+
+уйдет как application/json
+Http::post('http://test.com/users', ['name' => 'Taylor']);
+
+уйдет как application/x-www-form-urlencoded
+Http::asForm()->post('http://test.com/users', ['name' => 'Taylor']);
+
+уйдут сырые данные
+Http::withBody(
+  base64_encode($photo), 'image/jpeg'
+)->post('http://test.com/photo');
+
+отправить файлы в нескольких запросах
+Http::attach(
+  'attachment',
+  file_get_contents('photo.jpg'),
+  'photo.jpg'
+)->post('http://test.com/attachments');
+
+или
+
+Http::attach(
+  'attachment',
+  fopen('photo.jpg', 'r'),
+  'photo.jpg'
+)->post('http://test.com/attachments');
+--------------------
+
+Передать заголовки в Запрос
+
+Http::withHeaders([
+  'X-First' => 'foo',
+  'X-Second' => 'bar'
+])->post('http://test.com/users', [
+  'name' => 'Taylor'
+]);
+--------------------
+
+Передать аутентификацию в Запрос
+
+basic
+Http::withBasicAuth('taylor@laravel.com', 'secret')->post(...);
+
+digest
+Http::withDigestAuth('taylor@laravel.com', 'secret')->post(...);
+
+токен
+Http::withToken('token')->post(...);
+--------------------
+
+Ждать ответа N сек
+Http::timeout(3)->get(...);
+
+Попыток N и ждать ответа M млс
+Http::retry(3, 500)->post(...);
+--------------------
+
+Обработка ошибок
+
+$response->successful(); код >= 200 and < 300
+$response->failed(); код >= 400
+$response->clientError(); код 400
+$response->serverError(); код 500
+--------------------
+
+Выбросить исключение
+
+$response = Http::post);
+$response->throw();
+return $response['user']['id'];
+--------------------
+
+Опции Guzzle
+http://docs.guzzlephp.org/en/stable/request-options.html
+
+передать опции
+
+Http::withOptions([
+  'debug' => true
+])->get('http://test.com/users');
+
+Тестирование
+фасад Http метод fake
+
+Http::fake(); пустые ответы с кодом 200
+
+Http::fake([
+  'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
+  'google.com/*' => Http::response('Hello World', 200, ['Headers']),
+  '*' => Http::response('Hello World', 200, ['Headers']), на все остальные адреса будет эта заглушка
+]);
+--------------------
+
+Серия поддельных ответов
+
+Http::fake([
+  'github.com/*' => Http::sequence()
+    ->push('Hello World', 200)
+    ->push(['foo' => 'bar'], 200)
+    ->pushStatus(404),
+]);
+
+Http::fake([
+  'github.com/*' => Http::sequence()
+    ->push('Hello World', 200)
+    ->push(['foo' => 'bar'], 200)
+    ->whenEmpty(Http::response()),
+]);
+
+Http::fakeSequence()
+  ->push('Hello World', 200)
+  ->whenEmpty(Http::response());
+
+Http::fake(function ($request) {
+  return Http::response('Hello World', 200);
+});
+--------------------
+
+Проверка данных запросов
+
+Http::fake();
+
+Http::withHeaders([
+  'X-First' => 'foo'
+])->post('http://test.com/users', [
+  'name' => 'Taylor',
+  'role' => 'Developer'
+]);
+
+Http::assertSent(function ($request) {
+  return
+    $request->hasHeader('X-First', 'foo') &&
+    $request->url() == 'http://test.com/users' &&
+    $request['name'] == 'Taylor' &&
+    $request['role'] == 'Developer';
+});
+
+Http::assertNotSent(function (Request $request) {
+  return $request->url() === 'http://test.com/posts';
+});
+
+Http::assertNothingSent();
+-------------------------------------------------
+
+DIGGING DEEPER -> MAIL
+
+На базе либы SwiftMailer
+драйверы SMTP, Mailgun, Postmark, Amazon SES, Sendmail
+в шаблонах Blade
+фасад Mail
+
+Конфиг
+config/mail.php
+
+Папка почты
+app/Mail
+
+Папка шаблонов
+resources/views/emails
+
+Для драйверов на основе Api (Mailgun, Postmark) требуется
+composer require guzzlehttp/guzzle
+--------------------
+
+Mailgun
+пропустил
+
+Postmark
+пропустил
+
+Amazon SES
+пропустил
+--------------------
+
+Создать класс почты
+php artisan make:mail mailName
+
+Главный метод
+build
+
+Настройка заголовков From и Reply_to
+в config/mail.php
+--------------------
+
+Письмо plain text
+
+public function build() {
+  return $this->view('emails.name')->text('emails.namePlain');
+}
+--------------------
+
+Данные в шаблон
+
+1. Через публичные свойства
+public function __construct(User $user) {
+  $this->user = $user;
+}
+
+В шаблоне
+{{$user->email}}
+--------------------
+
+2. Через метод with
+public function __construct(User $user) {
+  $this->user = $user;
+}
+
+public function build() {
+  return $this->from('support@400.loc')
+    ->view('emails.signupuser')
+    ->with(['userId' => $this->user->id]);
+}
+
+В шаблоне
+{{$userId}}
+--------------------
+
+Вложить файл
+
+return $this->view('emails.viewname')
+  ->attach('/path/to/file');
+
+отображаемое имя и mime тип
+return $this->view('emails.viewname')
+  ->attach('/path/to/file', [
+    'as' => 'name.pdf',
+    'mime' => 'application/pdf',
+]);
+--------------------
+
+Вложить файл с диска
+
+return $this->view('emails.viewname')
+  ->attachFromStorage('/path/to/file');
+
+отображаемое имя и mime тип
+return $this->view('emails.viewname')
+  ->attachFromStorage('/path/to/file', 'name.pdf', [
+    'mime' => 'application/pdf'
+]);
+
+с указанием диска
+return $this->view('emails.viewname')
+  ->attachFromStorageDisk('s3', '/path/to/file');
+--------------------
+
+Вложить данные сгенеренные на лету
+
+return $this->view('emails.viewname')
+  ->attachData($this->pdf, 'name.pdf', [
+    'mime' => 'application/pdf',
+]);
+--------------------
+
+Встроить inline картинку
+
+<img src="{{$message->embed($pathToImage)}}">
+--------------------
+
+Встроить raw data картинку
+
+<img src="{{$message->embedData($data, 'imagename.jpg')}}">
+--------------------
+
+Глубокая настройка SwiftMailer
+
+public function build() {
+  пишем свой функционал до отправки
+  $this->withSwiftMessage(function ($message) {
+    $message->getHeaders()
+      ->addTextHeader('Custom-Header', 'HeaderValue');
+  });
+}
+--------------------
+
+Письмо markdown
+
+Создать класс почты markdown
+php artisan make:mail mailName --markdown=emails.viewname
+
+Это создаст еще вьюху, внутри компоненты Blade и Markdown
+resources/views/emails/viewname.blade.php
+
+Пример
+public function build() {
+  return $this->from('example@example.com')
+    ->markdown('emails.viewname', [
+	  'data'=>$data
+	]);
+}
+--------------------
+
+Компоненты
+
+Кнопка
+@component('mail::button', ['url' => $url, 'color' => 'success']) buttonName @endcomponent
+
+Панель
+@component('mail::panel') text @endcomponent
+
+Таблица
+@component('mail::table')
+| Laravel       | Table         | Example  |
+| ------------- |:-------------:| --------:|
+| Col 2 is      | Centered      | $10      |
+| Col 3 is      | Right-Aligned | $20      |
+@endcomponent
+--------------------
+
+Экспорт компонентов
+php artisan vendor:publish --tag=laravel-mail
+
+Появится папка
+resources/views/vendor/mail
+--------------------
+
+CSS компонентов
+resources/views/vendor/mail/html/themes/default.css
+--------------------
+
+Свой CSS для компонентов
+resources/views/vendor/mail/html/themes/myCSS.css
+
+в config/mail.php
+'markdown' => ['theme' => 'myCSS'];
+
+Или в классе $theme = 'myCSS';
+--------------------
+
+Отправка почты
+
+На почту
+Mail::to('email@email.com')->send(new mailName($user));
+
+На массив почт
+Mail::to(['email@email.com'])->send(new mailName($user));
+
+На объект
+Mail::to($user)->send(new mailName($user));
+
+На коллекцию объектов
+Mail::to($users)->send(new mailName($user));
+
+В объекте должны быть аттрибуты email и name
+--------------------
+
+Отправка копий
+Mail::to($user)->cc($users)->bcc($users)->send(new mailName($user));
+--------------------
+
+Отправка в цикле
+foreach (['email@email1.com', 'email@email2.com'] as $recipient) {
+  Mail::to($recipient)->send(new mailName($user));
+}
+
+Метод to принимает массив почт, забирает их все и рассылает. Поэтому в цикле нужно пересоздавать объект почтового класса. Иначе будут рассылаться предыдущим в цикле.
+--------------------
+
+Отправка с драйвера
+
+драйвер по умолчанию в config/mail.php
+'default' => env('MAIL_MAILER', 'smtp')
+
+Mail::mailer('sendmail')->to($user)->send(new mailName($user));
+--------------------
+
+Отложить отправку
+Mail::to($user)->later(now()->addMinutes(10), new mailName($user));
+--------------------
+
+Отправка в очередь
+Mail::to($user)->queue(new mailName($user));
+--------------------
+
+Отправка в очередь по имени
+Mail::to($user)->queue((new mailName($user))->onConnection('connectionName')->onQueue('queuename'));
+--------------------
+
+Отправка в очередь всегда
+
+добавить интерфейс ShouldQueue
+class mailName1 extends Mailable implements ShouldQueue {}
+--------------------
+
+Отладка письма
+
+вывести как строку
+echo (new mailName($user))->render();
+
+вернуть вместо вьюхи	
+return new mailName($user);
+--------------------
+
+Локализация
+Mail::to($user)->locale('ru')->send(new mailName($user));
+--------------------
+
+Локаль юзера
+
+Сохранять локаль юзера и подставить автоматически
+class User extends Model implements HasLocalePreference {
+  public function preferredLocale() {
+    return $this->locale;
+  }
+}
+Mail::to($user)->send(new mailName($user));
+--------------------
+
+Отладка отправки
+драйвер log
+--------------------
+
+События
+
+в EventServiceProvider.php зарегать прослушивателей событий
+
+$listen = [
+
+  до отправки
+  'Illuminate\Mail\Events\MessageSending' => ['Listeners\LogSendingMessage'],
+
+  после отправки
+  'Illuminate\Mail\Events\MessageSent' => ['Listeners\LogSentMessage'],
+];
+-------------------------------------------------
+
+DIGGING DEEPER -> NOTIFICATIONS
+
+Отправка уведомлений по разным каналам
+трейт Notifiable включен в модель User
+фасад Notification
+
+Каналы
+mail, database, sms, , broadcast, nexmo, slack
+
+Все каналы
+https://laravel-notification-channels.com
+
+Папка уведомлений
+app/Notifications
+--------------------
+
+Создать уведомление
+php artisan make:notification NotificationName
+--------------------
+
+Отправить уведомление
+1. Через трейт Notifiable и метод notify()
+2. Через фасад Notification
+--------------------
+
+Указать канал
+public function via($notifiable) {
+  return ['mail', 'database'];
+}
+--------------------
+
+Отправить в очередь
+1. Настроить очередь
+2. Добавить в класс интерфейс ShouldQueue и трейт Queueable
+
+class NotificationName extends Notification implements ShouldQueue {
+  use Queueable;
+}
+--------------------
+
+Отложить отправку
+$user->notify((new NotificationName($invoice))->delay(now()->addMinutes(10)));
+$user->notify((new NotificationName($invoice))->delay(['mail' => now()->addMinutes(5), 'sms' => now()->addMinutes(10)]));
+--------------------
+
+Отправить в соединение
+public $connection = 'redis';
+--------------------
+
+Отправить в канал и очередь
+public function viaQueues() {
+  return ['mail' => 'mail-queue', 'slack' => 'slack-queue'];
+}
+--------------------
+
+Отправить анониму
+Notification::route('mail', 'email@email.com')
+  ->route('nexmo', '555')
+  ->route('slack', 'https://hooks.slack.com/services')
+  ->notify(new NotificationName($invoice));
+--------------------
+
+Канал mail
+
+Вызов
+$user->notify(new NotificationName($user, 'message'));
+
+Конструктор
+public function __construct(User $user, $message) {
+  $this->message = $message;
+}
+
+Без вьюхи это всегда markdown
+
+Метод
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->line('Это уведомление')
+    ->action('Это ссылка', url('/'))
+    ->line('Это линия')
+    ->line('Это переменная ' . $this->message);
+}
+
+Вьюха
+public function toMail($notifiable) {
+  return (new MailMessage)->view('viewname', ['data' => $data]);
+}
+
+Вьюха plain text
+public function toMail($notifiable) {
+  return (new MailMessage)->view(['viewname', 'viewnamePlain'],
+    ['data' => $data]
+  );
+}
+
+Уведомление с красной кнопкой
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->error()
+    ->subject('subject')
+    ->line('text');
+}
+--------------------
+
+Настройка отправителя
+
+в config/mail.php в $from задать своё
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->from('email@email.com', 'Example')
+    ->line('text');
+}
+--------------------
+
+Настройка получателя
+
+автоматически ищет в объекте поле email. задать своё в модели
+public function routeNotificationForMail($notification) {
+  return $this->emailAddress;
+  return [$this->emailAddress => $this->name];
+}
+--------------------
+
+Настройка заголовка
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->subject('Subject')
+    ->line();
+}
+--------------------
+
+Настройка драйвера почты
+
+по умолчанию в config/mail.php
+'default' => env('MAIL_MAILER', 'smtp')
+
+задать свой
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->mailer('postmark')
+    ->line();
+}
+--------------------
+
+Экспорт шаблонов уведомлений
+php artisan vendor:publish --tag=laravel-notifications
+
+Появится папка
+resources/views/vendor/notifications
+
+Вложить файл
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->greeting('Hello')
+    ->attach('/path/to/file', [
+      'as' => 'name.pdf',
+      'mime' => 'application/pdf',
+  ]);
+}
+
+Вложить данные сгенеренные на лету
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->greeting('Hello!')
+    ->attachData($this->pdf, 'name.pdf', [
+      'mime' => 'application/pdf',
+  ]);
+}
+
+Отладка
+return (new NotificationName($user))->toMail($user);
+--------------------
+
+Уведомления markdown
+
+Создать
+php artisan make:notification NotificationName --markdown=notifications.viewname
+
+Это создаст еще вьюху, внутри компоненты Blade и Markdown
+resources/views/notifications/viewname.blade.php
+
+Пример
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->subject('subject')
+    ->markdown('notifications.viewname', ['data' => $data]);
+}
+--------------------
+
+Компоненты
+
+компоненты как у DIGGING DEEPER -> MAIL
+--------------------
+
+Экспорт компонентов
+
+php artisan vendor:publish --tag=laravel-mail
+
+Появится папка
+resources/views/vendor/mail
+--------------------
+
+CSS компонентов
+resources/views/vendor/mail/html/themes/default.css
+
+Свой CSS для компонентов
+resources/views/vendor/mail/html/themes/myCSS.css
+--------------------
+
+В config/mail.php
+
+'markdown' => ['theme' => 'myCSS'];
+
+Или в классе $theme = 'myCSS';
+
+Или в методе
+public function toMail($notifiable) {
+  return (new MailMessage)
+    ->theme('invoice')
+    ->subject('subject')
+    ->markdown('notifications.viewname', ['data' => $data]);
+}
+--------------------
+
+Канал database
+
+хранит уведомления в таблице notifications
+трейт Notifiable включен в модель User
+
+Создать миграцию для таблицы notifications
+php artisan notifications:table
+
+Накатить миграцию
+php artisan migrate
+
+Методы класса
+toDatabase или toArray
+
+toArray используется каналом broadcast
+лучше использовать toDatabase
+
+эти данные пишутся в таблицу notifications
+public function toDatabase($notifiable) {
+  return ['data' => $data];
+}
+--------------------
+
+Получить уведомления
+$user = User::find(1);
+foreach ($user->notifications as $notification) {
+  echo $notification->data;
+}
+
+Получить непрочитанные уведомления
+поле read_at пустое
+$user = User::find(1);
+foreach ($user->unreadNotifications as $notification) {
+  echo $notification->data;
+}
+--------------------
+
+Отметить уведомления как прочитанные
+
+Перебором в цикле
+$user = User::find(1);
+foreach ($user->unreadNotifications as $notification) {
+  $notification->markAsRead();
+}
+
+Сразу все
+$user->unreadNotifications->markAsRead();
+
+Без извлечения из бд
+$user = User::find(1);
+$user->unreadNotifications()->update(['read_at' => now()]);
+
+Удалить уведомления
+$user->notifications()->delete();
+
+Отладка
+return (new NotificationName($user))->toDatabase($user);
+--------------------
+
+Канал broadcast
+
+настроить Broadcasting
+работает на основе вещания событий
+реагирует из js либы на серверные события
+все уведомления стоят в очереди
+метод toBroadcast. или будет использован резервный метод toArray
+возвращает json
+
+public function toBroadcast($notifiable) {
+  return new BroadcastMessage(['data' => $data]);
+}
+--------------------
+
+Настроить соединение и очередь
+
+return (new BroadcastMessage($data))
+  ->onConnection('sqs')
+  ->onQueue('broadcasts');
+--------------------
+
+Настроить тип уведомлений
+
+public function broadcastType() {
+  return 'broadcast.message';
+}
+--------------------
+
+Прослушать уведомления
+
+формат канала {notifiable}.{id}
+для юзера Models\User с ID 1 это будет канал App.Models.User.1
+
+Echo.private('App.Models.User.' + userId)
+  .notification((notification) => {
+    console.log(notification.type);
+});
+--------------------
+
+Настроить формат канала в модели
+
+class User extends Authenticatable {
+  public function receivesBroadcastNotificationsOn() {
+    return 'users.' . $this->id;
+  }
+}
+--------------------
+
+Канал sms
+
+Пакет Vonage и Nexmo
+composer require laravel/nexmo-notification-channel
+composer require nexmo/laravel
+
+Конфиг в .env
+NEXMO_KEY, NEXMO_SECRET
+
+Конфиг в config/services.php
+'nexmo' => [
+  'sms_from' => '155',
+];
+--------------------
+
+Форматирование уведомлений
+
+public function toNexmo($notifiable) {
+  return (new NexmoMessage)
+    ->content('SMS message');
+	->unicode(); если будут символы юникода
+}
+--------------------
+
+Настройка отправителя
+
+в config/services.php поле sms_from
+
+задать своё
+public function toNexmo($notifiable) {
+  return (new NexmoMessage)
+    ->content('SMS message')
+    ->from('177');
+}
+--------------------
+
+Настройка получателя в модели
+
+class User extends Authenticatable {
+  public function routeNotificationForNexmo($notification) {
+    return $this->phone_number;
+  }
+}
+--------------------
+
+Канал slack
+
+Настроить Incoming Webhook
+
+Пакет
+composer require laravel/slack-notification-channel
+--------------------
+
+Отправить уведомление
+
+public function toSlack($notifiable) {
+  return (new SlackMessage)
+    ->content('text');
+}
+--------------------
+
+Настроить отправителя и получателя
+
+public function toSlack($notifiable) {
+  return (new SlackMessage)
+    ->from('Ghost', ':ghost:') имя и эмодзи
+    ->to('#bots') канал или имя
+    ->image('http://domain.com/image.png') лого
+    ->content('text');
+}
+--------------------
+
+Вложить файл
+
+public function toSlack($notifiable) {
+  return (new SlackMessage)
+    ->error()
+    ->content('text')
+    ->attachment(function ($attachment) use ($url) {
+      $attachment->title('title', $url)
+        ->content('text [background.jpg]');
+  });
+}
+--------------------
+
+Вложить таблицу
+пропустил
+--------------------
+
+Вложить markdown
+пропустил
+--------------------
+
+Роуты для уведомлений slack
+
+class User extends Authenticatable {
+  public function routeNotificationForSlack($notification) {
+    return 'https://hooks.slack.com/services/webhookURL';
+  }
+}
+--------------------
+
+Локализация
+
+$user->notify((new InvoicePaid($invoice))->locale('ru'));
+
+Notification::locale('ru')->send(
+    $users, new InvoicePaid($invoice)
+);
+--------------------
+
+Локализация когда язык в таблице юзера
+
+class User extends Model implements HasLocalePreference {
+  public function preferredLocale() {
+    return $this->locale;
+  }
+}
+
+$user->notify(new InvoicePaid($invoice));
+--------------------
+
+События уведомлений
+
+Слушателей событий в EventServiceProvider.php
+$listen = [
+  'Illuminate\Notifications\Events\NotificationSent' => [
+    'Listeners\LogNotification',
+  ],
+];
+
+Создать класс слушателя
+php artisan event:generate
+--------------------
+
+Свойства события
+
+public function handle(NotificationSent $event) {
+  $event->channel
+  $event->notifiable
+  $event->notification
+  $event->response
+}
+--------------------
+
+Создать свой канал
+пропустил
+--------------------
+
+Создать свой драйвер
+пропустил
+-------------------------------------------------
+
+DIGGING DEEPER -> PACKAGE DEVELOPMENT
+
+Пакет это способ добавить новый функционал
+пакет содержит контроллеры, модели, вьюхи, роуты
+универсальные пакеты типа Carbon, Behat добавлять через composer
+
+У контрактов и фасадов одинаковый уровень тестируемости
+Пакет для тестов https://github.com/orchestral/testbench
+
+Автоматическое обнаружение пакета
+Вручную config/app.php в $providers добавить СП пакета
+Автоматически, добавив СП в composer.json в ключ 'extra'. Там же прописать фасады пакета.
+
+Отключить Автоматическое обнаружение пакета
+добавить в composer.json в ключ "extra" в подключ "dont-discover".
+можно поставить "*" чтобы отключить обнаружение всех пакетов.
+
+СП связывает пакет и фреймворк
+СП привязывает контроллеры, модели, вьюхи, роуты к СК
+--------------------
+
+КОНФИГИ
+
+опубликовать конфиги пакета в папку config
+в СП написать
+
+public function boot() {
+  $this->publishes([
+    __DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
+  ]);
+}
+
+Юзер запустит команду vendor:publish
+это скопирует конфиги в нужную папку
+конфиг пакета будет доступен как обычный в формате файл.ключ
+
+config('courier.option');
+
+В конфигах не использовать замыкания
+
+дефолтовый конфиг
+слить конфиг пакета с копией в папке app
+
+public function register() {
+  $this->mergeConfigFrom(
+    __DIR__.'/path/to/config/courier.php', 'courier'
+  );
+}
+--------------------
+
+РОУТЫ
+
+загрузить роуты пакета
+public function boot() {
+  $this->loadRoutesFrom(__DIR__.'/routes.php');
+}
+--------------------
+
+МИГРАЦИИ
+
+загрузить миграции пакета
+чтобы они автоматически запускались командой php artisan migrate
+
+public function boot() {
+  $this->loadMigrationsFrom(__DIR__.'/path/to/migrations');
+}
+--------------------
+
+ФАБРИКИ
+
+загрузить фабрики пакета (database factories)
+public function boot() {
+  $this->loadFactoriesFrom(__DIR__.'/path/to/factories');
+}
+
+их использовать так
+factory(Package\Namespace\Model::class)->create();
+--------------------
+
+ПЕРЕВОДЫ
+
+загрузить переводы пакета (translation files)
+public function boot() {
+  $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+}
+
+доступ в формате package::file.line
+trans('courier::messages.welcome');
+
+опубликовать переводы пакета в папке приложения resources/lang/vendor
+public function boot() {
+
+  $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+
+  $this->publishes([
+    __DIR__.'/path/to/translations' => resource_path('lang/vendor/courier'),
+  ]);
+}
+
+юзер запускает команду vendor:publish и переводы окажутся в нужной папке
+--------------------
+
+ВЬЮХИ
+загрузить вьюхи пакета
+
+public function boot() {
+  $this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
+
+  $this->publishes([
+    __DIR__.'/path/to/views' => resource_path('views/vendor/courier'),
+  ]);
+}
+
+формат доступа package::view
+
+view('courier::admin');
+
+вьюхи лежат в папке пакета
+командой vendor:publish перекидываются в папку app для изменения
+--------------------
+
+КОМПОНЕНТЫ
+загрузить компоненты пакета (view components blade)
+
+public function boot() {
+  $this->loadViewComponentsAs('courier', [
+    Alert::class,
+    Button::class,
+  ]);
+}
+
+использовать так
+
+<x-courier-alert />
+<x-courier-button />
+
+анонимные компоненты так
+<x-courier::alert />
+--------------------
+
+КОМАНДЫ ARTISAN
+загрузить команды пакета чтобы юзать в Artisan CLI
+
+public function boot() {
+  if ($this->app->runningInConsole()) {
+    $this->commands([
+      FooCommand::class,
+      BarCommand::class,
+    ]);
+  }
+}
+--------------------
+
+ПУБЛИЧНЫЕ АКТИВЫ
+assets
+image, css, js
+
+public function boot() {
+  $this->publishes([
+    __DIR__.'/path/to/assets' => public_path('vendor/courier'),
+  ], 'public');
+}
+
+команда vendor:publish опубликует ресурсы в папке public
+можно тегирование
+php artisan vendor:publish --tag=public --force
+флаг --force даст обновление ресурсов при обновлении самого пакета
+
+Тегирование группы ресурсов
+публикация группы ресурсов отдельно по тегам
+
+public function boot() {
+
+  $this->publishes([
+    __DIR__.'/../config/package.php' => config_path('package.php')
+  ], 'config');
+
+  $this->publishes([
+    __DIR__.'/../database/migrations/' => database_path('migrations')
+  ], 'migrations');
+}
+php artisan vendor:publish --tag=config
+-------------------------------------------------
+
+DIGGING DEEPER -> QUEUES
+
+В очередь ставятся тяжелые фоновые задачи
+Laravel Horizon это панель управления очередями на Redis
+фасад Queue
+
+Драйверы
+Beanstalk, Amazon SQS
+Redis, Database, Synchronous (выполняет немедленно. для локальной разработки), Null (выключено)
+
+Конфиг
+config/queue.php
+
+Папка задач
+app/Jobs
+--------------------
+
+Соединение и Очередь
+
+Соединение это запрос к службе очередей, через указанный драйвер
+Задача отправляется в соединение, в очередь по умолчанию, или в указанную в 'queue'
+В соединении может быть много очередей
+Каждой очереди можно назначить приоритет
+У разных очередей разное колво воркеров
+Задачи запускают асинхронно
+Логика задачи в методе handle()
+СК автоматически разрешает зависимости в конструкторе класса задач
+--------------------
+
+Драйвер Database
+
+все задачи будут в таблице
+
+Создать миграцию для таблицы jobs
+php artisan queue:table
+
+Накатить миграцию
+php artisan migrate
+--------------------
+
+Драйвер Redis
+
+все задачи будут в таблице
+пропустил
+--------------------
+
+Драйвер Amazon SQS
+
+пропустил
+--------------------
+
+Драйвер Beanstalkd
+
+пропустил
+--------------------
+
+Создать задачу
+
+php artisan make:job JobName
+
+class JobName implements ShouldQueue {
+
+  public function __construct(User $user) {
+    $this->user = $user;
+	$this->user = $user->withoutRelations();
+  }
+
+  главный метод
+  public function handle() {
+  }
+}
+--------------------
+
+Мидлваре для задач
+
+оборачивает задачу логикой
+чтобы разгрузить метод handle от логики
+мидлваре для задач работает как мидлваре для роутов
+
+class JobName implements ShouldQueue {
+
+  public function middleware() {
+    return [new RateLimited];
+  }
+
+  public function handle() {
+    Redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
+      info('lock obtained');
+      Handle job
+    }, 
+	function () {
+      could not obtain lock
+      return $this->release(5);
+    });
+}
+--------------------
+
+Папка мидлваре для задач
+app/Jobs/Middleware
+
+Пример мидлваре
+class RateLimited {
+  public function handle($job, $next) {
+    Redis::throttle('key')
+      ->block(0)->allow(1)->every(5)
+      ->then(function () use ($job, $next) {
+        lock obtained...
+        $next($job);
+      }, function () use ($job) {
+        could not obtain lock
+        $job->release(5);
+      });
+    }
+}
+--------------------
+
+Отправить задачу
+
+в очередь по умолчанию
+JobName::dispatch($user);
+
+в очередь nameQueue
+JobName::dispatch($user)->onQueue('nameQueue');
+
+это отправит задачу в таблицу jobs
+--------------------
+
+Отправить по условию
+
+JobName::dispatchIf($userban == 1, $user);
+JobName::dispatchUnless($userban === 0, $user);
+--------------------
+
+Отложить отправку
+
+JobName::dispatch($user)->delay(now()->addMinutes(10));
+--------------------
+
+Отправить после прихода ответа в браузер
+
+JobName::dispatchAfterResponse($user);
+
+или
+
+dispatch(function () {
+  Mail::to('email@email.com')->send(new WelcomeMessage);
+})->afterResponse();
+
+для коротких задач
+--------------------
+
+Отправить синхронно
+выполнит сразу без очереди
+
+JobName::dispatchNow($user);
+--------------------
+
+Цепочки задач
+
+список задач в нужной последовательности
+если одна задача падает, то остальные не выполняются
+
+Bus::chain([
+  new JobName1,
+  new JobName2,
+  new JobName3,
+])->dispatch();
+
+Bus::chain([
+  new JobName1,
+  new JobName2,
+  function () {
+    User::update();
+  },
+])->dispatch();
+--------------------
+
+Удаление задачи
+
+$this->delete()
+
+не остановит цепочку задач
+--------------------
+
+Указать Соединение и Очередь
+
+Bus::chain([
+  new JobName1,
+  new JobName2,
+  new JobName3,
+])
+  ->onConnection('connectionName')
+  ->onQueue('queueName')
+  ->dispatch();
+--------------------
+
+Отправка цепочки не удалась
+
+Bus::chain([
+  new JobName1,
+  new JobName2,
+  new JobName2,
+])->catch(function (Throwable $e) {
+  chain has failed
+})->dispatch();
+--------------------
+
+Отправить задачу в очередь nameQueue
+JobName::dispatch($user)->onQueue('nameQueue');
+
+Или указать в конструкторе
+public function __construct() {
+  $this->onQueue('nameQueue');
+}
+--------------------
+
+Отправить задачу в соединение nameConnection
+JobName::dispatch($podcast)->onConnection('nameConnection');
+
+Или указать в конструкторе
+public function __construct() {
+  $this->onConnection('nameConnection');
+}
+--------------------
+
+Колво попыток выполнения задачи
+
+Через командную строку
+php artisan queue:work --tries=N
+
+В классе задачи
+public $tries = N;
+
+по умолчанию это 1 раз
+потом задача будет считаться неудачной
+--------------------
+
+Пытаться выполнять задачу до указанного времени
+
+public function retryUntil() {
+  return now()->addSeconds(N);
+}
+--------------------
+
+Пытаться выполнять задачу пока колво падений не будет N
+
+public $maxExceptions = 3;
+--------------------
+
+Указать максимальное время выполнения задачи
+
+Через командную строку
+php artisan queue:work --timeout=N
+
+В классе задачи
+public $timeout = N;
+--------------------
+
+Вернуть задачу в очередь
+
+public function handle() {
+  $this->release();
+  $this->release(N сек)
+}
+--------------------
+
+Сделать задачу неудачной
+
+public function handle() {
+  $this->fail();
+  $this->fail($exception);
+}
+--------------------
+
+Пакетная обработка задач
+
+Создать миграцию для таблицы job_batches
+php artisan queue:batches-table
+
+Накатить миграцию
+php artisan migrate
+
+Пропустил разделы
+пакетные задачи
+именованные пакеты
+соединения и очереди
+цепочки пакетов
+добавить задачу в пакет
+отладка пакетов
+отмена выполнения пакетов
+ошибки выполнения пакетных задач
+--------------------
+
+Задачи на базе замыкания
+
+dispatch(function () use ($user) {
+  $user->ban();
+})->catch(function (Throwable $e) {
+  job failed
+});
+--------------------
+
+Обработчик задач
+
+это фоновый демон. загружает код в память
+изменили код, сделать рестарт обработчика
+--------------------
+
+Запуск обработчика очереди задач
+
+В терминале
+php artisan queue:work
+
+С автоматическим обновлением измененного кода
+php artisan queue:listen
+
+В фоновом режиме
+Supervisor
+--------------------
+
+Запуск нескольких обработчиков
+
+В терминале
+php artisan queue:work
+php artisan queue:work
+php artisan queue:work
+
+В фоновом режиме
+Supervisor 'numprocs' = N
+--------------------
+
+Указать соединение
+
+php artisan queue:work connectionName
+
+все соединения в config/queue.php
+--------------------
+
+Указать очередь
+
+php artisan queue:work --queue=queueName
+--------------------
+
+Обработать 1 задачу
+php artisan queue:work --once
+
+Обработать N задач
+php artisan queue:work --max-jobs=N
+
+Обработать все задачи и выйти
+php artisan queue:work --stop-when-empty
+
+Обрабатывать задачи на протяжении N секунд и выйти
+php artisan queue:work --max-time=N
+--------------------
+
+Пауза между задачами
+
+php artisan queue:work --sleep=3
+--------------------
+
+Приоритеты
+
+В config/queue.php
+'queue' = low
+
+В коде
+dispatch((new Job)->onQueue('high'));
+
+Командой
+php artisan queue:work --queue=high,low
+--------------------
+
+Деплой на сервер
+
+Рестарт обработчиков
+php artisan queue:restart
+--------------------
+
+Сколько ждать перед новой попыткой выполнить задачу
+параметр retry_after в config/queue.php
+
+Сколько ждать выполнения задачи, а потом завершить неудачно
+php artisan queue:work --timeout=N
+
+Параметр retry_after на 5 сек длиннее чем timeout
+--------------------
+
+Настройка Supervisor
+
+либа для Linux
+
+Мануал
+http://supervisord.org
+
+Установка
+sudo apt-get install supervisor
+
+Конфиг
+/etc/supervisor/conf.d
+
+Запуск
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start
+--------------------
+
+Обработка неудачных задач
+
+складываются в таблицу failed_jobs
+
+Создать миграцию для таблицы failed_jobs
+php artisan queue:failed-table
+
+Накатить миграцию
+php artisan migrate
+--------------------
+
+Сколько ждать перед новой попыткой выполнить задачу
+
+В терминале
+php artisan queue:work --backoff=N
+
+В классе в свойстве
+public $backoff = N;
+
+В классе в методе
+public function backoff() {
+  return N;
+  return [N, M, X];
+}
+--------------------
+
+Очистка после неудачных задач
+
+public function failed(Throwable $exception) {
+ notification of failure
+}
+--------------------
+
+Посмотреть неудачные задачи
+
+php artisan queue:failed
+--------------------
+
+Выполнить неудачную задачу, список задач, все задачи
+
+php artisan queue:retry 5
+php artisan queue:retry 5 6 7 8 9 10
+php artisan queue:retry --range=5-10
+php artisan queue:retry all
+--------------------
+
+Удалить неудачную задачу, все задачи
+
+php artisan queue:forget 5
+php artisan queue:flush
+--------------------
+
+Модель передаётся в задачу
+
+сериализуется в массив json и сохраняется в поле в бд
+
+Если модель уже удалена, то задачу можно не выполнять
+public $deleteWhenMissingModels = true;
+--------------------
+
+События задач
+
+в AppServiceProvider.php
+public function boot() {
+
+  до выполнения задачи
+  Queue::before(function (JobProcessing $event) {
+    $event->connectionName
+    $event->job
+    $event->job->payload()
+  });
+
+  после выполнения задачи
+  Queue::after(function (JobProcessed $event) {
+    $event->connectionName
+    $event->job
+    $event->job->payload()
+  });
+
+  перед получением задачи из очереди
+  Queue::looping(function () {
+    while (DB::transactionLevel() > 0) {
+      DB::rollBack();
+    }
+  });
+  
+  задача завершилась неудачно
+  Queue::failing(function (JobFailed $event) {
+    $event->connectionName
+    $event->job
+    $event->exception
+  });
+}
+--------------------
+
+Удалить задачи из очереди
+
+php artisan queue:clear
+php artisan queue:clear connectionName --queue=queueName
+-------------------------------------------------
+
+DIGGING DEEPER -> TASK SCHEDULING
+
+обычно 1 крон = 1 задача
+такие задачи вне Гит
+и нужен ssh
+
+Крон
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+
+Все задачи в классе Console\Kernel в методе schedule()
+
+protected function schedule(Schedule $schedule) {
+
+  используя замыкание
+  $schedule->call(function () {
+    DB::table('recent_users')->delete();
+  })->daily();
+
+  используя вызываемые классы
+  $schedule->call(new DeleteRecentUsers)->daily();
+
+  команды Artisan
+  $schedule->command('emails:send Taylor --force')->daily();
+  $schedule->command(EmailsCommand::class, ['Taylor', '--force'])->daily();
+
+  очереди задач
+  $schedule->job(new Heartbeat)->everyFiveMinutes();
+  $schedule->job(new Heartbeat, 'heartbeats')->everyFiveMinutes();
+
+  команды оболочки shell
+  $schedule->exec('node /home/forge/script.js')->daily();
+}
+--------------------
+
+Настройки
+
+cron('* * * * *');
+
+everyMinute(), everyTwoMinutes(), everyThreeMinutes(), everyFourMinutes(), everyFiveMinutes(), everyTenMinutes(), everyFifteenMinutes(), everyThirtyMinutes()
+
+hourly(), hourlyAt(17), everyTwoHours(), everyThreeHours(), everyFourHours(), everySixHours()
+
+daily(), dailyAt('13:00'), twiceDaily(1, 13)
+
+weekly(), weeklyOn(1, '8:00')
+
+monthly(), monthlyOn(4, '15:00'), lastDayOfMonth('15:00')
+
+quarterly(), yearly()
+
+timezone('America/New_York')
+
+weekdays(), weekends(), sundays(), mondays(), tuesdays(), wednesdays(), thursdays(), fridays(), saturdays(), days(array|mixed), between($start, $end), unlessBetween($start, $end), when(Closure), skip(Closure) environments($env), at()
+--------------------
+
+Цепочки
+
+$schedule->command('foo')
+  ->weekdays()
+  ->hourly()
+  ->timezone('America/Chicago')
+  ->between('8:00', '17:00');
+
+$schedule->call(function () {})
+  ->weekly()
+  ->mondays()
+  ->at('13:00');
+--------------------
+
+Таймзона для всех задач
+в app/Console/Kernel.php
+
+protected function scheduleTimezone() {
+  return 'America/Chicago';
+}
+
+Таймзона на лету
+->timezone('America/New_York');
+--------------------
+
+Дублирование задач
+задачи будут стартовать, даже если предыдущая не закончилась
+чтобы предотвратить дублирование
+
+$schedule->command('emails:send')->withoutOverlapping();
+
+сколько минут ждать лок
+$schedule->command('emails:send')->withoutOverlapping(10);
+--------------------
+
+Выполнение 1 задачи на 1 сервере
+если несколько серверов
+драйвер кеша database, memcached, redis
+
+$schedule->command('report:generate')
+  ->fridays()
+  ->at('17:00')
+  ->onOneServer();
+--------------------
+
+Паралельное выполнение задач
+по умолчанию все задачи выполняются последовательно
+
+работает только для command и exec
+$schedule->command('analytics:report')
+  ->daily()
+  ->runInBackground();
+--------------------
+
+В режиме обслуживания сайта задачи не выполняются
+сделать чтобы выполнялись
+
+$schedule->command('emails:send')->evenInMaintenanceMode();
+--------------------
+
+Вывод результата задачи
+
+вывод в файл
+$schedule->command('emails:send')->daily()->sendOutputTo($filePath);
+
+вывод в файл. добавлять
+$schedule->command('emails:send')->daily()->appendOutputTo($filePath);
+
+отправить по почте
+$schedule->command('foo')->daily()->sendOutputTo($filePath)->emailOutputTo('foo@example.com');
+
+отправить по почте только в случае сбоя
+$schedule->command('foo')->daily()->emailOutputOnFailure('foo@example.com');
+
+данные методы только для методов command и exec
+emailOutputTo, emailOutputOnFailure, sendOutputTo, appendOutputTo
+--------------------
+
+Хуки
+
+$schedule->command('emails:send')
+  ->daily()
+  ->before(function () {
+    до начала выполнения
+  })
+  ->after(function () {
+    задача выполнена
+});
+
+$schedule->command('emails:send')
+  ->daily()
+  ->onSuccess(function () {
+    задача выполнена успешно
+  })
+  ->onFailure(function () {
+    задача не выполнилась
+});
+--------------------
+
+Пинг урлов
+
+требуется
+composer require guzzlehttp/guzzle
+
+пинг урла до и после выполнения задачи
+$schedule->command('emails:send')
+  ->daily()
+  ->pingBefore($url)
+  ->thenPing($url);
+
+если условие true
+$schedule->command('emails:send')
+  ->daily()
+  ->pingBeforeIf($condition, $url)
+  ->thenPingIf($condition, $url);
+
+если условие false
+$schedule->command('emails:send')
+  ->daily()
+  ->pingOnSuccess($successUrl)
+  ->pingOnFailure($failureUrl);
+-------------------------------------------------
+
+DATABASE -> REDIS
+
+Redis это хранилище пар ключ-значение
+composer require predis/predis
+фасад Redis
+команды https://redis.io/commands
+
+Для скорости поставить PhpRedis PHP extension PECL
+Конфиг config/database.php в $redis
+
+Соединение требует name, host, port, password, database
+Или единый url
+
+включить 'scheme' => 'tls' (TLS/SSL)
+или будет 'tcp' по умолчанию
+
+Настройка кластера серверов redis
+в файле настроек в массиве clusters
+
+Расширение Predis
+REDIS_CLIENT = predis
+поддерживает разные Соединения
+
+Расширение PhpRedis
+установлено по умолчанию
+REDIS_CLIENT = phpredis
+
+Чтобы использовать PhpRedis и фасад Redis
+чтобы не было конфликта
+в app.php переименовать так
+'RedisManager' => Illuminate\Support\Facades\Redis::class
+--------------------
+
+Вызов команд
+
+Redis::get('user:profile:'.$id);
+Redis::set('name', 'Taylor');
+Redis::lrange('names', 5, 10);
+Redis::command('lrange', ['name', 5, 10]);
+--------------------
+
+Выбрать соединение
+
+Redis::connection();
+Redis::connection('my-connection');
+--------------------
+
+Отправка сразу много команд (pipelining)
+
+Redis::pipeline(function ($pipe) {
+  for ($i = 0; $i < 1000; $i++) {
+    $pipe->set("key:$i", $i);
+  }
+});
+--------------------
+
+Publish и Subscribe на каналы
+
+public function handle() {
+  Redis::subscribe(['test-channel'], function ($message) {
+    echo $message;
+  });
+}
+
+Route::get('publish', function () {
+  Redis::publish('test-channel', json_encode(['foo' => 'bar']));
+});
+--------------------
+
+Подписка на много каналов
+
+Redis::psubscribe(['*'], function ($message, $channel) {
+  echo $message;
+});
+
+Redis::psubscribe(['users.*'], function ($message, $channel) {
+  echo $message;
+});
+-------------------------------------------------
+
+NODE.JS, NPM, PACKAGE.JSON
+
+Запуск файла
+
+node script
+node script.js
+node.exe script.js
+из PhpStorm кнопкой Run
+
+Подключить файл
+
+<script src='./node_modules/packagename/dist/script.min.js'></script>
+--------------------
+
+Подключение
+
+модуль в файле testfile.js
+const testfile = require('./testfile');
+можно опустить окончание ".js"
+
+модуль в папке folder
+const folder = require('./folder');
+автоматически внутри ищет файл index.js
+
+пакет в папке node_modules
+const modulename = require('modulename');
+автоматически ищет внутри папки node_modules
+--------------------
+
+Пример модуля
+
+Модуль с данными
+module.exports = {a: 1, b: 2};
+module.exports = [1, 2];
+
+Модуль с функцией
+module.exports = function (a, b) {return a + b;};
+console.log(modulename(2, 3));
+
+Сложный модуль
+module.exports = {a: 1, b: 2,
+  f: function (a, b) {return a * b;}
+};
+console.log(modulename.f(2, 3));
+--------------------
+
+Экспорт из модуля
+
+export - что импортируем из модуля
+exports {var, func, class}
+exports {var as var1} алиас
+
+Импорт из модуля
+
+import - что импортируем из модуля в локальную область видимости
+import {var, func, class } from './file'
+import {var as var1} алиас
+
+import * as object1 from './file'; вытащить все экспорты в 1 сборный объект
+
+Экспорт по умолчанию
+
+export default {1,2} - будет экспортировано это по умолчанию при вызове:
+import var from './file'
+--------------------
+
+Модули Node CommonJS
+
+импорт синхронный последовательный
+импортирует всю библиотеку
+команды require, module.exports, exports.foo
+
+var modulename = require('modulename');
+
+Примеры
+
+hello.js
+function hello() {return 'hello'}
+module.exports = hello
+
+app.js
+const hello = require('./hello')
+hello()
+
+
+hello.js
+function hello1() {return 'hello1'}
+function hello2() {return 'hello2'}
+module.exports = {hello1,hello2}
+
+app.js
+const hello = require('./hello')
+hello.hello1()
+hello.hello2()
+--------------------
+
+Модули ES6
+
+импорт асинхронный
+загружают модули динамически
+новый стандарт
+команды import, export default, export
+требуется Babel
+Babel преобразует import в require
+--------------------
+
+Примеры
+
+import modulename from 'modulename';
+
+импортирует кусок библиотеки
+import { chank } from modulename;
+
+импортирует все куски
+import * as modulename from 'modulename'; 
+--------------------
+
+hello.js
+function hello() {return 'hello'}
+export default hello
+
+app.js
+import hello from './hello'
+hello()
+
+
+hello.js
+function hello1() {return 'hello1'}
+function hello2() {return 'hello2'}
+export { hello1, hello2 }
+
+app.js
+import { hello1, hello2 } from './hello'
+hello1()
+hello2()
+-------------------------------------------------
+
+ЭКСПОРТ ИЗ MYSQL WORKBENCH В LARAVEL MIGRATION
+
+1. Скачать плагин. Из схемы в миграцию
+https://github.com/beckenrode/mysql-workbench-export-laravel-5-migrations
+
+MySQL Workbench - Scripting - Install Plugin
+выбрать export-laravel-5-migrations.py
+
+MySQL Workbench - Tools - Catalog - Export Laravel 5 Migration
+
+2. Использовать сервис. Из sql в миграцию
+https://adolfocuadros.com/sql_to_laravel
+
+3. Использовать пакет. Из бд в миграцию
+https://github.com/Xethron/migrations-generator
+-------------------------------------------------
+
+НЕЙМИНГ
+
+Таблица (мн)                 brands
+Таблица промежуточная (ед)   brand_site
+Столбик таблицы (snake_case) meta_title
+Аттрибут модели (snake_case) $model->meta_title
+Первичный ключ               id
+Внешний ключ (ед)            brand_id
+
+Модель (ед)                         php artisan make:model Brand
+Связи модели hasOne, belongsTo (ед) brandSite
+Связи модели остальные (мн)         brandSites
+
+Миграция (ед) php artisan make:migration Brand
+Фабрика (ед)  php artisan make:factory Brand
+Сидер (ед)    php artisan make:seeder Brand
+
+Контроллер (ед)                       php artisan make:controller BrandController
+Метод (camelCase)                     getAll
+Метод в ресурсном контроллере (table) store
+Метод в тестовом классе (camelCase)   testBrand
+
+Роут(мн)                      brands/1
+Роут именованный (snake_case) brands.show_active
+
+Переменная (camelCase) $brandSite
+Коллекция (мн)         $brands= Brand::all()->get()
+Объект (ед)            $user= User::find(1)
+
+Файлы конфигов и языковые (snake_case) articles_enabled
+
+Вьюха (kebab-case)                 brand-show.blade.php
+Контракт, интерфейс (сущ или прил) BrandInterface
+Трейт (прил)                       Brandable
+-------------------------------------------------
+
+ЛУЧШИЕ ПРАКТИКИ
+
+Модель
+работа с данными, логика, сортировки, условия, where
+длинные условия разбивать на отдельные методы
+куски where запросов выносить в методы scopeName
+eloquent лучше чем query builder лучше чем сырые запросы
+использовать массовое заполнение
+использовать нетерпеливую загрузку (проблема N+1)
+каждая модель связана со своей таблицей
+для даты использовать акцессоры и мутаторы в модели
+
+Классы Request
+валидация
+
+Сервис классы
+бизнес логика
+
+Вьюхи
+не выполнять запросы к модели
+не встраивать css и js
+не использовать php
+
+Контроллер
+текст выносить в константы, языковые файлы, конфиги
+коллекция лучше массива
+использовать IoC container или фасады вместо new Class (public function __construct(User $user) {$this->user = $user;} вместо $user = new User;)
+использовать config() вместо env()
+-------------------------------------------------
+
+КОРОТКИЙ СИНТАКСИС
+
+Session::get('cart')
+session('cart')
+
+Session::put('cart', $data)
+session(['cart' => $data])
+
+$request->session()->get('cart')
+session('cart')
+
+$request->input('name'), Request::get('name')
+$request->name, request('name')
+
+$request->has('value') ? $request->value : 'default';
+$request->get('value', 'default')
+
+return Redirect::back()
+return back()
+
+is_null($object->relation) ? null : $object->relation->id
+optional($object->relation)->id
+
+view('index')->with('title', $title)->with('client', $client)
+view('index', compact('title', 'client'))
+
+Carbon::now(), Carbon::today()
+now(), today()
+
+App::make('Class')
+app('Class')
+
+->where('column', '=', 1)
+->where('column', 1)
+
+->orderBy('created_at', 'desc')
+->latest()
+
+->orderBy('age', 'desc')
+->latest('age')
+
+->orderBy('created_at', 'asc')
+->oldest()
+
+->select('id', 'name')->get()
+->get(['id', 'name'])
+
+->first()->name
+->value('name')
