@@ -28,7 +28,25 @@ Angular and AngularJS, Behat Support, Codeception Framework, CoffeeScript, Copyr
 
 Плагины поставить
 
-Laravel, BrowseWordAtCaret, Php Inspections (EA Extended)
+BrowseWordAtCaret, Php Inspections (EA Extended)
+
+Раскрашивает папки, автодополнение кода
+https://plugins.jetbrains.com/plugin/7532-laravel
+
+Генерация PHPDoc, подсказок для автодополнения кода
+https://github.com/barryvdh/laravel-ide-helper
+
+Писать и исполнять код в отдельном файле как strach в phpstorm
+https://plugins.jetbrains.com/plugin/14957-laravel-tinker
+
+Подсветка в файлах .env и автодополнение в остальных местах
+https://plugins.jetbrains.com/plugin/9525--env-files-support
+
+Панель отладки ошибок. аналог ignition
+https://github.com/barryvdh/laravel-debugbar
+
+Закладки для xDebug
+https://www.jetbrains.com/phpstorm/marklets
 --------------------
 
 Настроить Windows Path
