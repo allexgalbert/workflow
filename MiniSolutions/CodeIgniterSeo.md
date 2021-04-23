@@ -1,4 +1,8 @@
-# Функционал для реализации SEO на фреймворке CodeIgniter
+# Реализация SEO на фреймворке CodeIgniter
+
+- Установка метатегов description и keywords
+- Глобально
+- Для каждой страницы отдельно
 
 ## В файле настроек application/config/config.php
 
