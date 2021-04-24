@@ -57,6 +57,9 @@ modules\php\PHP_7.4
 
 Настроить
 
+Переместить папку jbr
+PhpStorm->Choose Boot Java Runtime for the IDE
+
 Путь до PHP
 modules\php\PHP-7.4-x64\php.exe
 
