@@ -70,6 +70,7 @@ Cmd на git Tools | Terminal
 git/bin/bash.exe
 
 Добавить Version Control | GitHub
+токен https://github.com/settings/tokens
 
 Languages & Frameworks | Node.js and NPM
 C:\Program Files\nodejs\node.exe
