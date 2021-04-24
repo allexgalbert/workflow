@@ -42,6 +42,9 @@ chrome://flags/#tab-hover-cards в disabled
 Отключить панель громкости
 chrome://flags/#hardware-media-key-handling в disabled
 
+Отключить вертикальную панель вкладок
+chrome://flags/#enable-tab-search в disabled
+
 Включить DNS через HTTPS (DoH)
 chrome://flags/#dns-over-https в enabled
 
