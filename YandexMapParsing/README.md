@@ -2,81 +2,81 @@
 
 - По запросам типа "Москва магазины, Самара аптеки"
 - Собираются данные: название, описание, адрес, сайт, категория, телефон, расписание, координаты
-- Данные вставляются в базу.
+- Данные вставляются в базу
 
 # Примеры выборок
 
-## Выбрать аптеки
+## Выбрать аптеки в Москве
+
 ```sql
-SELECT * FROM `object` WHERE `category` REGEXP 'Аптека' AND `address` REGEXP 'Москва';
-SELECT `category`, COUNT(*) FROM `object` GROUP BY `category`;
+SELECT *
+FROM `objects`
+WHERE `category` REGEXP 'Аптека' AND `address` REGEXP 'Москва';
 ```
 
-## Все уникальные категории, с сортировкой по кол-ву объектов в каждой
+## Все категории с сортировкой по кол-ву объектов в каждой
+
 ```sql
-SELECT DISTINCT `category`, COUNT(`id`) as `quallityobjects`
-FROM `object`
+SELECT `category`, COUNT(*) as `quallityobjects`
+FROM `objects`
 GROUP BY `category`
 ORDER BY `quallityobjects` DESC;
 ```
 
-## Все уникальные категории, с сортировкой по кол-ву объектов в каждой, где объектов больше 1000
+## Все категории с сортировкой по кол-ву объектов в каждой, где объектов больше 1000
+
 ```sql
-SELECT DISTINCT `category`, COUNT(`id`) as `quallityobjects`
-FROM `object`
+SELECT `category`, COUNT(*) as `quallityobjects`
+FROM `objects`
 GROUP BY `category`
 HAVING `quallityobjects` >= 1000
-ORDER BY `quallityobjects` DESC
+ORDER BY `quallityobjects` DESC;
 ```
 
-## Все уникальные категории, с сортировкой по кол-ву объектов в каждой, у которых есть мыла
+## Все категории с сортировкой по кол-ву объектов в каждой, у которых есть почта
+
 ```sql
-SELECT DISTINCT `category`, COUNT(`id`) AS `quallityobjects`
-FROM `object`
-WHERE LENGTH(`email`)>1
+SELECT `category`, COUNT(*) AS `quallityobjects`
+FROM `objects`
+WHERE LENGTH(`email`) > 1
 GROUP BY `category`
 ORDER BY `quallityobjects` DESC;
 ```
 
 ## Все объекты по данной категории
+
 ```sql
 SELECT `name`, `address`, `url`
-FROM `object`
+FROM `objects`
 WHERE `category` = 'Банки';
 ```
 
 ## Все объекты с телефонами
+
 ```sql
-SELECT COUNT(*) FROM `object` WHERE LENGTH(`phone`) > 1;
+SELECT COUNT(*)
+FROM `objects`
+WHERE LENGTH(`phone`) > 1;
 ```
 
-## Количество пройденных запросов
+## Все объекты у которых есть сайты
+
 ```sql
-SELECT DISTINCT COUNT(*) FROM `city_has_type`;
-SELECT DISTINCT COUNT(*) FROM `city_has_brand`;
+SELECT COUNT(*)
+FROM `objects`
+WHERE LENGTH(`url`) > 1;
 ```
 
-## Количество объектов
-```sql
-SELECT COUNT(*) FROM `object`;
-```
+## Все объекты по выбранным категориям
 
-## Все объекты, у которых есть сайты
-```sql
-SELECT COUNT(*) FROM `object` WHERE LENGTH(`url`) > 1;
-```
-
-## Все объекты по данным категориям
 ```sql
 SELECT *
-FROM `object`
-WHERE
-`category` IN ('Автосервис, автотехцентр', 'Юридические услуги', 'Детский сад')
-AND
-LENGTH(`phone`) > 1;
+FROM `objects`
+WHERE `category` IN ('Автосервис, автотехцентр', 'Юридические услуги', 'Детский сад');
 ```
 
 ## Вывод яндекс-карты
+
 ```php
 <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 
