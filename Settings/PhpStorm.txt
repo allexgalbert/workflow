@@ -113,6 +113,9 @@ Check IDE updates, Check for plugin updates
 Статистика Appearance & Behavior | System Settings | Data Sharing
 Send usage statistics
 
+Путь до файла в окне Appearance & Behavior | Appearance
+Always show full path in window header
+
 Шрифт кода Editor | Font
 с 13 на 15
 
