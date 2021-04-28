@@ -101,3 +101,7 @@ function init() {
 }
 </script>
 ```
+
+## Структура
+
+![Сбор информации об организациях с Яндекс-Карт](https://raw.githubusercontent.com/allexgalbert/workflow/main/YandexMapParsing/1.png "Сбор информации об организациях с Яндекс-Карт")
