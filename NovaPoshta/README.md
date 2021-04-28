@@ -114,8 +114,10 @@ public function get_postoffices() {
 <?php } ?>
 ```
 
-## Демо
+## Структура
 
 ![Работа с API Нова Пошта](https://raw.githubusercontent.com/allexgalbert/workflow/main/NovaPoshta/1.png "Работа с API Нова Пошта")
+
+## Демо
 
 ![Работа с API Нова Пошта](https://raw.githubusercontent.com/allexgalbert/workflow/main/NovaPoshta/1.gif "Работа с API Нова Пошта")
