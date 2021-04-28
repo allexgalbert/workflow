@@ -18,30 +18,31 @@
 - Получить токен XXX:XXX
 - Кинуть в консоль хостинга чтобы увидеть id чатов кто писал https://api.telegram.org/botXXX:XXX/getUpdates
 - Получить структуру сообщения
+
 ```json
 {
-   "ok":true,
-   "result":[
-      {
-         "update_id":XXX,
-         "message":{
-            "message_id":1,
-            "from":{
-               "id":XXX,
-               "is_bot":false,
-               "first_name":"first_name",
-               "language_code":"ru"
-            },
-            "chat":{
-               "id":XXX,
-               "first_name":"first_name",
-               "type":"private"
-            },
-            "date":1572965904,
-            "text":"текст"
-         }
-      },
-   ]
+  "ok": true,
+  "result": [
+    {
+      "update_id": XXX,
+      "message": {
+        "message_id": 1,
+        "from": {
+          "id": XXX,
+          "is_bot": false,
+          "first_name": "first_name",
+          "language_code": "ru"
+        },
+        "chat": {
+          "id": XXX,
+          "first_name": "first_name",
+          "type": "private"
+        },
+        "date": 1572965904,
+        "text": "текст"
+      }
+    }
+  ]
 }
 ```
 
@@ -51,3 +52,6 @@
 - Обработка команд типа /start, /menu
 - Обработка кнопок
 - Вставка номера чата телеграм, в таблицу юзеров
+
+[![Бот VK и Telegram для перевода диалогов](https://raw.githubusercontent.com/allexgalbert/workflow/main/TelegramBot/1.png "Бот VK и Telegram для перевода диалогов")]
+
