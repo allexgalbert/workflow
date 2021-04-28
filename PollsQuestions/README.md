@@ -43,6 +43,6 @@
 
 Как сборный объект на опрос
 
-## Демо
+## Структура
 
 ![Структура базы данных для сайта с опросами](https://raw.githubusercontent.com/allexgalbert/workflow/main/PollsQuestions/1.png "Структура базы данных для сайта с опросами")
