@@ -53,5 +53,4 @@
 - Обработка кнопок
 - Вставка номера чата телеграм, в таблицу юзеров
 
-[![Бот VK и Telegram для перевода диалогов](https://raw.githubusercontent.com/allexgalbert/workflow/main/TelegramBot/1.png "Бот VK и Telegram для перевода диалогов")]
-
+[Бот VK и Telegram для перевода диалогов](https://raw.githubusercontent.com/allexgalbert/workflow/main/TelegramBot/1.png "Бот VK и Telegram для перевода диалогов")
