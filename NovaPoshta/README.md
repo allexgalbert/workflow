@@ -113,3 +113,9 @@ public function get_postoffices() {
   <option value='<?= $v->id ?>'><?= $v->name ?></option>
 <?php } ?>
 ```
+
+## Демо
+
+![Работа с API Нова Пошта](https://raw.githubusercontent.com/allexgalbert/workflow/main/NovaPoshta/1.png "Работа с API Нова Пошта")
+
+![Работа с API Нова Пошта](https://raw.githubusercontent.com/allexgalbert/workflow/main/NovaPoshta/1.gif "Работа с API Нова Пошта")
