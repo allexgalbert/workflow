@@ -210,4 +210,4 @@ public function moreButton() {
 ## Демо
 
 ![Кнопка "Ещё" для каталога на фреймворке CodeIgniter](https://raw.githubusercontent.com/allexgalbert/workflow/main/CodeIgniterPaginator/1.gif "
-Кнопка "Ещё" для каталога на фреймворке CodeIgniter")
+Кнопка 'Ещё' для каталога на фреймворке CodeIgniter")
