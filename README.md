@@ -1,6 +1,3 @@
 # Workflow
 
-- Examples
-- Projects
-- Codes
-- Notes
+My projects, codes, examples, notes
