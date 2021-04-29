@@ -205,5 +205,9 @@ public function moreButton() {
     'pagination' => $getProduction['pagination'],
   ]);
 }
-
 ```
+
+## Демо
+
+![Кнопка "Ещё" для каталога на фреймворке CodeIgniter](https://raw.githubusercontent.com/allexgalbert/workflow/main/CodeIgniterPaginator/1.gif "
+Кнопка "Ещё" для каталога на фреймворке CodeIgniter")
