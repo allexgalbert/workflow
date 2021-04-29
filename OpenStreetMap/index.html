@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>LeafletJS</title>
+
+  <!--Leaflet-->
+  <link href='/leaflet/leaflet.css' rel='stylesheet'>
+  <script src='/leaflet/leaflet.js'></script>
+
+  <!--Esri-->
+  <script src='/esri/esri-leaflet.js'></script>
+
+  <!--Geocoder-->
+  <link href='/geocoder/esri-leaflet-geocoder.css' rel='stylesheet'>
+  <script src='/geocoder/esri-leaflet-geocoder.js'></script>
+
+  <style type='text/css'>
+      /*размер карты*/
+      #mapid {
+          width: 600px;
+          height: 400px;
+      }
+
+      /*скрыть копирайт на карте*/
+      .leaflet-bottom.leaflet-right {
+          display: none;
+      }
+  </style>
+</head>
+<body>
+
+<!--блок карты-->
+<div id='mapid'></div>
+
+<script>
+
+  //Старт карты
+  var coordinates = [42.342305, 12.650757]; //стартовые координаты
+  var zoom = 18; //зум
+  var mymap = L.map('mapid').setView(coordinates, zoom);
+  //-------------------------------------------------
+
+  //Поиск
+
+  //поле поиска
+  var searchControl = L.esri.Geocoding.geosearch({
+    position: 'topright', //позиция кнопки поиска
+    useMapBounds: false, //границы карты для фильтрации поиска (false, от 1 до 12)
+    expanded: true, //поле поиска всегда раскрыто
+    placeholder: 'Поиск' //слово внутри поля поиска
+  }).addTo(mymap);
+
+  //слой для результатов
+  var results = new L.LayerGroup().addTo(mymap);
+
+  //прослушать результаты и добавить на карту
+  searchControl.on('results', function (data) {
+
+    //удалить все старые маркеры со слоя результатов
+    results.clearLayers();
+
+    //удалить все старые маркеры со всех слоёв
+    mymap.eachLayer(function (layer) {
+      //главный слой карты и маркеры лежат в layer. определить по наличию свойства dragging что это маркеры
+      if (layer.dragging) {
+        mymap.removeLayer(layer);
+      }
+    });
+
+    //добавить результаты
+    for (var i = data.results.length - 1; i >= 0; i--) {
+      results.addLayer(L.marker(data.results[i].latlng));
+    }
+  });
+  //-------------------------------------------------
+
+  //добавить поставщика карты
+  L.tileLayer(
+    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
+    {
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1
+    }
+  ).addTo(mymap);
+  //-------------------------------------------------
+
+  //создать иконку маркера
+  var markericon = L.icon({
+    iconUrl: 'icon.png', //иконка. ее левый верхний угол именно на точке
+    iconSize: [32, 32], //размер иконки
+    iconAnchor: [16, 16], //положение маркера, относительно точки
+    popupAnchor: [0, -16] //положение попапа, относительно точки
+  });
+
+  //добавить маркер
+  L.marker(coordinates, {icon: markericon})
+    .addTo(mymap)
+    .bindPopup('<b>Заголовок</b><br>Описание');
+  //-------------------------------------------------
+
+  //клик на карту добавляет маркер
+  function onMapClick(e) {
+
+    //удалить все старые маркеры
+    mymap.eachLayer(function (layer) {
+      //главный слой карты и маркеры лежат в layer. определяем по наличию свойства dragging что это маркеры
+      if (layer.dragging) {
+        mymap.removeLayer(layer);
+      }
+    });
+
+    //добавить маркер
+    L.marker(e.latlng, {icon: markericon})
+      .addTo(mymap)
+      .bindPopup('<b>Новая точка</b><br>');
+
+    //добавить попап при установке маркера
+    L.popup()
+      .setLatLng(e.latlng)
+      .setContent(e.latlng.toString())
+      .openOn(mymap);
+
+    //короткие координаты
+    console.log(e.latlng.toString());
+
+    //длинные координаты
+    console.log(e.latlng.lat, e.latlng.lng);
+  }
+
+  //добавить событие клика на карту
+  mymap.on('click', onMapClick);
+
+</script>
+
+</body>
+</html>
