@@ -1,27 +1,26 @@
-Скачать https://chromium.woolyss.com
-Версия archive, marmaduke, all-codecs+, sync, win64
+https://chromium.woolyss.com
+Archive
 --------------------
 
 Флаги
 
-marmaduke, robrichavx, chromium authors - автор
-widevine - плагин для DRM
-all-codecs - открытые аудио и видео кодеки (H.264 + AAC)
-all-codecs+ - открытые аудио и видео кодеки (H.264 + AAC + H.265 + MPEG-4 + AMR)
-sync - ключи Google API для синхронизации
-no-sync - без ключей Google API для синхронизации
-win64 - версия 64bit
-up-to-date - современная версия как у Chrome
-avx - для новых процессоров с инструкциями AVX
-ungoogled - без интеграции с Google и повышенной конфиденциальностью
+widevine плагин для DRM
+all-codecs аудио видео кодеки H.264 + AAC
+all-codecs+ аудио видео кодеки H.264 + AAC + H.265 + MPEG-4 + AMR
+sync ключи Google API для синхронизации
+no-sync без ключей Google API для синхронизации
+ungoogled без интеграции с Google и повышенной конфиденциальностью
+win64 версия 64bit
+up-to-date современная версия как у Chrome
+avx для новых процессоров с инструкциями AVX
 --------------------
 
 Цвет
 
-Зеленый - стабильный релиз
-Синий - девелоперский или бета
-Желтый - канари
-Оранжевый - девелоперский официальный
+Зеленый стабильный релиз
+Синий девелоперский или бета
+Желтый канари
+Оранжевый девелоперский официальный
 --------------------
 
 Настройка
@@ -29,27 +28,24 @@ ungoogled - без интеграции с Google и повышенной кон
 Путь до профиля по умолчанию
 C:\Users\user\AppData\Local\Google\Chrome\User Data\Default
 
-Сменить в ярлыке путь до профиля и кеша
+Изменить в ярлыке путь до профиля и кеша
 Chromium\chrome.exe --user-data-dir=Chromium\Profile --disk-cache-dir=AppData\Local\Temp\ChromiumCache
 проверить chrome://version
 
 Добавить русский
 chrome://settings/languages
 
-Отключить превьюшки на табах
+Выключить превьюшки на табах
 chrome://flags/#tab-hover-cards в disabled
 
-Отключить панель громкости
+Выключить панель громкости
 chrome://flags/#hardware-media-key-handling в disabled
 
-Отключить вертикальную панель вкладок
+Выключить вертикальную панель вкладок
 chrome://flags/#enable-tab-search в disabled
 
-Включить DNS через HTTPS (DoH)
-chrome://flags/#dns-over-https в enabled
-
 Удалить пункт меню "Отправить на устройство"
-Settings - Sync and Google services - Manage sync - Turn off "Open Tabs"
+Settings->Sync and Google services->Manage sync->Turn off "Open Tabs"
 chrome://settings/syncSetup/advanced
 --------------------
 
