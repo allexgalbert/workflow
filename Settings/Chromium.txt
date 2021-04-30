@@ -32,6 +32,9 @@ C:\Users\user\AppData\Local\Google\Chrome\User Data\Default
 Chromium\chrome.exe --user-data-dir=Chromium\Profile --disk-cache-dir=AppData\Local\Temp\ChromiumCache
 проверить chrome://version
 
+Изменить в ярлыке выключить глобальную аудио-панель
+--disable-features=GlobalMediaControls
+
 Добавить русский
 chrome://settings/languages
 
@@ -44,9 +47,14 @@ chrome://flags/#hardware-media-key-handling в disabled
 Выключить вертикальную панель вкладок
 chrome://flags/#enable-tab-search в disabled
 
+Выключить QR-код
+chrome://flags/#sharing-qr-code-generator в disabled
+
+Импорт экспорт паролей
+chrome://flags/#PasswordImport в enabled
+
 Удалить пункт меню "Отправить на устройство"
-Settings->Sync and Google services->Manage sync->Turn off "Open Tabs"
-chrome://settings/syncSetup/advanced
+chrome://settings/syncSetup/advanced в Turn off "Open Tabs"
 --------------------
 
 Плагины
@@ -94,3 +102,10 @@ https://webbrowsertools.com/canvas-fingerprint
 https://webbrowsertools.com/font-fingerprint
 https://webbrowsertools.com/webgl-fingerprint
 https://webbrowsertools.com/audiocontext-fingerprint
+--------------------
+
+Настройка ungoogled
+
+chrome://flags/#extension-mime-request-handling в Always prompt for install
+chrome://extensions включить режим разработчика
+https://github.com/NeverDecaf/chromium-web-store/releases/latest скачать релиз и перетащить на вкладку
