@@ -20,6 +20,17 @@
 - Всех роботов поисковых систем редиректит с поддомена a.domain.com на домен domain.com
 - Для всех остальных случаев покажет заглушку "500 error. нет информации"
 
+## Методы
+
+- GetUserData.php - получение юзерагента, реферрера, ip адреса пользователя
+- CheckConditions.php - условия для редеректов
+- Database.php - работа с бд
+- GetIps.php - работа с ip адресами для черного списка
+
+## Структура
+
+![Система работы сайта на поддомене](https://raw.githubusercontent.com/allexgalbert/workflow/main/BogusSubdomain/DOC/1.png "Система работы сайта на поддомене")
+
 ## Демо
 
-![Система работы сайта на поддомене](https://raw.githubusercontent.com/allexgalbert/workflow/main/BogusSubdomain/1.png "Система работы сайта на поддомене")
+![Система работы сайта на поддомене](https://raw.githubusercontent.com/allexgalbert/workflow/main/BogusSubdomain/DOC/2.png "Система работы сайта на поддомене")
