@@ -105,3 +105,7 @@ $this->lang->line('form_validation_required');
 //изменим язык по умолчанию в конфиге на лету
 $this->config->set_item('language', 'english');
 ```
+
+## Структура
+
+![Реализация многоязычности на фреймворке CodeIgniter](https://raw.githubusercontent.com/allexgalbert/workflow/main/CodeIgniterLanguages/1.png "Реализация многоязычности на фреймворке CodeIgniter")
