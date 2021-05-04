@@ -30,10 +30,10 @@ var_dump(1.55); var_dump(strftime('%A %B'));
 
 ```php
 //урл языка
-$this->config->item('lang'));
+$this->config->item('lang');
 
 //папка языка
-$this->config->item('language'));
+$this->config->item('language');
 
 //ссылка с автоматическим добавлением языка
 mysiteurl();
@@ -87,7 +87,6 @@ form_error('field');
 //filename имя языкового файла без _lang.php
 //language язык (название папки), если параметра нет, то берется из конфига application/config/config.php: $config['language'];
 //если 3й параметр true, то вернет массив всех строк
-
 $this->lang->load('file', 'language', false);
 
 //получить сообщение из файла. язык взялся по-умолчанию из конфига
@@ -106,6 +105,46 @@ $this->lang->line('form_validation_required');
 $this->config->set_item('language', 'english');
 ```
 
-## Структура
+## Варианты
 
 ![Реализация многоязычности на фреймворке CodeIgniter](https://raw.githubusercontent.com/allexgalbert/workflow/main/CodeIgniterLanguages/1.png "Реализация многоязычности на фреймворке CodeIgniter")
+
+## Запросы
+
+Для 1 варианта. Все части блока, по id блока и id языка (2 таблицы. 1 join)
+
+```sql
+SELECT elements.id, elements.name, translations.name
+FROM elements,
+     translations
+WHERE elements.id = translations.elements_id
+  AND elements.components_id = 2
+  AND translations.langs_id = 4;
+```
+
+Для 1 варианта. Все части блока, по имени блока и iso языка (4 таблицы. 3 join)
+
+```sql
+SELECT elements.id, elements.name, translations.name
+FROM langs,
+     components,
+     elements,
+     translations
+WHERE langs.id = translations.langs_id
+  AND components.id = elements.components_id
+  AND elements.id = translations.elements_id
+  AND components.name = 'footer'
+  AND langs.iso = 'fr';
+```
+
+Для 3 варианта. Все части блока, по имени блока и iso языка (3 таблицы. 2 join)
+
+```sql
+SELECT elements2.id, elements2.name, translations2.name_ru
+FROM components2,
+     elements2,
+     translations2
+WHERE components2.id = elements2.components2_id
+  AND elements2.id = translations2.elements2_id
+  AND components2.name = 'header';
+```
