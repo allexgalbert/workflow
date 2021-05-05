@@ -1,6 +1,5 @@
-# Определение геолокации на основе MaxMind
+# Геолокация MaxMind для фреймворка CodeIgniter
 
-- Модуль для фреймворка CodeIgniter
 - MaxMind-DB-Reader устанавливается как PHP Extension
 - Определение 2-значного ISO-кода страны пользователя по его IP
 - Автоматическое обновление базы GeoLite2-Country.mmdb
