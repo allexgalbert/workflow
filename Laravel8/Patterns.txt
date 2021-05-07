@@ -1,0 +1,174 @@
+Dependency Injection
+
+Инъекция зависимостей, это когда конструктор класса, ждет зависимость в виде объекта, нужного интерфейса или класса. При создании класса, в конструктор передаем объект, который реализует этот интерфейс или класс.
+
+Инверсия зависимостей, это когда конструктор класса, ждет зависимость в виде объекта, нужного интерфейса, а не конкретного класса.
+
+Интерфейс
+interface Interface {}
+
+Классы
+class Class1 implements Interface {}
+class Class2 implements Interface {}
+
+Класс
+class Class {
+  public function __construct(Interface $object) {
+    $this->object = $object;
+  }
+  public function __construct(Class1 $object) {
+    $this->object = $object;
+  }
+}
+
+new Class(new Class1);
+new Class(new Class2);
+-------------------------------------------------
+
+Adapter
+
+2 библиотеки с разными интерфейсами и методами. Нужно заменить одну на другую, не меняя код по всему проекту
+
+Библиотека 1
+
+interface Interface1 {public function method1() {}}
+class Class1 implements Interface1 {public function method1() {}}
+
+Библиотека 2
+
+interface Interface2 {public function method2() {}}
+class Class2 implements Interface2 {public function method2() {}}
+
+Адаптер
+
+class Adapter implements Interface1 {
+
+  подключить библиотеку 2
+  public function __construct() {$this->adapter = new Class2()}
+  
+  названия методов из библиотеки1, но внутри вызвать методы библиотеки 2
+  public function method1() {$this->adapter->method2()}
+}
+
+Варианты
+- объект класса Class2 создать в конструкторе
+- класс Adapter наследовать от класса Class2
+
+
+Работа с библиотекой 1
+$var = app(Class1::class);
+$var->method1();
+	
+Работа с адаптером. по факту с библиотекой 2
+$var = app(Adapter::class);
+$var->method1();
+	
+Можно улучшить так
+$var = app(Interface1::class);
+$var->method1();
+	
+В провайдере указать ларавелу, объект какого класса создавать, когда идет обращение к интерфейсу
+$bindings = [Interface1::class => Adapter::class]
+-------------------------------------------------
+
+Observer
+
+Объект observable
+- издатель
+- создает события
+- содержит список observers
+- методы: add, remove, notify
+- метод notify перебирает и вызывает у каждого observer метод handle
+
+Объекты observers
+- подписчики
+- разного типа
+- наблюдают за событиями у observable
+- метод handle
+
+Использование в ларавел
+- при сохранении, изменении, удалении модели
+- вызываются классы из папки Observers
+- там методы с такими же названиями
+- обсерверы создаются командой php artisan make:observer name --model=name
+
+В PHP использовать SplSubject, SplObserver, SplObjectStorage
+
+class Observable {
+  private $observers = [];
+  
+  public function add($observer) {$this->observers[] = $observer;}
+  public function remove($observer) {unset($this->observers[$observer]);}
+  
+  public function notify($event) {
+    foreach ($this->observers as $observer) {
+      $observer->handle($this);
+	  $observer->handle($event);
+    }
+  }
+  
+  public function notify($payload) {
+    foreach ($this->observers as $observer) {
+      $observer->handle($payload);
+    }
+  }
+}
+
+class Observer {
+  public function handle($observable) {}
+  public function handle($event) {}
+  public function handle($payload) {}
+}
+
+
+$observable = new Observable();
+
+$observer1 = new Observer();
+$observer2 = new Observer();
+
+$observable->add($observer1);
+$observable->add($observer2);
+
+$observable->notify();
+
+$observable->remove($observer2);
+
+$observable->notify();
+
+
+class Event {}
+$observable->notify(new Event());
+
+$observable->notify($payload);
+-------------------------------------------------
+
+Facade
+
+Сложная подсистема которую надо скрыть
+class Class1 {public function method1() {}}
+class Class2 {public function method2() {}}
+
+Фасад скрывает реализацию под собой, объединяя вызовы с разных мест, под одним методом
+class Facade {
+
+  protected $class1;
+  protected $class2;
+
+  public function _construct() {
+    $this->class1 = new Class1;
+	$this->class2 = new Class2;
+  }
+  
+  public function start() {
+    $this->class1->method1();
+	$this->class2->method2();
+  }
+
+}
+
+$facade =  new Facade;
+$facade->start();
+
+Под разными фасадами можно скрывать отдельные наборы вызываемых методов подсистемы.
+В ларавел папка Facades
+-------------------------------------------------
