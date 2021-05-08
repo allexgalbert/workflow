@@ -1,8 +1,16 @@
+Dependency Injection - для реализации слабосвязанной архитектуры.
+Adapter - привести неудобный интерфейс класса, в интерфейс совместимый с вашим кодом, предоставляя для этого прослойку с интерфейсом удобным для клиентов, а внутри себя используя оригинальный неудобный интерфейс.
+Observer - для реализации публикации и подписки на поведение объекта, когда объект «subject» меняет состояние, прикрепленные объекты «observers» будут уведомлены. Используется чтобы сократить количество связанных напрямую объектов и использует слабую связь.
+Facade - предназначен для разделения клиента и подсистемы путем внедрения одного интерфейса и уменьшения общей сложности.
+Repository - посредних между контроллером и разными хранилищами, инкапсулирует набор объектов хранилища и сами операции выборки и сохранения.
+-------------------------------------------------
+
 Dependency Injection
 
-Инъекция зависимостей, это когда конструктор класса, ждет зависимость в виде объекта, нужного интерфейса или класса. При создании класса, в конструктор передаем объект, который реализует этот интерфейс или класс.
+Инъекция зависимостей, это когда конструктор класса ждет зависимость в виде объекта нужного интерфейса или класса. При создании класса, в конструктор передаем объект, который реализует этот интерфейс или класс. Инъекция зависимостей это просто передача аргумента в метод.
 
-Инверсия зависимостей, это когда конструктор класса, ждет зависимость в виде объекта, нужного интерфейса, а не конкретного класса.
+Инверсия зависимостей, это когда конструктор класса ждет зависимость в виде объекта только нужного интерфейса. А не конкретного класса.
+
 
 Интерфейс
 interface Interface {}
@@ -27,26 +35,23 @@ new Class(new Class2);
 
 Adapter
 
-2 библиотеки с разными интерфейсами и методами. Нужно заменить одну на другую, не меняя код по всему проекту
+2 библиотеки с разными интерфейсами и методами. Нужно заменить одну на другую, не меняя код по всему проекту.
 
 Библиотека 1
-
 interface Interface1 {public function method1() {}}
 class Class1 implements Interface1 {public function method1() {}}
 
 Библиотека 2
-
 interface Interface2 {public function method2() {}}
 class Class2 implements Interface2 {public function method2() {}}
 
 Адаптер
-
 class Adapter implements Interface1 {
 
   подключить библиотеку 2
   public function __construct() {$this->adapter = new Class2()}
   
-  названия методов из библиотеки1, но внутри вызвать методы библиотеки 2
+  названия методов как в библиотеке 1, но внутри вызывают методы библиотеки 2
   public function method1() {$this->adapter->method2()}
 }
 
@@ -74,15 +79,13 @@ $bindings = [Interface1::class => Adapter::class]
 Observer
 
 Объект observable
-- издатель
-- создает события
+- издатель. создает события
 - содержит список observers
 - методы: add, remove, notify
-- метод notify перебирает и вызывает у каждого observer метод handle
+- метод notify перебирает observers и вызывает у каждого метод handle
 
 Объекты observers
-- подписчики
-- разного типа
+- подписчики. разного типа
 - наблюдают за событиями у observable
 - метод handle
 
@@ -94,10 +97,13 @@ Observer
 
 В PHP использовать SplSubject, SplObserver, SplObjectStorage
 
+
 class Observable {
+
   private $observers = [];
   
   public function add($observer) {$this->observers[] = $observer;}
+  
   public function remove($observer) {unset($this->observers[$observer]);}
   
   public function notify($event) {
@@ -133,18 +139,17 @@ $observable->notify();
 
 $observable->remove($observer2);
 
-$observable->notify();
-
 
 class Event {}
 $observable->notify(new Event());
+
 
 $observable->notify($payload);
 -------------------------------------------------
 
 Facade
 
-Сложная подсистема которую надо скрыть
+Сложная подсистема которую надо скрыть под фасадом
 class Class1 {public function method1() {}}
 class Class2 {public function method2() {}}
 
@@ -163,12 +168,65 @@ class Facade {
     $this->class1->method1();
 	$this->class2->method2();
   }
-
 }
 
 $facade =  new Facade;
 $facade->start();
 
-Под разными фасадами можно скрывать отдельные наборы вызываемых методов подсистемы.
+Под разными фасадами можно скрывать разные наборы вызываемых методов подсистемы
 В ларавел папка Facades
+В итоге все вызовы сложной подсистемы сводятся к вызову 1 метода у 1 объекта
 -------------------------------------------------
+
+Repository
+
+обертка для модели
+обертка содержит логику работы с данными
+модель как источник данных
+
+как книжный шкаф. только брать и класть
+не может создавать и изменять
+
+репозитарий это коллекция. это абстрактный слой между разными хранилищами и контроллером
+
+в ларавел папка Repositories где репозитарии и интерфейсы
+
+
+Методы. получить все записи и только записи юзера
+interface Interface {
+  public function method1() {}
+  public function method2() {}
+}
+
+Реализации. юзеры лежат в базе или в файлах
+class Class1 implements Interface {
+  public function method1() {}
+  public function method2() {}
+}
+class Class2 implements Interface {
+  public function method1() {}
+  public function method2() {}
+}
+
+
+Контроллер
+class Class {
+
+  private $repository;
+  
+  public function __construct(Interface $class1) {
+    $this->repository = $class1;
+  }
+
+  public function method() {
+    $this->repository->method1();
+	$this->repository->method2();
+  }
+}
+
+Вместо внедрения в конструкторе, можно привязать в сервис-провайдере:
+public function register() {
+  $this->app->bind(Interface::class, Class1::class);
+}
+-------------------------------------------------
+
