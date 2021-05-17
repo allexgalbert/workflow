@@ -129,7 +129,6 @@ class Builder implements Interface {
   public function build() {
     return new Object($this);
   }
-  
 }
 ```
 
@@ -140,10 +139,9 @@ $builder->setProperty1('value1')->setProperty2();
 $object = $builder->getObject();
 ```
 
-В билдер можно добавить и геттеры. Билдеры часто делаются для моделей.
+В билдер можно добавить геттеры. Билдеры часто делаются для моделей.
 
-Менеджер создает сценарии создания объектов. Руководит билдером
-Сценарии создают объекты, с по-разному заполненными полями
+**Менеджер** создает сценарии создания объектов. Руководит билдером. Сценарии создают объекты, с по-разному заполненными полями.
 
 ```php
 class Manager {
@@ -152,7 +150,7 @@ class Manager {
   
   public function setBuilder($builder) {
     $this->builder = $builder;
-	return $this;
+    return $this;
   }
   
   public function scenario1() {
@@ -162,7 +160,6 @@ class Manager {
   public function scenario2() {
     return $this->builder->setProperty1('value2')->getObject();
   }
-
 }
 
 $manager = new Manager;
