@@ -1,5 +1,4 @@
 Dependency Injection - для реализации слабосвязанной архитектуры.
-Adapter - привести неудобный интерфейс класса, в интерфейс совместимый с вашим кодом, предоставляя для этого прослойку, а внутри себя используя оригинальный неудобный интерфейс.
 Observer - для реализации публикации и подписки на поведение объекта, когда объект subject меняет состояние, прикрепленные объекты observers будут уведомлены. Используется чтобы сократить количество связанных напрямую объектов и использует слабую связь.
 Facade - предназначен для разделения клиента и сложной подсистемы, путем внедрения одного интерфейса и уменьшения общей сложности.
 Repository - посредних между контроллером и разными хранилищами, инкапсулирует в себе коллекцию объектов хранилища и сами операции выборки и сохранения.
@@ -39,54 +38,6 @@ class Class {
 
 new Class(new Class1);
 new Class(new Class2);
--------------------------------------------------
-
-Adapter
-
-2 библиотеки с разными интерфейсами и методами. Нужно заменить одну на другую, не меняя код по всему проекту.
-
-Библиотека 1
-interface Interface1 {public function method1()}
-class Class1 implements Interface1 {public function method1() {}}
-
-Библиотека 2
-interface Interface2 {public function method2()}
-class Class2 implements Interface2 {public function method2() {}}
-
-
-Адаптер. Объект класса Class2 создать в конструкторе
-
-class Adapter implements Interface1 {
-
-  подключить библиотеку 2
-  public function __construct() {$this->adapter = new Class2}
-  
-  названия методов как в библиотеке 1, но внутри вызывают методы библиотеки 2
-  public function method1() {$this->adapter->method2()}
-}
-
-
-Адаптер. класс Adapter наследовать от класса Class2
-
-class Adapter extends Class2 {
-  названия методов как в библиотеке 1, но внутри вызывают методы библиотеки 2
-  public function method1() {$this->method2()}
-}
-
-Работа с библиотекой 1
-$var = app(Class1::class);
-$var->method1();
-	
-Работа с адаптером. по факту с библиотекой 2
-$var = app(Adapter::class);
-$var->method1();
-	
-Можно улучшить так
-$var = app(Interface1::class);
-$var->method1();
-	
-В провайдере указать ларавелу, объект какого класса создавать, когда идет обращение к интерфейсу
-$bindings = [Interface1::class => Adapter::class]
 -------------------------------------------------
 
 Observer
@@ -539,3 +490,6 @@ $invoker = new Invoker(new Command1($receiver), new Command2($receiver));
 $invoker->run1();
 $invoker->run2();
 -------------------------------------------------
+
+Active Record
+
