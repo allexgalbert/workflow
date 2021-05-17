@@ -204,7 +204,7 @@ class Command2 implements Command {
 class Invoker {
   public function __constructor(Command $command1, Command $command2) {
     $this->command1 = $command1;
-	$this->command2 = $command2;
+    $this->command2 = $command2;
   }
   public function run1() {$this->command1->execute()}
   public function run2() {$this->command2->execute()}
