@@ -135,7 +135,7 @@ class Builder implements Interface {
 
   //отдать готовый объект  
   public function getObject() {
-    $object= $this->object;
+    $object = $this->object;
 	
     //обнулить болванку
     $this->create();
