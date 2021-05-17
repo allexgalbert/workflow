@@ -321,25 +321,25 @@ class Class {
   //без фабричного метода. сами вызываем фабрику
   public function method() {
     $factory = new JavaFactory;
-	$developer = $factory->create();
-	$developer->coding();
+    $developer = $factory->create();
+    $developer->coding();
   }
   
   //фабричный метод. вызывает фабрику по типу
   public static function createMake($type) {
     if ($type == 'java') {
-	  return new JavaFactory;
+      return new JavaFactory;
     }
-	if ($type == 'perl') {
-	  return new PerlFactory;
+    if ($type == 'perl') {
+      return new PerlFactory;
     }
   }
   
   //с фабричным методом. передавая тип кодера которого нужно создать
   public function method() {
     $factory = self::createMake('java');
-	$developer = $factory->create();
-	$developer->coding();
+    $developer = $factory->create();
+    $developer->coding();
   }
 }
 ```
