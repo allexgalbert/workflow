@@ -3,7 +3,6 @@ Observer - для реализации публикации и подписки 
 Facade - предназначен для разделения клиента и сложной подсистемы, путем внедрения одного интерфейса и уменьшения общей сложности.
 Repository - посредних между контроллером и разными хранилищами, инкапсулирует в себе коллекцию объектов хранилища и сами операции выборки и сохранения.
 Factory - фабрика для создания объектов разных типов но одинаковой структуры.
-Builder - строитель для создания объектов пошагово по разным сценариям.
 Strategy - выносить однообразные алгоритмы в отдельные классы и легко их заменять.
 MVC - модель вью контроллер.
 Command - заворачивает команды в отдельные классы, команды как отдельные объекты, прослойка между объектами которые вызывают команды, и объектом который обрабатывает команды.
@@ -263,112 +262,6 @@ class Main {
 $factory = new Main;
 $audi = factory->make('audi');
 $ford = factory->make('ford');
--------------------------------------------------
-
-Builder
-
-Строитель это отдельный класс, который создает объект, мы сами пошагово заполняем его свойства, и он возвращает готовый объект.
-Вообщем логику создания объекта выносим в отдельный класс.
-
-Проблема которую решаем: большой конструктор
-function create($property1, $property2, $property3,.. $property10) {}
-create(1, 2, null,.. 5);
-create(null, null, null,.. 4);
-
-
-Интерфейс билдера
-interface Interface {
-  public function create()
-  public function setProperty1($value)
-  public function setProperty2()
-  public function getObject()
-}
-
-Объект который строим
-class Object {}
-
-Билдер строит объект Object
-
-class Builder implements Interface {
-
-  public function __construct() {
-    $this->create();
-  }
-  
-  public function create() {
-    $this->object = new Object;
-	return $this;
-  }
-
-  заполняем свойства объекта  
-  public function setProperty1($value) {
-    $this->object->property1 = $value;
-	return $this;
-  }
-  
-  заполняем свойства объекта
-  public function setProperty2() {
-    $this->object->property2 = 'default';
-	return $this;
-  }
-
-  отдать готовый объект  
-  public function getObject() {
-    $object= $this->object;
-	
-	//обнулить болванку
-	$this->create();
-	
-	return $object;
-  }
-  
-  отдать готовый объект. другая реализация метода getObject
-  public function build() {
-    return new Object($this);
-  }
-  
-}
-
-Создали билдер, он создал объект, заполнили свойства, получили объект
-$builder = new Builder;
-$builder->setProperty1('value1')->setProperty2();
-$object = $builder->getObject();
-
-В билдер можно добавить и геттеры. Билдеры часто делаются для моделей.
-
-
-
-Менеджер создает сценарии создания объектов. Руководит билдером
-Сценарии создают объекты, с по-разному заполненными полями
-
-class Manager {
-
-  private $builder;
-  
-  public function setBuilder($builder) {
-    $this->builder = $builder;
-	return $this;
-  }
-  
-  public function scenario1() {
-    return $this->builder->setProperty1('value1')->getObject();
-  }
-  
-  public function scenario2() {
-    return $this->builder->setProperty1('value2')->getObject();
-  }
-
-}
-
-$manager = new Manager;
-$manager->setBuilder($builder);
-
-$object = $manager->scenario1();
-$object = $manager->scenario2();
-
-Менеджер - другое название: Директор, Абстрактный билдер
-
-В ларавел паттерн билдер реализован в Eloquent Query Builder для запросов.
 -------------------------------------------------
 
 Strategy

@@ -1,6 +1,7 @@
 # Паттерны
 
 - **Adapter** - привести неудобный интерфейс класса, в интерфейс совместимый с вашим кодом, предоставляя для этого прослойку, а внутри себя используя оригинальный неудобный интерфейс.
+- **Builder** - строитель для создания объектов пошагово по разным сценариям.
 
 
 ## Adapter
@@ -21,7 +22,7 @@ interface Interface2 {public function method2()}
 class Class2 implements Interface2 {public function method2() {}}
 ```
 
-**Адаптер. Объект класса Class2 создать в конструкторе**
+**Адаптер. объект класса Class2 создать в конструкторе**
 
 ```php
 class Adapter implements Interface1 {
@@ -58,3 +59,119 @@ $var->method1();
 //в провайдере указать ларавелу, объект какого класса создавать, когда идет обращение к интерфейсу
 $bindings = [Interface1::class => Adapter::class]
 ```
+
+## Builder
+
+Строитель это отдельный класс, который создает объект, мы сами пошагово заполняем его свойства, и он возвращает готовый объект. Логику создания объекта выносим в отдельный класс.
+
+Проблема которую решаем: большой конструктор
+```php
+function create($property1, $property2, $property3,.. $property10) {}
+create(1, 2, null,.. 5);
+create(null, null, null,.. 4);
+```
+
+
+**Интерфейс билдера**
+
+```php
+interface Interface {
+  public function create()
+  public function setProperty1($value)
+  public function setProperty2()
+  public function getObject()
+}
+```
+
+**Объект который строим**
+
+```php
+class Object {}
+```
+
+**Билдер строит объект Object**
+
+```php
+class Builder implements Interface {
+
+  public function __construct() {
+    $this->create();
+  }
+  
+  public function create() {
+    $this->object = new Object;
+	return $this;
+  }
+
+  //заполняем свойства объекта  
+  public function setProperty1($value) {
+    $this->object->property1 = $value;
+	return $this;
+  }
+  
+  //заполняем свойства объекта
+  public function setProperty2() {
+    $this->object->property2 = 'default';
+	return $this;
+  }
+
+  //отдать готовый объект  
+  public function getObject() {
+    $object= $this->object;
+	
+	//обнулить болванку
+	$this->create();
+	
+	return $object;
+  }
+  
+  //отдать готовый объект. другая реализация метода getObject
+  public function build() {
+    return new Object($this);
+  }
+  
+}
+```
+
+```php
+//Создали билдер, он создал объект, заполнили свойства, получили объект
+$builder = new Builder;
+$builder->setProperty1('value1')->setProperty2();
+$object = $builder->getObject();
+```
+
+В билдер можно добавить и геттеры. Билдеры часто делаются для моделей.
+
+Менеджер создает сценарии создания объектов. Руководит билдером
+Сценарии создают объекты, с по-разному заполненными полями
+
+```php
+class Manager {
+
+  private $builder;
+  
+  public function setBuilder($builder) {
+    $this->builder = $builder;
+	return $this;
+  }
+  
+  public function scenario1() {
+    return $this->builder->setProperty1('value1')->getObject();
+  }
+  
+  public function scenario2() {
+    return $this->builder->setProperty1('value2')->getObject();
+  }
+
+}
+
+$manager = new Manager;
+$manager->setBuilder($builder);
+
+$object = $manager->scenario1();
+$object = $manager->scenario2();
+```
+
+Менеджер - другое название: Директор, Абстрактный билдер
+
+В ларавел паттерн билдер реализован в Eloquent Query Builder для запросов.
