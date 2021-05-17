@@ -100,29 +100,29 @@ class Builder implements Interface {
   
   public function create() {
     $this->object = new Object;
-	return $this;
+    return $this;
   }
 
   //заполняем свойства объекта  
   public function setProperty1($value) {
     $this->object->property1 = $value;
-	return $this;
+    return $this;
   }
   
   //заполняем свойства объекта
   public function setProperty2() {
     $this->object->property2 = 'default';
-	return $this;
+    return $this;
   }
 
   //отдать готовый объект  
   public function getObject() {
     $object= $this->object;
 	
-	//обнулить болванку
-	$this->create();
+    //обнулить болванку
+    $this->create();
 	
-	return $object;
+    return $object;
   }
   
   //отдать готовый объект. другая реализация метода getObject
