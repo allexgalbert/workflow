@@ -7,21 +7,21 @@
 
 2 библиотеки с разными интерфейсами и методами. Нужно заменить одну на другую, не меняя код по всему проекту.
 
-Библиотека 1
+**Библиотека 1**
 
 ```php
 interface Interface1 {public function method1()}
 class Class1 implements Interface1 {public function method1() {}}
 ```
 
-Библиотека 2
+**Библиотека 2**
 
 ```php
 interface Interface2 {public function method2()}
 class Class2 implements Interface2 {public function method2() {}}
 ```
 
-Адаптер. Объект класса Class2 создать в конструкторе
+**Адаптер. Объект класса Class2 создать в конструкторе**
 
 ```php
 class Adapter implements Interface1 {
@@ -33,7 +33,7 @@ class Adapter implements Interface1 {
 }
 ```
 
-Адаптер. класс Adapter наследовать от класса Class2
+**Адаптер. класс Adapter наследовать от класса Class2**
 
 ```php
 class Adapter extends Class2 {
