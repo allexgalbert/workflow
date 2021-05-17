@@ -315,8 +315,8 @@ class Perl implements Developer {public function coding() {код}}
 
 ```php
 interface Factory {public function create()}
-class JavaFactory implements Factory {public function create() {return new Java;}}
-class PerlFactory implements Factory {public function create() {return new Perl;}}
+class JavaFactory implements Factory {public function create() {return new Java}}
+class PerlFactory implements Factory {public function create() {return new Perl}}
 ```
 
 ```php
@@ -351,8 +351,8 @@ class Class {
 ```php
 class Factory {
   public function create($type) {
-    if ($type == 'audi') {return new Audi;}
-    if ($type == 'ford') {return new Ford;}
+    if ($type == 'audi') {return new Audi}
+    if ($type == 'ford') {return new Ford}
   }
 }
 
@@ -362,8 +362,8 @@ $ford = factory->create('ford');
 ```
 
 ```php
-class Factory1 {public function create() {return new Audi;}}
-class Factory2 {public function create() {return new Ford;}}
+class Factory1 {public function create() {return new Audi}}
+class Factory2 {public function create() {return new Ford}}
 ```
 
 **Абстрактная фабрика**
@@ -371,8 +371,8 @@ class Factory2 {public function create() {return new Ford;}}
 ```php
 class Main {
   public function make($type) {
-    if ($type == 'audi') {return new Factory1;}
-    if ($type == 'ford') {return new Factory2;}
+    if ($type == 'audi') {return new Factory1}
+    if ($type == 'ford') {return new Factory2}
   }
 }
 
@@ -433,14 +433,14 @@ class Observable {
 
   private $observers = [];
   
-  public function add($observer) {$this->observers[] = $observer;}
+  public function add($observer) {$this->observers[] = $observer}
   
-  public function remove($observer) {unset($this->observers[$observer]);}
+  public function remove($observer) {unset($this->observers[$observer])}
   
   public function notify($event) {
     foreach ($this->observers as $observer) {
       $observer->handle($this);
-	  $observer->handle($event);
+      $observer->handle($event);
     }
   }
   
@@ -523,7 +523,7 @@ class Class {
 
   public function method() {
     $this->repository->method1();
-	$this->repository->method2();
+    $this->repository->method2();
   }
 }
 
