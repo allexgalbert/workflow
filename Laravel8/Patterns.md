@@ -398,7 +398,7 @@ class Controller {
   
   public function execute() {
     $data = $this->model->getData();
-	$this->view->showData($data);
+    $this->view->showData($data);
   }
 }
 
