@@ -279,12 +279,12 @@ class Facade {
 
   public function _construct() {
     $this->class1 = new Class1;
-	$this->class2 = new Class2;
+    $this->class2 = new Class2;
   }
   
   public function start() {
     $this->class1->method1();
-	$this->class2->method2();
+    $this->class2->method2();
   }
 }
 ```
