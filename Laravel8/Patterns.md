@@ -2,6 +2,7 @@
 
 - **Adapter** - привести неудобный интерфейс класса, в интерфейс совместимый с вашим кодом, предоставляя для этого прослойку, а внутри себя используя оригинальный неудобный интерфейс.
 - **Builder** - строитель для создания объектов пошагово по разным сценариям.
+- **Command** - заворачивает команды в отдельные классы, команды как отдельные объекты, прослойка между объектами которые вызывают команды, и объектом который обрабатывает команды.
 
 
 ## Adapter
@@ -172,3 +173,47 @@ $object = $manager->scenario2();
 Менеджер - другое название: Директор, Абстрактный билдер
 
 В ларавел паттерн билдер реализован в Eloquent Query Builder для запросов.
+
+## Command
+
+Заворачивает команды в отдельные классы. Команды как отдельные объекты.
+Прослойка между объектами которые вызывают команды, и объектом который обрабатывает.
+
+```php
+class Receiver {
+  public function command1() {}
+  public function command2() {}
+}
+```
+
+```php
+interface Command {public function execute()}
+
+class Command1 implements Command {
+  public function __construction(Receiver $receiver) {$this->receiver= $receiver}
+  public function execute() {$this->receiver->command1()}
+}
+
+class Command2 implements Command {
+  public function __construction(Receiver $receiver) {$this->receiver= $receiver}
+  public function execute() {$this->receiver->command2()}
+}
+```
+
+```php
+class Invoker {
+  public function __constructor(Command $command1, Command $command2) {
+    $this->command1 = $command1;
+	$this->command2 = $command2;
+  }
+  public function run1() {$this->command1->execute()}
+  public function run2() {$this->command2->execute()}
+}
+```
+
+```php
+$receiver= new Receiver;
+$invoker = new Invoker(new Command1($receiver), new Command2($receiver));
+$invoker->run1();
+$invoker->run2();
+```

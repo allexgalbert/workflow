@@ -5,7 +5,6 @@ Repository - посредних между контроллером и разн�
 Factory - фабрика для создания объектов разных типов но одинаковой структуры.
 Strategy - выносить однообразные алгоритмы в отдельные классы и легко их заменять.
 MVC - модель вью контроллер.
-Command - заворачивает команды в отдельные классы, команды как отдельные объекты, прослойка между объектами которые вызывают команды, и объектом который обрабатывает команды.
 -------------------------------------------------
 
 Dependency Injection
@@ -342,46 +341,6 @@ class Controller {
 
 $controller = new Controller;
 $controller->execute();
--------------------------------------------------
-
-Command
-
-Заворачивает команды в отдельные классы. Команды как отдельные объекты.
-Прослойка между объектами которые вызывают команды, и объектом который обрабатывает.
-
-class Receiver {
-  public function command1() {}
-  public function command2() {}
-}
---------------------
-
-interface Command {public function execute()}
-
-class Command1 implements Command {
-  public function __construction(Receiver $receiver) {$this->receiver= $receiver}
-  public function execute() {$this->receiver->command1()}
-}
-
-class Command2 implements Command {
-  public function __construction(Receiver $receiver) {$this->receiver= $receiver}
-  public function execute() {$this->receiver->command2()}
-}
---------------------
-
-class Invoker {
-  public function __constructor(Command $command1, Command $command2) {
-    $this->command1 = $command1;
-	$this->command2 = $command2;
-  }
-  public function run1() {$this->command1->execute()}
-  public function run2() {$this->command2->execute()}
-}
---------------------
-
-$receiver= new Receiver;
-$invoker = new Invoker(new Command1($receiver), new Command2($receiver));
-$invoker->run1();
-$invoker->run2();
 -------------------------------------------------
 
 Active Record
