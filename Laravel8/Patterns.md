@@ -348,7 +348,7 @@ class Class {
 class Factory {
   public function create($type) {
     if ($type == 'audi') {return new Audi;}
-	if ($type == 'ford') {return new Ford;}
+    if ($type == 'ford') {return new Ford;}
   }
 }
 
@@ -367,8 +367,8 @@ class Factory2 {public function create() {return new Ford;}}
 ```php
 class Main {
   public function make($type) {
-	if ($type == 'audi') {return new Factory1;}
-	if ($type == 'ford') {return new Factory2;}
+    if ($type == 'audi') {return new Factory1;}
+    if ($type == 'ford') {return new Factory2;}
   }
 }
 
