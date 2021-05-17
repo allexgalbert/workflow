@@ -1,24 +1,24 @@
 # Паттерны
 
-- [Adapter](#adapter) - 2 класса с разными интерфейсами и методами. Заменить 1 на 2, не меняя код по всему проекту. В
-  прослойке методы 1 вызывают методы 2.
+- [Adapter](#adapter) - 2 класса с разными интерфейсами и методами. Заменить 1 на 2, не меняя код по всему проекту. В прослойке методы 1 вызывают методы 2.
 
-- [Builder](#builder) - это отдельный класс в котором логика создания объекта, сами пошагово заполняем его свойства.
-  Можно разные сценарии создания.
+- [Builder](#builder) - это отдельный класс в котором логика создания объекта, сами пошагово заполняем его свойства. Можно разные сценарии создания.
 
 - [Command](#command) - оборачивает команды в отдельные классы. Прослойка между объектами которые вызывают команды, и объектом который исполняет команды.
 
-- **[Dependency Injection](#dependency-injection)** - для реализации слабосвязанной архитектуры.
-- **[Facade](#facade)** - предназначен для разделения клиента и сложной подсистемы, путем внедрения одного интерфейса и
-  уменьшения общей сложности.
-- **[Factory](#factory)** - фабрика для создания объектов разных типов но одинаковой структуры.
-- **[MVC](#mvc)** - модель вью контроллер.
-- **[Observer](#observer)** - для реализации публикации и подписки на поведение объекта, когда объект subject меняет
-  состояние, прикрепленные объекты observers будут уведомлены. Используется чтобы сократить количество связанных
-  напрямую объектов и использует слабую связь.
-- **[Repository](#repository)** - посредних между контроллером и разными хранилищами, инкапсулирует в себе коллекцию
-  объектов хранилища и сами операции выборки и сохранения.
-- **[Strategy](#strategy)** - выносить однообразные алгоритмы в отдельные классы и легко их заменять.
+- [Dependency Injection](#dependency-injection) - для реализации слабосвязанной архитектуры.
+
+- [Facade](#facade) - скрыть сложную систему под фасадом в 1 метод.
+  
+- [Factory](#factory) - фабрика для создания объектов разных типов но одинаковой структуры.
+
+- [MVC](#mvc) - модель вью контроллер.
+
+- [Observer](#observer) - для реализации публикации и подписки на поведение объекта. Когда объект меняет состояние, прикрепленные объекты будут уведомлены. Чтобы сократить количество связанных напрямую объектов.
+  
+- [Repository](#repository) - посредник между контроллером и хранилищами. Оборачивает в себе коллекцию объектов, и операции.
+
+- [Strategy](#strategy) - выносить однообразные алгоритмы объекта в отдельные классы, легко их заменять как поведения.
 
 ## Adapter
 
@@ -28,14 +28,14 @@
 **Класс 1**
 
 ```php
-interface Interface1 {public function method1();}
+interface Interface1 {public function method1()}
 class Class1 implements Interface1 {public function method1() {}}
 ```
 
 **Класс 2**
 
 ```php
-interface Interface2 {public function method2();}
+interface Interface2 {public function method2()}
 class Class2 implements Interface2 {public function method2() {}}
 ```
 
@@ -44,19 +44,19 @@ class Class2 implements Interface2 {public function method2() {}}
 ```php
 class Adapter implements Interface1 {
   //подключить класс 2
-  public function __construct() {$this->adapter = new Class2;}
+  public function __construct() {$this->adapter = new Class2}
   
   //названия методов как в классе 1, но внутри вызывают методы класса 2
-  public function method1() {$this->adapter->method2();}
+  public function method1() {$this->adapter->method2()}
 }
 ```
 
-**Адаптер. класс Adapter наследовать от класса Class2**
+**Адаптер. наследовать от класса Class2**
 
 ```php
 class Adapter extends Class2 {
   //названия методов как в классе 1, но внутри вызывают методы класса 2
-  public function method1() {$this->method2();}
+  public function method1() {$this->method2()}
 }
 ```
 
@@ -74,7 +74,7 @@ $var = app(Interface1::class);
 $var->method1();
 
 //в провайдере указать ларавелу, объект какого класса создавать, когда идет обращение к интерфейсу
-$bindings = [Interface1::class => Adapter::class];
+$bindings = [Interface1::class => Adapter::class]
 ```
 
 ## Builder
@@ -94,10 +94,10 @@ create(null, null, null, 4);
 
 ```php
 interface Interface {
-  public function create();
-  public function setProperty1($value);
-  public function setProperty2();
-  public function getObject();
+  public function create()
+  public function setProperty1($value)
+  public function setProperty2()
+  public function getObject()
 }
 ```
 
@@ -202,12 +202,12 @@ class Receiver {
 interface Command {public function execute()}
 
 class Command1 implements Command {
-  public function __construction(Receiver $receiver) {$this->receiver= $receiver}
+  public function __construction(Receiver $receiver) {$this->receiver = $receiver}
   public function execute() {$this->receiver->command1()}
 }
 
 class Command2 implements Command {
-  public function __construction(Receiver $receiver) {$this->receiver= $receiver}
+  public function __construction(Receiver $receiver) {$this->receiver = $receiver}
   public function execute() {$this->receiver->command2()}
 }
 ```
@@ -224,7 +224,7 @@ class Invoker {
 ```
 
 ```php
-$receiver= new Receiver;
+$receiver = new Receiver;
 $invoker = new Invoker(new Command1($receiver), new Command2($receiver));
 $invoker->run1();
 $invoker->run2();
@@ -232,12 +232,10 @@ $invoker->run2();
 
 ## Dependency Injection
 
-Инъекция зависимостей, это когда конструктор класса ждет зависимость в виде объекта нужного интерфейса или класса. При
-создании класса, в конструктор передаем объект, который реализует этот интерфейс или класс. Инъекция зависимостей это
-просто передача аргумента в конструктор или метод.
+Инъекция зависимостей, это когда конструктор класса ждет зависимость в виде объекта: нужного интерфейса или класса. При
+создании класса, в конструктор передаем объект, который реализует этот интерфейс или класс. Инъекция зависимостей это передача аргумента в конструктор или метод.
 
-Инверсия зависимостей, это когда конструктор класса ждет зависимость в виде объекта только нужного интерфейса. А не
-конкретного класса.
+Инверсия зависимостей, это когда конструктор класса ждет зависимость в виде объекта: только нужного интерфейса. А не конкретного класса.
 
 **Интерфейс**
 
@@ -264,7 +262,6 @@ class Class {
   public function __construct(Class2 $object) {
     $this->object = $object;
   }
-  
 }
 ```
 
@@ -275,14 +272,14 @@ new Class(new Class2);
 
 ## Facade
 
-Сложная подсистема которую надо скрыть под фасадом
+Скрыть сложную систему под фасадом в 1 метод.
 
 ```php
 class Class1 {public function method1() {}}
 class Class2 {public function method2() {}}
 ```
 
-Фасад скрывает реализацию под собой, объединяя вызовы с разных мест, под одним методом
+Фасад скрывает реализацию под собой, объединяя вызовы с разных мест, под 1 методом
 
 ```php
 class Facade {
@@ -303,14 +300,16 @@ class Facade {
 ```
 
 ```php
-$facade =  new Facade;
+$facade = new Facade;
 $facade->start();
 ```
 
-Под разными фасадами можно скрывать разные наборы вызываемых методов подсистемы. В ларавел папка Facades. В итоге все
+Под разными фасадами, можно скрывать разные наборы вызываемых методов подсистемы. В ларавел папка Facades. Все
 вызовы сложной подсистемы сводятся к вызову 1 метода у 1 объекта.
 
 ## Factory
+
+Фабрика для создания объектов разных типов но одинаковой структуры.
 
 **Кодеры и их действия**
 
@@ -357,6 +356,8 @@ class Class {
 }
 ```
 
+**Еще реализация**
+
 ```php
 class Factory {
   public function create($type) {
@@ -366,16 +367,16 @@ class Factory {
 }
 
 $factory = new Factory;
-$audi = factory->create('audi');
-$ford = factory->create('ford');
+$audi = $factory->create('audi');
+$ford = $factory->create('ford');
 ```
+
+**Еще реализация**
 
 ```php
 class Factory1 {public function create() {return new Audi}}
 class Factory2 {public function create() {return new Ford}}
 ```
-
-**Абстрактная фабрика**
 
 ```php
 class Main {
@@ -386,8 +387,8 @@ class Main {
 }
 
 $factory = new Main;
-$audi = factory->make('audi');
-$ford = factory->make('ford');
+$audi = $factory->make('audi');
+$ford = $factory->make('ford');
 ```
 
 ## MVC
@@ -419,24 +420,24 @@ $controller->execute();
 
 ## Observer
 
-Объект observable
+Для реализации публикации и подписки на поведение объекта. Когда объект меняет состояние, прикрепленные объекты будут уведомлены. Чтобы сократить количество связанных напрямую объектов.
+
+**Объект observable**
 
 - издатель. создает события
 - содержит список observers
 - методы: add, remove, notify
 - метод notify перебирает observers и вызывает у каждого метод handle
 
-Объекты observers
+**Объекты observers**
 
 - подписчики. разного типа
 - наблюдают за событиями у observable
 - метод handle
 
-Использование в ларавел
+**Использование в ларавел**
 
-- при сохранении, изменении, удалении модели
-- вызываются классы из папки Observers
-- там методы с такими же названиями
+- при сохранении, изменении, удалении модели, вызываются классы из папки Observers, методы с такими же названиями
 - обсерверы создаются командой php artisan make:observer name --model=name
 
 В PHP использовать SplSubject, SplObserver, SplObjectStorage
@@ -462,7 +463,6 @@ class Observable {
       $observer->handle($payload);
     }
   }
-  
 }
 ```
 
@@ -497,12 +497,14 @@ $observable->notify($payload);
 
 ## Repository
 
+Посредник между контроллером и хранилищами. Оборачивает в себе коллекцию объектов, и операции.
+
 - Обертка для модели. Содержит логику работы с данными. Модель как источник данных
 - Как книжный шкаф. Только брать и класть. Не может создавать и изменять
 - Репозитарий это коллекция. Абстрактный слой между контроллером и разными хранилищами
 - В ларавел папка Repositories где репозитарии и интерфейсы
 
-**Методы. получить все записи и только записи юзера**
+**Методы. получить все записи, и только записи юзера**
 
 ```php
 interface Interface {
@@ -511,13 +513,14 @@ interface Interface {
 }
 ```
 
-**Реализации. юзеры лежат в базе или в файлах**
+**Реализации. юзеры лежат в базе, или файлах**
 
 ```php
 class Class1 implements Interface {
   public function method1() {}
   public function method2() {}
 }
+
 class Class2 implements Interface {
   public function method1() {}
   public function method2() {}
@@ -543,7 +546,7 @@ $class = new Class(new Class1);
 $class = new Class(new Class2);
 ```
 
-В ларавел вместо внедрения в конструкторе, можно привязать в провайдере
+В ларавел вместо внедрения в конструкторе, можно привязать в провайдере.
 
 ```php
 public function register() {
@@ -554,9 +557,10 @@ public function register() {
 
 ## Strategy
 
-- Выносить однообразные алгоритмы в отдельные классы и легко их заменять
-- Каждый алгоритм в своем классе. Семейство алгоритмов.
-- Выбирать алгоритм путем создания класса алгоритма.
+Выносить однообразные алгоритмы объекта в отдельные классы, легко их заменять как поведения.
+
+- Каждый алгоритм в своем классе.
+- Выбирать алгоритм через создание класса алгоритма.
 - Для легкой замены поведений. Стратегия заменяет поведения: алгоритм1, алгоритм2, алгоритм3,..
 
 Активности разработчика: кодить, кушать
