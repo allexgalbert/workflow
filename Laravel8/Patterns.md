@@ -25,7 +25,6 @@ class Class2 implements Interface2 {public function method2() {}}
 
 ```php
 class Adapter implements Interface1 {
-
   //подключить библиотеку 2
   public function __construct() {$this->adapter = new Class2}
   
@@ -38,7 +37,6 @@ class Adapter implements Interface1 {
 
 ```php
 class Adapter extends Class2 {
-  
   //названия методов как в библиотеке 1, но внутри вызывают методы библиотеки 2
   public function method1() {$this->method2()}
 }
