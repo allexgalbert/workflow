@@ -1,6 +1,5 @@
 Observer - для реализации публикации и подписки на поведение объекта, когда объект subject меняет состояние, прикрепленные объекты observers будут уведомлены. Используется чтобы сократить количество связанных напрямую объектов и использует слабую связь.
 Repository - посредних между контроллером и разными хранилищами, инкапсулирует в себе коллекцию объектов хранилища и сами операции выборки и сохранения.
-Factory - фабрика для создания объектов разных типов но одинаковой структуры.
 Strategy - выносить однообразные алгоритмы в отдельные классы и легко их заменять.
 MVC - модель вью контроллер.
 -------------------------------------------------
@@ -128,75 +127,6 @@ public function register() {
   $this->app->bind(Interface::class, Class1::class);
   $this->app->bind(Interface::class, Class2::class);
 }
--------------------------------------------------
-
-Factory
-
-Кодеры и их действия
-interface Developer {public function coding()}
-class Java implements Developer {public function coding() {код}}
-class Perl implements Developer {public function coding() {код}}
-
-Фабрики для создания кодеров
-interface Factory {public function create()}
-class JavaFactory implements Factory {public function create() {return new Java;}}
-class PerlFactory implements Factory {public function create() {return new Perl;}}
-
-
-class Class {
-
-  без фабричного метода. сами вызываем фабрику
-  public function method() {
-    $factory = new JavaFactory;
-	$developer = $factory->create();
-	$developer->coding();
-  }
-  
-  фабричный метод. вызывает фабрику по типу
-  public static function createMake($type) {
-    if ($type == 'java') {
-	  return new JavaFactory;
-    }
-	if ($type == 'perl') {
-	  return new PerlFactory;
-    }
-  }
-  
-  с фабричным методом. передавая тип кодера которого нужно создать
-  public function method() {
-    $factory = self::createMake('java');
-	$developer = $factory->create();
-	$developer->coding();
-  }
-}
---------------------
-
-class Factory {
-  public function create($type) {
-    if ($type == 'audi') {return new Audi;}
-	if ($type == 'ford') {return new Ford;}
-  }
-}
-
-$factory = new Factory;
-$audi = factory->create('audi');
-$ford = factory->create('ford');
---------------------
-
-class Factory1 {public function create() {return new Audi;}}
-class Factory2 {public function create() {return new Ford;}}
-
-Абстрактная фабрика
-class Main {
-  public function make($type) {
-	if ($type == 'audi') {return new Factory1;}
-	if ($type == 'ford') {return new Factory2;}
-  }
-}
-
-$factory = new Main;
-$audi = factory->make('audi');
-$ford = factory->make('ford');
 -------------------------------------------------
 
 Strategy

@@ -5,6 +5,7 @@
 - **Command** - заворачивает команды в отдельные классы, команды как отдельные объекты, прослойка между объектами которые вызывают команды, и объектом который обрабатывает команды.
 - **Dependency Injection** - для реализации слабосвязанной архитектуры.
 - **Facade** - предназначен для разделения клиента и сложной подсистемы, путем внедрения одного интерфейса и уменьшения общей сложности.
+- **Factory** - фабрика для создания объектов разных типов но одинаковой структуры.
 
 ## Adapter
 
@@ -295,4 +296,84 @@ $facade->start();
 ```
 
 Под разными фасадами можно скрывать разные наборы вызываемых методов подсистемы. В ларавел папка Facades. В итоге все вызовы сложной подсистемы сводятся к вызову 1 метода у 1 объекта.
+
+## Factory
+
+**Кодеры и их действия**
+
+```php
+interface Developer {public function coding()}
+class Java implements Developer {public function coding() {код}}
+class Perl implements Developer {public function coding() {код}}
+```
+
+**Фабрики для создания кодеров**
+
+```php
+interface Factory {public function create()}
+class JavaFactory implements Factory {public function create() {return new Java;}}
+class PerlFactory implements Factory {public function create() {return new Perl;}}
+```
+
+```php
+class Class {
+
+  //без фабричного метода. сами вызываем фабрику
+  public function method() {
+    $factory = new JavaFactory;
+	$developer = $factory->create();
+	$developer->coding();
+  }
+  
+  //фабричный метод. вызывает фабрику по типу
+  public static function createMake($type) {
+    if ($type == 'java') {
+	  return new JavaFactory;
+    }
+	if ($type == 'perl') {
+	  return new PerlFactory;
+    }
+  }
+  
+  //с фабричным методом. передавая тип кодера которого нужно создать
+  public function method() {
+    $factory = self::createMake('java');
+	$developer = $factory->create();
+	$developer->coding();
+  }
+}
+```
+
+```php
+class Factory {
+  public function create($type) {
+    if ($type == 'audi') {return new Audi;}
+	if ($type == 'ford') {return new Ford;}
+  }
+}
+
+$factory = new Factory;
+$audi = factory->create('audi');
+$ford = factory->create('ford');
+```
+
+```php
+class Factory1 {public function create() {return new Audi;}}
+class Factory2 {public function create() {return new Ford;}}
+```
+
+**Абстрактная фабрика**
+
+```php
+class Main {
+  public function make($type) {
+	if ($type == 'audi') {return new Factory1;}
+	if ($type == 'ford') {return new Factory2;}
+  }
+}
+
+$factory = new Main;
+$audi = factory->make('audi');
+$ford = factory->make('ford');
+```
 
