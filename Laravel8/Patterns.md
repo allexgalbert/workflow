@@ -188,35 +188,58 @@ $object = $manager->scenario2();
 Оборачивает команды в отдельные классы. Прослойка между объектами которые вызывают команды, и объектом который исполняет
 команды.
 
+- Receiver класс с командами
+- На каждую команду делаем класс, который создает объект Receiver и вызывает эту команду
+- Invoker класс, туда передаем классы команд, и дёргаем его методы, которые дёргают классы команд, и их методы
+
 ```php
 class Receiver {
-  public function command1() {}
-  public function command2() {}
+  public function command1() {
+    echo 'command1';
+  }
+
+  public function command2() {
+    echo 'command2';
+  }
 }
 ```
 
 ```php
-interface Command {public function execute()}
+class Command1 {
+  public function __construct(Receiver $receiver) {
+    $this->receiver = $receiver;
+  }
 
-class Command1 implements Command {
-  public function __construction(Receiver $receiver) {$this->receiver = $receiver}
-  public function execute() {$this->receiver->command1()}
+  public function execute() {
+    $this->receiver->command1();
+  }
 }
 
-class Command2 implements Command {
-  public function __construction(Receiver $receiver) {$this->receiver = $receiver}
-  public function execute() {$this->receiver->command2()}
+class Command2 {
+  public function __construct(Receiver $receiver) {
+    $this->receiver = $receiver;
+  }
+
+  public function execute() {
+    $this->receiver->command2();
+  }
 }
 ```
 
 ```php
 class Invoker {
-  public function __constructor(Command $command1, Command $command2) {
+  public function __construct($command1, $command2) {
     $this->command1 = $command1;
     $this->command2 = $command2;
   }
-  public function run1() {$this->command1->execute()}
-  public function run2() {$this->command2->execute()}
+
+  public function run1() {
+    $this->command1->execute();
+  }
+
+  public function run2() {
+    $this->command2->execute();
+  }
 }
 ```
 
