@@ -1,21 +1,2 @@
-Active Record
-Adapter
-Builder
-Command
-Dependency Injection
-Facade
-Factory
-MVC
-Observer
-Repository
 Singletone
-Strategy
--------------------------------------------------
-
-Singletone
-
-
-
-
-
 
