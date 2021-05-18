@@ -577,7 +577,6 @@ class Singleton {
   }
   
   public function do() {что-то делаем}
-  
 }
 ```
 
