@@ -18,7 +18,7 @@
   
 - [Repository](#repository) - посредник между контроллером и хранилищами. Оборачивает в себе коллекцию объектов, и операции.
 
-- [Singletone](#singletone) - трата
+- [Singleton](#singleton) - чтобы класс имел 1 объект. Используется для соединения с бд, ведения логов.
 
 - [Strategy](#strategy) - выносить однообразные алгоритмы объекта в отдельные классы, легко их заменять как поведения.
 
@@ -559,9 +559,32 @@ public function register() {
 }
 ```
 
-## Singletone
+## Singleton
 
-трата
+Чтобы класс имел 1 объект. Используется для соединения с бд, ведения логов.
+
+```php
+class Singleton {
+
+  private static $instance;
+  
+  private function __construct() {запрещаем создание}
+  private function __clone() {запрещаем клонирование}
+  private function __wakeup() {запрещаем десериализацию}
+  
+  public static function get() {
+    return static::$instance ?? (static::$instance = new static());
+  }
+  
+  public function do() {что-то делаем}
+  
+}
+```
+
+```php
+$object = Singleton::get();
+$object->do();
+```
 
 ## Strategy
 
@@ -652,5 +675,5 @@ $user->name = 'name';
 $user->delete();
 
 $user->id = 2;
-$user->find();
+$user->findFirst();
 ```
