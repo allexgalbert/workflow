@@ -254,42 +254,51 @@ $invoker->run2();
 
 Инъекция зависимостей, это когда конструктор класса ждет зависимость в виде объекта: нужного интерфейса или класса. При
 создании класса, в конструктор передаем объект, который реализует этот интерфейс или класс. Инъекция зависимостей это
-передача аргумента в конструктор или метод.
+просто передача аргумента в конструктор или метод.
 
 Инверсия зависимостей, это когда конструктор класса ждет зависимость в виде объекта: только нужного интерфейса. А не
 конкретного класса.
 
-**Интерфейс**
+**Конструктор класса ждет зависимость в виде объекта нужного класса**
 
 ```php
-interface Interface {}
-```
-
-**Классы**
-
-```php
-class Class1 implements Interface {}
-class Class2 implements Interface {}
-```
-
-**Класс**
-
-```php
-class Class {
-
-  public function __construct(Interface $object) {
-    $this->object = $object;
-  }
-  
-  public function __construct(Class2 $object) {
-    $this->object = $object;
+class Class1 {
+  public function method1() {
+    echo 'method1';
   }
 }
+
+class Dependency1 {
+  public function __construct(Class1 $object) {
+    $this->object = $object;
+    $this->object->method1();
+  }
+}
+
+new Dependency1(new Class1);
 ```
 
+**Конструктор класса ждет зависимость в виде объекта нужного интерфейса**
+
 ```php
-new Class(new Class1);
-new Class(new Class2);
+interface Interface2 {
+  public function method2();
+}
+
+class Class2 implements Interface2 {
+  public function method2() {
+    echo 'method2';
+  }
+}
+
+class Dependency2 {
+  public function __construct(Interface2 $object) {
+    $this->object = $object;
+    $this->object->method2();
+  }
+}
+
+new Dependency2(new Class2);
 ```
 
 ## Facade
