@@ -306,8 +306,17 @@ new Dependency2(new Class2);
 Скрыть сложную систему под фасадом в 1 метод.
 
 ```php
-class Class1 {public function method1() {}}
-class Class2 {public function method2() {}}
+class Class1 {
+  public function method1() {
+    echo 'Class1 method1';
+  }
+}
+
+class Class2 {
+  public function method2() {
+    echo 'Class2 method2';
+  }
+}
 ```
 
 Фасад скрывает реализацию под собой, объединяя вызовы с разных мест, под 1 методом
@@ -318,11 +327,11 @@ class Facade {
   protected $class1;
   protected $class2;
 
-  public function _construct() {
+  public function __construct() {
     $this->class1 = new Class1;
     $this->class2 = new Class2;
   }
-  
+
   public function start() {
     $this->class1->method1();
     $this->class2->method2();
