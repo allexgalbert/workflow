@@ -18,7 +18,11 @@
   
 - [Repository](#repository) - посредник между контроллером и хранилищами. Оборачивает в себе коллекцию объектов, и операции.
 
+- [Singletone](#singletone) - трата
+
 - [Strategy](#strategy) - выносить однообразные алгоритмы объекта в отдельные классы, легко их заменять как поведения.
+
+- [Active Record](#active-record) - работа с бд. Каждая таблица это 1 класс. Каждая строка в таблице это 1 объект. Данные и поведение в 1 классе.
 
 ## Adapter
 
@@ -555,6 +559,10 @@ public function register() {
 }
 ```
 
+## Singletone
+
+трата
+
 ## Strategy
 
 Выносить однообразные алгоритмы объекта в отдельные классы, легко их заменять как поведения.
@@ -609,4 +617,40 @@ $developer->execute();
 
 $developer->set(new Eating);
 $developer->execute();
+```
+
+## Active Record
+
+Работа с бд. Каждая таблица это 1 класс. Каждая строка в таблице это 1 объект. Данные и поведение в 1 классе.
+
+В базе данных таблица users: id, name, email
+
+```php
+class User {
+  public $id;
+  public $name;
+  public $email;
+  public function create() {}
+  public function select() {}
+  public function update() {}
+  public function delete() {}
+  public function findFirst() {}
+}
+
+$user = new User;
+
+$user->name = 'name';
+$user->create();
+
+$user->id = 1;
+$user->select();
+
+$user->name = 'name2';
+$user->update();
+
+$user->name = 'name';
+$user->delete();
+
+$user->id = 2;
+$user->find();
 ```

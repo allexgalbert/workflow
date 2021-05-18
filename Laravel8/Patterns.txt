@@ -12,5 +12,10 @@ Singletone
 Strategy
 -------------------------------------------------
 
-Active Record
+Singletone
+
+
+
+
+
 
