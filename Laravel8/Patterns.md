@@ -400,7 +400,7 @@ function createMake($type) {
 }
 
 //С фабричным методом. Передать тип кодера
-$factory = self::createMake('java');
+$factory = createMake('perl');
 $developer = $factory->create();
 $developer->coding();
 ```
