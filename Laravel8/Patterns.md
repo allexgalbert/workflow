@@ -478,21 +478,37 @@ $controller->execute();
 class Observable {
 
   private $observers = [];
-  
-  public function add($observer) {$this->observers[] = $observer}
-  
-  public function remove($observer) {unset($this->observers[$observer])}
-  
-  public function notify($event) {
-    foreach ($this->observers as $observer) {
-      $observer->handle($this);
-      $observer->handle($event);
+
+  public function add($observer) {
+    $this->observers[] = $observer;
+  }
+
+  public function remove($observer) {
+    foreach ($this->observers as $k => $v) {
+      if ($observer === $v) {
+        unset($this->observers[$k]);
+      }
     }
   }
-  
-  public function notify($payload) {
+
+  //Оповестить. Передать объект Observable
+  public function notify1() {
     foreach ($this->observers as $observer) {
-      $observer->handle($payload);
+      $observer->handle1($this);
+    }
+  }
+
+  //Оповестить. Передать произвольную нагрузку
+  public function notify2($payload) {
+    foreach ($this->observers as $observer) {
+      $observer->handle2($payload);
+    }
+  }
+
+  //Оповестить. Передать любой объект типа как Event
+  public function notify3($event) {
+    foreach ($this->observers as $observer) {
+      $observer->handle3($event);
     }
   }
 }
@@ -500,9 +516,18 @@ class Observable {
 
 ```php
 class Observer {
-  public function handle($observable) {}
-  public function handle($event) {}
-  public function handle($payload) {}
+
+  public function handle1(Observable $observable) {
+    var_dump($observable);
+  }
+
+  public function handle2($payload) {
+    var_dump($payload);
+  }
+
+  public function handle3(Event $event) {
+    var_dump($event);
+  }
 }
 ```
 
@@ -515,16 +540,15 @@ $observer2 = new Observer;
 $observable->add($observer1);
 $observable->add($observer2);
 
-$observable->notify();
-
 $observable->remove($observer2);
 
+$observable->notify1();
+
+$observable->notify2('payload');
 
 class Event {}
-$observable->notify(new Event);
 
-
-$observable->notify($payload);
+$observable->notify3(new Event);
 ```
 
 ## Repository
