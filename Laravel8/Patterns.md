@@ -560,54 +560,59 @@ $observable->notify3(new Event);
 - Репозитарий это коллекция. Абстрактный слой между контроллером и разными хранилищами
 - В ларавел папка Repositories где репозитарии и интерфейсы
 
-**Методы. получить все записи, и только записи юзера**
+**Методы. Получить всех юзеров**
 
 ```php
-interface Interface {
-  public function method1()
-  public function method2()
+interface Interface1 {
+  public function method1();
 }
 ```
 
-**Реализации. юзеры лежат в базе, или файлах**
+**Реализации. Юзеры лежат в базе, в файлах**
 
 ```php
-class Class1 implements Interface {
-  public function method1() {}
-  public function method2() {}
+class Class1 implements Interface1 {
+  public function method1() {
+    echo 'Class1';
+  }
 }
 
-class Class2 implements Interface {
-  public function method1() {}
-  public function method2() {}
+class Class2 implements Interface1 {
+  public function method1() {
+    echo 'Class2';
+  }
 }
 ```
 
 ```php
-class Class {
+class Controller {
 
   private $repository;
-  
-  public function __construct(Interface $class) {
+
+  public function __construct(Interface1 $class) {
     $this->repository = $class;
   }
 
   public function method() {
     $this->repository->method1();
-    $this->repository->method2();
   }
 }
+```
 
-$class = new Class(new Class1);
-$class = new Class(new Class2);
+```php
+$class = new Controller(new Class1);
+$class->method();
+
+$class = new Controller(new Class2);
+$class->method();
 ```
 
 В ларавел вместо внедрения в конструкторе, можно привязать в провайдере.
 
 ```php
 public function register() {
-  $this->app->bind(Interface::class, Class1::class);
-  $this->app->bind(Interface::class, Class2::class);
+  $this->app->bind(Interface1::class, Class1::class);
+  $this->app->bind(Interface1::class, Class2::class);
 }
 ```
 
