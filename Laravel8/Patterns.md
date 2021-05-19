@@ -13,7 +13,7 @@
 
 - [Facade](#facade) - скрыть сложную систему под фасадом в 1 метод.
 
-- [Factory](#factory) - фабрика для создания объектов разных типов но одинаковой структуры.
+- [Factory](#factory) - фабрика для создания объектов разных типов, но одинаковой структуры.
 
 - [MVC](#mvc) - модель вью контроллер.
 
@@ -60,12 +60,12 @@ class Class2 {
 ```php
 class Adapter1 {
 
-  //подключить класс 2
+  //Подключить класс 2
   public function __construct() {
     $this->adapter = new Class2;
   }
 
-  //названия методов как в классе 1, но внутри вызывают методы класса 2
+  //Названия методов как в классе 1, но внутри вызывают методы класса 2
   public function method1() {
     $this->adapter->method2();
   }
@@ -77,7 +77,7 @@ class Adapter1 {
 ```php
 class Adapter2 extends Class2 {
 
-  //названия методов как в классе 1, но внутри вызывают методы класса 2
+  //Названия методов как в классе 1, но внутри вызывают методы класса 2
   public function method1() {
     $this->method2();
   }
@@ -112,29 +112,29 @@ class Builder {
     $this->create();
   }
 
-  //создать объект
+  //Создать объект
   public function create() {
     $this->object = new stdClass;
     return $this;
   }
 
-  //заполнить его свойство
+  //Заполнить его свойство
   public function setProperty1($value) {
     $this->object->property1 = $value;
     return $this;
   }
 
-  //заполнить его свойство
+  //Заполнить его свойство
   public function setProperty2() {
     $this->object->property2 = 'default';
     return $this;
   }
 
-  //отдать готовый объект
+  //Отдать готовый объект
   public function getObject() {
     $object = $this->object;
 
-    //обнулить объект
+    //Обнулить объект
     $this->create();
 
     return $object;
@@ -163,12 +163,12 @@ class Manager {
     return $this;
   }
 
-  //сценарий 1
+  //Сценарий 1
   public function scenario1() {
     return $this->builder->setProperty1('scenario1')->setProperty2()->getObject();
   }
 
-  //сценарий 2
+  //Сценарий 2
   public function scenario2() {
     return $this->builder->setProperty1('scenario2')->setProperty2()->getObject();
   }
@@ -349,86 +349,60 @@ $facade->start();
 
 ## Factory
 
-Фабрика для создания объектов разных типов но одинаковой структуры.
+Фабрика для создания объектов разных типов, но одинаковой структуры.
 
-**Кодеры и их действия**
+**Кодеры**
 
 ```php
-interface Developer {public function coding()}
-class Java implements Developer {public function coding() {код}}
-class Perl implements Developer {public function coding() {код}}
+class Java {
+  public function coding() {
+    echo 'Java coding';
+  }
+}
+
+class Perl {
+  public function coding() {
+    echo 'Perl coding';
+  }
+}
 ```
 
 **Фабрики для создания кодеров**
 
 ```php
-interface Factory {public function create()}
-class JavaFactory implements Factory {public function create() {return new Java}}
-class PerlFactory implements Factory {public function create() {return new Perl}}
-```
-
-```php
-class Class {
-
-  //без фабричного метода. сами вызываем фабрику
-  public function method() {
-    $factory = new JavaFactory;
-    $developer = $factory->create();
-    $developer->coding();
+class JavaFactory {
+  public function create() {
+    return new Java;
   }
-  
-  //фабричный метод. вызывает фабрику по типу
-  public static function createMake($type) {
-    if ($type == 'java') {
-      return new JavaFactory;
-    }
-    if ($type == 'perl') {
-      return new PerlFactory;
-    }
-  }
-  
-  //с фабричным методом. передавая тип кодера которого нужно создать
-  public function method() {
-    $factory = self::createMake('java');
-    $developer = $factory->create();
-    $developer->coding();
+}
+
+class PerlFactory {
+  public function create() {
+    return new Perl;
   }
 }
 ```
 
-**Еще реализация**
-
 ```php
-class Factory {
-  public function create($type) {
-    if ($type == 'audi') {return new Audi}
-    if ($type == 'ford') {return new Ford}
+//Без фабричного метода. Сами вызываем фабрику
+$factory = new JavaFactory;
+$developer = $factory->create();
+$developer->coding();
+
+//Фабричный метод. Вызывает фабрику по типу
+function createMake($type) {
+  if ($type == 'java') {
+    return new JavaFactory;
+  }
+  if ($type == 'perl') {
+    return new PerlFactory;
   }
 }
 
-$factory = new Factory;
-$audi = $factory->create('audi');
-$ford = $factory->create('ford');
-```
-
-**Еще реализация**
-
-```php
-class Factory1 {public function create() {return new Audi}}
-class Factory2 {public function create() {return new Ford}}
-```
-
-```php
-class Main {
-  public function make($type) {
-    if ($type == 'audi') {return new Factory1}
-    if ($type == 'ford') {return new Factory2}
-  }
-}
-
-$factory = new Main;
-$audi = $factory->make('audi');
-$ford = $factory->make('ford');
+//С фабричным методом. Передать тип кодера
+$factory = self::createMake('java');
+$developer = $factory->create();
+$developer->coding();
 ```
 
 ## MVC
