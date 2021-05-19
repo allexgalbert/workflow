@@ -414,21 +414,38 @@ $developer->coding();
   модели, готовит данные для вью, отдает ответ.
 
 ```php
-class Model {public function getData() {return $data}}
-class View {public function showData($data) {echo $data}}
+class Model {
+  public function getData() {
+    return 'data';
+  }
+}
+```
 
+```php
+class View {
+  public function showData($data) {
+    echo $data;
+  }
+}
+```
+
+```php
 class Controller {
- 
-  private $model = new Model;
-  private $view = new View;
-  
+
+  public function __construct(Model $model, View $view) {
+    $this->model = $model;
+    $this->view = $view;
+  }
+
   public function execute() {
     $data = $this->model->getData();
     $this->view->showData($data);
   }
 }
+```
 
-$controller = new Controller;
+```php
+$controller = new Controller(new Model, new View);
 $controller->execute();
 ```
 
