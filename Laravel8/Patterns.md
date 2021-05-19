@@ -624,16 +624,29 @@ public function register() {
 class Singleton {
 
   private static $instance;
-  
-  private function __construct() {запрещаем создание}
-  private function __clone() {запрещаем клонирование}
-  private function __wakeup() {запрещаем десериализацию}
-  
-  public static function get() {
-    return static::$instance ?? (static::$instance = new static());
+
+  //Запрещаем создание
+  private function __construct() {
   }
-  
-  public function do() {что-то делаем}
+
+  //Запрещаем клонирование
+  private function __clone() {
+  }
+
+  //Запрещаем десериализацию
+  private function __wakeup() {
+  }
+
+  public static function get() {
+    if (empty(self::$instance)) {
+      self::$instance = new self();
+    }
+    return self::$instance;
+  }
+
+  public function do() {
+    echo 'do';
+  }
 }
 ```
 
