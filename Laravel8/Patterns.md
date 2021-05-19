@@ -668,8 +668,8 @@ $object->do();
 **Интерфейс**
 
 ```php
-interface Interface {
-  //выполнить активность
+interface Interface1 {
+  //Выполнить активность
   public function do();
 }
 ```
@@ -677,8 +677,17 @@ interface Interface {
 **Классы активностей**
 
 ```php
-class Coding implements Interface {public function do() {кодить}}
-class Eating implements Interface {public function do() {кушать}}
+class Coding implements interface1 {
+  public function do() {
+    echo 'кодить';
+  }
+}
+
+class Eating implements interface1 {
+  public function do() {
+    echo 'кушать';
+  }
+}
 ```
 
 **Разработчик**
@@ -686,15 +695,15 @@ class Eating implements Interface {public function do() {кушать}}
 ```php
 class Developer {
 
-  //активность
+  //Активность
   private $activity;
-  
-  //установить активность
-  public function set($activity) {
+
+  //Установить активность
+  public function set(interface1 $activity) {
     $this->activity = $activity;
   }
-  
-  //выполнить активность
+
+  //Выполнить активность
   public function execute() {
     $this->activity->do();
   }
