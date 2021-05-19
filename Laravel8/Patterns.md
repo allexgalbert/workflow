@@ -731,6 +731,7 @@ class User {
   public $id;
   public $name;
   public $email;
+  
   public function create() {}
   public function select() {}
   public function update() {}
