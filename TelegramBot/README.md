@@ -12,11 +12,17 @@
 
 ## Бот телеграм
 
-- В телеге идем сюда @BotFather
-- Далее команды /start, /newbot выбрать имя "MyNameBot" и урл "MyNameBot"
-- Урл бота http://t.me/MyNameBot
+- Зайти в бота @BotFather
+- Создать бота командой /newbot, выбрать имя "MyNameBot" и урл "MyNameBot"
+- Изменить бота командой /mybots, задать Description, About, Botpic
+
+- Урл бота https://t.me/MyNameBot
 - Получить токен XXX:XXX
-- Кинуть в консоль хостинга чтобы увидеть id чатов кто писал https://api.telegram.org/botXXX:XXX/getUpdates
+
+- Добавить в канал, бота как администратора
+- Постить в канал по имени канала @namechannel
+
+- Кинуть в консоль хостинга https://api.telegram.org/botXXX:XXX/getUpdates чтобы увидеть id чатов кто писал
 - Получить структуру сообщения
 
 ```json
