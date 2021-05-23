@@ -197,6 +197,9 @@ Show method separators
 
 Удалять файлы при синхронизации Build, Execution, Deployment | Deployment | Options
 Delete target items when source ones do not exist
+
+Не скрывать блок 'use' Editor | General | Code Folding
+Снять галку General->Imports
 --------------------
 
 Макрос ReformatSave

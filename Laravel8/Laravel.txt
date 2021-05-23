@@ -5728,7 +5728,26 @@ public function boot() {
 
 DIGGING DEEPER -> HELPERS
 
-Хелперы это глобальные вспомогательные функции
+Хелперы это глобальные вспомогательные функции в мануале большой список.
+
+Свои хелперы:
+
+1. Хелпер как глобальные функции в файле
+
+создать app/Helpers/mainhelpers.php
+внутри функции empty(function_exists('name'))
+в composer.json добавить "autoload": "files": ["app/Helpers/mainhelpers.php"]
+обновить карту классов composer dump-autoload
+вызвать name()
+
+2. Хелпер как класс с методами
+
+создать app/Helpers/NameHelper.php
+внутри статичные методы
+вызвать use App\Helpers\NameHelper; NameHelper::method()
+алиас в config/app.php $aliases = ['NameHelper' => App\Helpers\NameHelper::class]
+обновить карту классов composer dump-autoload
+вызвать use NameHelper; NameHelper::name()
 -------------------------------------------------
 
 DIGGING DEEPER -> HTTP CLIENT
