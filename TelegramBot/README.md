@@ -13,31 +13,35 @@
 ## Бот телеграм
 
 - Зайти в бота @BotFather
-- Создать бота командой /newbot, выбрать имя "MyNameBot" и урл "MyNameBot"
-- Изменить бота командой /mybots, задать Description, About, Botpic
-- Урл бота https://t.me/MyNameBot
+- Создать бота командой /newbot: задать имя "Name", ник "nameBot"
+- Изменить бота командой /mybots: задать Description, About, Botpic
+- Урл бота https://t.me/nameBot
 - Получить токен XXX:XXX
+- Привязать или отвязать бота от файла-обработчика
+    - https://api.telegram.org/botTOKEN/setWebhook?url=https://domain.com/file.php
+    - https://api.telegram.org/botTOKEN/deleteWebhook?url=https://domain.com/file.php
+
 - Добавить в канал, бота как администратора
 - Постить в канал по имени канала @namechannel
-- Кинуть в консоль хостинга https://api.telegram.org/botXXX:XXX/getUpdates чтобы увидеть id чатов кто писал
-- Получить структуру сообщения
+
+### Структура сообщения
 
 ```json
 {
   "ok": true,
   "result": [
     {
-      "update_id": XXX,
+      "update_id": 123,
       "message": {
         "message_id": 1,
         "from": {
-          "id": XXX,
+          "id": 123,
           "is_bot": false,
           "first_name": "first_name",
           "language_code": "ru"
         },
         "chat": {
-          "id": XXX,
+          "id": 123,
           "first_name": "first_name",
           "type": "private"
         },
