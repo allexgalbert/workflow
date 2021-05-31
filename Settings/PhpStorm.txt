@@ -125,7 +125,7 @@ Ctrl+Shift+. Fold Code Block
 Ctrl+/ Ctrl+.             Comment with Line Comment
 Ctrl+Shift+/ Ctrl+Shift+. Comment with Block Comment
 Ctrl+Shift+Q              Locate Duplicates
-Ctrl+Alt+Shift+Z          Upload to Default Server
+Alt+Z                     Upload to Default Server
 F10                       Toggle Full Screen mode
 
 Своё меню Appearance & Behavior | Quick Lists
