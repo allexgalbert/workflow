@@ -4268,7 +4268,7 @@ Artisan это command line interface (CLI)
 php artisan list
 
 хелп по команде
-php artisan help commandName
+php artisan help name
 --------------------
 
 Tinker это пакет REPL (read-eval-print-loop) на базе пакета PsySH
@@ -5575,7 +5575,9 @@ storage/app/public
 Символическая ссылка public/storage => storage/app/public
 php artisan storage:link
 
-в папке /public появится папка storage, которая смотрит на папку storage/app/public. Т.е. всё класть в storage/app/public, и это автоматически появится в public/storage
+Появится папка /public/storage которая смотрит на папку storage/app/public
+
+Всё класть в storage/app/public, это автоматически появится в public/storage
 
 Символические ссылки в конфиге
 'links' => [

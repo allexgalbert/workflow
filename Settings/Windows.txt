@@ -41,9 +41,9 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
 
 Отключить стрелки на ярлыках
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer
-- клик на Explorer, создать папку Shell Icons
-- внутри папки создать String Value, назвать 29
-- если пропали иконки в Проводнике restore бекапа, то удалить из реестра и снова создать
+- клик на Explorer, New->Key, назвать Shell Icons
+- внутри папки, New->String Value, назвать 29
+- если пропали иконки после восстановления бекапа, то пересоздать
 
 Удалить библиотеки из Проводника
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace
