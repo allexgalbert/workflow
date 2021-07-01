@@ -55,7 +55,6 @@ DIGGING DEEPER -> TASK SCHEDULING
 DATABASE -> REDIS
 NODE.JS, NPM, PACKAGE.JSON
 ЭКСПОРТ ИЗ MYSQL WORKBENCH В LARAVEL MIGRATION
-НЕЙМИНГ
 ЛУЧШИЕ ПРАКТИКИ
 КОРОТКИЙ СИНТАКСИС
 -------------------------------------------------
@@ -7801,42 +7800,6 @@ https://adolfocuadros.com/sql_to_laravel
 
 3. Использовать пакет. Из бд в миграцию
 https://github.com/Xethron/migrations-generator
--------------------------------------------------
-
-НЕЙМИНГ
-
-Таблица (мн)                 brands
-Таблица промежуточная (ед)   brand_site
-Столбик таблицы (snake_case) meta_title
-Аттрибут модели (snake_case) $model->meta_title
-Первичный ключ               id
-Внешний ключ (ед)            brand_id
-
-Модель (ед)                         php artisan make:model Brand
-Связи модели hasOne, belongsTo (ед) brandSite
-Связи модели остальные (мн)         brandSites
-
-Миграция (ед) php artisan make:migration Brand
-Фабрика (ед)  php artisan make:factory Brand
-Сидер (ед)    php artisan make:seeder Brand
-
-Контроллер (ед)                       php artisan make:controller BrandController
-Метод (camelCase)                     getAll
-Метод в ресурсном контроллере (table) store
-Метод в тестовом классе (camelCase)   testBrand
-
-Роут(мн)                      brands/1
-Роут именованный (snake_case) brands.show_active
-
-Переменная (camelCase) $brandSite
-Коллекция (мн)         $brands= Brand::all()->get()
-Объект (ед)            $user= User::find(1)
-
-Файлы конфигов и языковые (snake_case) articles_enabled
-
-Вьюха (kebab-case)                 brand-show.blade.php
-Контракт, интерфейс (сущ или прил) BrandInterface
-Трейт (прил)                       Brandable
 -------------------------------------------------
 
 ЛУЧШИЕ ПРАКТИКИ

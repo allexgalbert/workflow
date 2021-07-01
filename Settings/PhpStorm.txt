@@ -177,6 +177,10 @@ Default Encoding: UTF-8
 
 Выключить подсказки параметров в коде Editor | Inlay Hints
 
+Удалить пустые строки у слова 'use' Editor | Code Style | PHP
+Blank Lines->Minimum blank lines->After 'use' statements: 0
+Blank Lines->Minimum blank lines->Before 'use' statements: 0
+
 Окончание строки Editor | Code Style
 Line separator: Unix and macOS (\n)
 
