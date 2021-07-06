@@ -1,9 +1,7 @@
 Состав файла Eloquent
-
 Getting Started, Relationships, Collections, Mutators, Api resources, Serialization
 
 Состав файла Database
-
 Getting Started, Query Builder, Pagination, Migrations, Seeding
 -------------------------------------------------
 
