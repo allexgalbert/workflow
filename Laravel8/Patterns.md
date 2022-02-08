@@ -1,11 +1,11 @@
 # Паттерны
 
-- [Adapter](#adapter) - Заменить класс 1, на класс 2, не меняя код по всему проекту. В адаптере методы класса 1, вызывают методы класса 2.
+- [Adapter](#adapter) - заменить класс 1, на класс 2, не меняя код по всему проекту. В адаптере методы класса 1,
+  вызывают методы класса 2.
 
-- [Builder](#builder) - Это класс, в котором логика создания другого объекта.
+- [Builder](#builder) - это класс, в котором логика создания другого объекта.
 
-- [Command](#command) - оборачивает команды в отдельные классы. Прослойка между объектами которые вызывают команды, и
-  объектом который исполняет команды.
+- [Command](#command) - прослойка между объектами которые вызывают команды, и объектом который исполняет команды.
 
 - [Dependency Injection](#dependency-injection) - для реализации слабосвязанной архитектуры.
 
@@ -136,8 +136,8 @@ $object = $builder->getObject();
 
 В билдер можно добавить Getters. В Laravel билдер реализован как Eloquent Query Builder.
 
-**Менеджер** (Директор, Абстрактный билдер) - создает сценарии создания объектов. По сути управляет билдером. Сценарии создают объекты, с по-разному заполненными
-полями.
+**Менеджер** (Директор, Абстрактный билдер) - создает сценарии создания объектов. По сути управляет билдером. Сценарии
+создают объекты, с по-разному заполненными полями.
 
 ```php
 class Manager {
@@ -171,69 +171,50 @@ $object = $manager->scenario2();
 
 ## Command
 
-Оборачивает команды в отдельные классы. Прослойка между объектами которые вызывают команды, и объектом который исполняет
-команды.
+Прослойка между объектами которые вызывают команды, и объектом который исполняет команды.
 
-- Receiver класс с командами
-- На каждую команду делаем класс, который создает объект Receiver и вызывает эту команду
-- Invoker класс, туда передаем классы команд, и дёргаем его методы, которые дёргают классы команд, и их методы
+**Класс с командами**
 
 ```php
 class Receiver {
-  public function command1() {
-    echo 'command1';
-  }
-
-  public function command2() {
-    echo 'command2';
+  public function command() {
+    echo 'command';
   }
 }
 ```
+
+**Класс для каждой команды**
 
 ```php
-class Command1 {
+class Command {
   public function __construct(Receiver $receiver) {
     $this->receiver = $receiver;
   }
 
   public function execute() {
-    $this->receiver->command1();
-  }
-}
-
-class Command2 {
-  public function __construct(Receiver $receiver) {
-    $this->receiver = $receiver;
-  }
-
-  public function execute() {
-    $this->receiver->command2();
+    $this->receiver->command();
   }
 }
 ```
+
+**Класс который принимает класс команды**
 
 ```php
 class Invoker {
-  public function __construct($command1, $command2) {
-    $this->command1 = $command1;
-    $this->command2 = $command2;
+  public function __construct($command) {
+    $this->command = $command;
   }
 
-  public function run1() {
-    $this->command1->execute();
-  }
-
-  public function run2() {
-    $this->command2->execute();
+  public function run() {
+    $this->command->execute();
   }
 }
 ```
 
 ```php
 $receiver = new Receiver;
-$invoker = new Invoker(new Command1($receiver), new Command2($receiver));
-$invoker->run1();
-$invoker->run2();
+$invoker = new Invoker(new Command($receiver));
+$invoker->run();
 ```
 
 ## Dependency Injection
