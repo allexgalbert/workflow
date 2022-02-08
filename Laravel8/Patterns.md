@@ -11,7 +11,7 @@
 
 - [Facade](#facade) - скрывает реализацию под собой, объединяя вызовы с разных классов, под одним своим методом.
 
-- [Factory](#factory) - фабрика для создания объектов разных типов, но одинаковой структуры.
+- [Factory](#factory) - для создания объектов одинаковой структуры, но разных типов.
 
 - [MVC](#mvc) - модель вью контроллер.
 
@@ -276,13 +276,10 @@ new Dependency(new Class1);
 ```php
 class Class1 {
   public function method1() {
-    echo 'Class1, method1';
+    echo 'method1';
   }
-}
-
-class Class2 {
   public function method2() {
-    echo 'Class2, method2';
+    echo 'method2';
   }
 }
 ```
@@ -293,16 +290,14 @@ class Class2 {
 class Facade {
 
   protected $class1;
-  protected $class2;
 
   public function __construct() {
     $this->class1 = new Class1;
-    $this->class2 = new Class2;
   }
 
   public function start() {
     $this->class1->method1();
-    $this->class2->method2();
+    $this->class1->method2();
   }
 }
 ```
@@ -314,20 +309,14 @@ $facade->start();
 
 ## Factory
 
-Фабрика для создания объектов разных типов, но одинаковой структуры.
+Для создания объектов одинаковой структуры, но разных типов.
 
 **Кодеры**
 
 ```php
-class Java {
+class Php {
   public function coding() {
-    echo 'Java coding';
-  }
-}
-
-class Perl {
-  public function coding() {
-    echo 'Perl coding';
+    echo 'coding';
   }
 }
 ```
@@ -335,37 +324,28 @@ class Perl {
 **Фабрики для создания кодеров**
 
 ```php
-class JavaFactory {
+class PhpFactory {
   public function create() {
-    return new Java;
-  }
-}
-
-class PerlFactory {
-  public function create() {
-    return new Perl;
+    return new Php;
   }
 }
 ```
 
 ```php
-//Без фабричного метода. Сами вызываем фабрику
-$factory = new JavaFactory;
+//без фабричного метода. сами вызываем фабрику
+$factory = new PhpFactory;
 $developer = $factory->create();
 $developer->coding();
 
-//Фабричный метод. Вызывает фабрику по типу
+//фабричный метод. сам вызывает фабрику
+
 function createMake($type) {
-  if ($type == 'java') {
-    return new JavaFactory;
-  }
-  if ($type == 'perl') {
-    return new PerlFactory;
+  if ($type == 'php') {
+    return new PhpFactory;
   }
 }
 
-//С фабричным методом. Передать тип кодера
-$factory = createMake('perl');
+$factory = createMake('php');
 $developer = $factory->create();
 $developer->coding();
 ```
