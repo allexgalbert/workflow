@@ -2,8 +2,7 @@
 
 - [Adapter](#adapter) - Заменить класс 1, на класс 2, не меняя код по всему проекту. В адаптере методы класса 1, вызывают методы класса 2.
 
-- [Builder](#builder) - это класс, в котором логика создания другого объекта. Сами пошагово заполняем его свойства.
-  Можно создать разные сценарии создания объекта.
+- [Builder](#builder) - Это класс, в котором логика создания другого объекта.
 
 - [Command](#command) - оборачивает команды в отдельные классы. Прослойка между объектами которые вызывают команды, и
   объектом который исполняет команды.
@@ -84,7 +83,7 @@ class Adapter2 extends Class2 {
 $var = new Class1;
 $var->method1();
 
-//Работа с адаптером. По факту работа с классом 2
+//работа с адаптером. по факту работа с классом 2
 $var = new Adapter1;
 $var->method1(); //вызовет method2
 
@@ -94,8 +93,7 @@ $var->method1(); //вызовет method2
 
 ## Builder
 
-Это класс, в котором логика создания другого объекта. Сами пошагово заполняем его свойства. Можно создать разные
-сценарии создания объекта.
+Это класс, в котором логика создания другого объекта.
 
 **Билдер**
 
@@ -106,29 +104,23 @@ class Builder {
     $this->create();
   }
 
-  //Создать объект
+  //создать объект
   public function create() {
     $this->object = new stdClass;
     return $this;
   }
 
-  //Заполнить его свойство
-  public function setProperty1($value) {
-    $this->object->property1 = $value;
+  //заполнить его свойство
+  public function setProperty($value) {
+    $this->object->property = $value;
     return $this;
   }
 
-  //Заполнить его свойство
-  public function setProperty2() {
-    $this->object->property2 = 'default';
-    return $this;
-  }
-
-  //Отдать готовый объект
+  //отдать объект
   public function getObject() {
     $object = $this->object;
 
-    //Обнулить объект
+    //обнулить объект
     $this->create();
 
     return $object;
@@ -138,14 +130,14 @@ class Builder {
 
 ```php
 $builder = new Builder;
-$builder->setProperty1('value')->setProperty2();
+$builder->setProperty('value');
 $object = $builder->getObject();
 ```
 
-В билдер можно добавить геттеры. Билдеры часто делают для моделей. В ларавел билдер реализован в Eloquent Query Builder.
+В билдер можно добавить Getters. В Laravel билдер реализован как Eloquent Query Builder.
 
-**Менеджер** создает сценарии создания объектов. Управляет билдером. Сценарии создают объекты, с по-разному заполненными
-полями. Другое название менеджера - Директор, Абстрактный билдер.
+**Менеджер** (Директор, Абстрактный билдер) - создает сценарии создания объектов. По сути управляет билдером. Сценарии создают объекты, с по-разному заполненными
+полями.
 
 ```php
 class Manager {
@@ -157,14 +149,14 @@ class Manager {
     return $this;
   }
 
-  //Сценарий 1
+  //сценарий 1
   public function scenario1() {
-    return $this->builder->setProperty1('scenario1')->setProperty2()->getObject();
+    return $this->builder->setProperty(1)->getObject();
   }
 
-  //Сценарий 2
+  //сценарий 2
   public function scenario2() {
-    return $this->builder->setProperty1('scenario2')->setProperty2()->getObject();
+    return $this->builder->setProperty(2)->getObject();
   }
 }
 ```
