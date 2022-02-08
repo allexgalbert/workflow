@@ -257,14 +257,14 @@ class Class1 implements Interface1 {
   }
 }
 
-class Dependency2 {
+class Dependency {
   public function __construct(Interface1 $object) {
     $this->object = $object;
-    $this->object->method2();
+    $this->object->method();
   }
 }
 
-new Dependency2(new Class1);
+new Dependency(new Class1);
 ```
 
 ## Facade
