@@ -21,7 +21,7 @@
 
 - [Singleton](#singleton) - наличие только 1 объекта у класса.
 
-- [Strategy](#strategy) - выносить однообразные алгоритмы объекта в отдельные классы, легко их заменять как поведения.
+- [Strategy](#strategy) - выносить алгоритмы в отдельные классы, чтобы легко менять поведение объекта.
 
 - [Active Record](#active-record) - работа с бд. Каждая таблица это 1 класс. Каждая строка в таблице это 1 объект.
   Данные и поведение в 1 классе.
@@ -568,67 +568,57 @@ $object->do();
 
 ## Strategy
 
-Выносить однообразные алгоритмы объекта в отдельные классы, легко их заменять как поведения.
+Выносить алгоритмы в отдельные классы, чтобы легко менять поведение объекта.
 
-- Каждый алгоритм в своем классе.
-- Выбирать алгоритм через создание класса алгоритма.
-- Для легкой замены поведений. Стратегия заменяет поведения: алгоритм1, алгоритм2, алгоритм3,..
-
-Активности разработчика: кодить, кушать
-
-**Интерфейс**
+**Интерфейс метода**
 
 ```php
 interface Interface1 {
-  //Выполнить активность
-  public function do();
+  public function method();
 }
 ```
 
-**Классы активностей**
+**Реализации метода**
 
 ```php
-class Coding implements interface1 {
-  public function do() {
-    echo 'кодить';
+class Class1 implements interface1 {
+  public function method() {
+    echo 'Class1, method';
   }
 }
 
-class Eating implements interface1 {
-  public function do() {
-    echo 'кушать';
+class Class2 implements interface1 {
+  public function method() {
+    echo 'Class2, method';
   }
 }
 ```
 
-**Разработчик**
+**Объект**
 
 ```php
-class Developer {
+class Object {
 
-  //Активность
   private $activity;
 
-  //Установить активность
   public function set(interface1 $activity) {
     $this->activity = $activity;
   }
 
-  //Выполнить активность
-  public function execute() {
-    $this->activity->do();
+  public function run() {
+    $this->activity->method();
   }
 }
 ```
 
 ```php
-$developer = new Developer;
+$object= new Object;
 
-$developer->set(new Coding);
-$developer->execute();
+$object->set(new Class1);
+$object->run();
 
-$developer->set(new Eating);
-$developer->execute();
+$object->set(new Class2);
+$object->run();
 ```
 
 ## Active Record
