@@ -464,7 +464,7 @@ $observable = new Observable;
 //подписчики
 $observer = new Observer;
 
-//в издатель добавить подписчиков
+//в издатель добавить подписчика
 $observable->add($observer);
 
 //удалить подписчика
