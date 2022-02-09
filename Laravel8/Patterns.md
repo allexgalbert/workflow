@@ -23,8 +23,7 @@
 
 - [Strategy](#strategy) - выносить алгоритмы в отдельные классы, чтобы легко менять поведение объекта.
 
-- [Active Record](#active-record) - работа с бд. Каждая таблица это 1 класс. Каждая строка в таблице это 1 объект.
-  Данные и поведение в 1 классе.
+- [Active Record](#active-record) - для работы с данными в таблицах баз данных.
 
 ## Adapter
 
@@ -623,23 +622,23 @@ $object->run();
 
 ## Active Record
 
-Работа с бд. Каждая таблица это 1 класс. Каждая строка в таблице это 1 объект. Данные и поведение в 1 классе.
+Для работы с данными в таблицах баз данных.
 
-В базе данных таблица users: id, name, email
+**Класс для таблицы**
 
 ```php
 class User {
   public $id;
   public $name;
-  public $email;
   
   public function create() {}
   public function select() {}
   public function update() {}
   public function delete() {}
-  public function findFirst() {}
 }
+```
 
+```php
 $user = new User;
 
 $user->name = 'name';
@@ -653,7 +652,4 @@ $user->update();
 
 $user->name = 'name';
 $user->delete();
-
-$user->id = 2;
-$user->findFirst();
 ```
