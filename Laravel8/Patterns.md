@@ -15,8 +15,7 @@
 
 - [MVC](#mvc) - модель представление контроллер.
 
-- [Observer](#observer) - для реализации публикации и подписки на поведение объекта. Когда объект меняет состояние,
-  прикрепленные объекты будут уведомлены. Чтобы сократить количество связанных напрямую объектов.
+- [Observer](#observer) - для реализации публикации и подписки на поведение объекта.
 
 - [Repository](#repository) - посредник между контроллером и хранилищами. Оборачивает в себе коллекцию объектов, и
   операции.
@@ -398,38 +397,22 @@ $controller->execute();
 
 ## Observer
 
-Для реализации публикации и подписки на поведение объекта. Когда объект меняет состояние, прикрепленные объекты будут
-уведомлены. Чтобы сократить количество связанных напрямую объектов.
+Для реализации публикации и подписки на поведение объекта.
 
-**Объект observable**
-
-- издатель. создает события
-- содержит список observers
-- методы: add, remove, notify
-- метод notify перебирает observers и вызывает у каждого метод handle
-
-**Объекты observers**
-
-- подписчики. разного типа
-- наблюдают за событиями у observable
-- метод handle
-
-**Использование в ларавел**
-
-- при сохранении, изменении, удалении модели, вызываются классы из папки Observers, методы с такими же названиями
-- обсерверы создаются командой php artisan make:observer name --model=name
-
-В PHP использовать SplSubject, SplObserver, SplObjectStorage
+**Издатель**
 
 ```php
 class Observable {
 
+  //подписчики
   private $observers = [];
 
+  //добавить подписчика
   public function add($observer) {
     $this->observers[] = $observer;
   }
 
+  //удалить подписчика
   public function remove($observer) {
     foreach ($this->observers as $k => $v) {
       if ($observer === $v) {
@@ -438,21 +421,21 @@ class Observable {
     }
   }
 
-  //Оповестить. Передать объект Observable
+  //оповестить подписчиков. передать объект Observable
   public function notify1() {
     foreach ($this->observers as $observer) {
       $observer->handle1($this);
     }
   }
 
-  //Оповестить. Передать произвольную нагрузку
+  //оповестить подписчиков. передать произвольную нагрузку
   public function notify2($payload) {
     foreach ($this->observers as $observer) {
       $observer->handle2($payload);
     }
   }
 
-  //Оповестить. Передать любой объект типа как Event
+  //оповестить подписчиков. передать любой объект типа как Event
   public function notify3($event) {
     foreach ($this->observers as $observer) {
       $observer->handle3($event);
@@ -461,40 +444,35 @@ class Observable {
 }
 ```
 
+**Подписчик**
+
 ```php
 class Observer {
 
-  public function handle1(Observable $observable) {
-    var_dump($observable);
-  }
-
-  public function handle2($payload) {
-    var_dump($payload);
-  }
-
-  public function handle3(Event $event) {
-    var_dump($event);
-  }
+  //обработка события от издателя
+  public function handle1(Observable $observable) {}
+  public function handle2($payload) {}
+  public function handle3(Event $event) {}
 }
 ```
 
 ```php
+
+//издатель
 $observable = new Observable;
 
-$observer1 = new Observer;
-$observer2 = new Observer;
+//подписчики
+$observer = new Observer;
 
-$observable->add($observer1);
-$observable->add($observer2);
+//в издатель добавить подписчиков
+$observable->add($observer);
 
-$observable->remove($observer2);
+//удалить подписчика
+$observable->remove($observer);
 
+//оповестить подписчиков
 $observable->notify1();
-
 $observable->notify2('payload');
-
-class Event {}
-
 $observable->notify3(new Event);
 ```
 
