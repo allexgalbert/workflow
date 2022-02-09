@@ -17,8 +17,7 @@
 
 - [Observer](#observer) - для реализации публикации и подписки на поведение объекта.
 
-- [Repository](#repository) - посредник между контроллером и хранилищами. Оборачивает в себе коллекцию объектов, и
-  операции.
+- [Repository](#repository) - посредник между контроллером и хранилищами.
 
 - [Singleton](#singleton) - чтобы класс имел 1 объект. Используется для соединения с бд, ведения логов.
 
@@ -478,36 +477,33 @@ $observable->notify3(new Event);
 
 ## Repository
 
-Посредник между контроллером и хранилищами. Оборачивает в себе коллекцию объектов, и операции.
+Посредник между контроллером и хранилищами.
 
-- Обертка для модели. Содержит логику работы с данными. Модель как источник данных
-- Как книжный шкаф. Только брать и класть. Не может создавать и изменять
-- Репозитарий это коллекция. Абстрактный слой между контроллером и разными хранилищами
-- В ларавел папка Repositories где репозитарии и интерфейсы
-
-**Методы. Получить всех юзеров**
+**Интерфейс метода**
 
 ```php
 interface Interface1 {
-  public function method1();
+  public function method();
 }
 ```
 
-**Реализации. Юзеры лежат в базе, в файлах**
+**Реализации метода**
 
 ```php
 class Class1 implements Interface1 {
-  public function method1() {
-    echo 'Class1';
+  public function method() {
+    echo 'Class1, method';
   }
 }
 
 class Class2 implements Interface1 {
-  public function method1() {
-    echo 'Class2';
+  public function method() {
+    echo 'Class2, method';
   }
 }
 ```
+
+**Контроллер**
 
 ```php
 class Controller {
@@ -519,7 +515,7 @@ class Controller {
   }
 
   public function method() {
-    $this->repository->method1();
+    $this->repository->method();
   }
 }
 ```
@@ -530,15 +526,6 @@ $class->method();
 
 $class = new Controller(new Class2);
 $class->method();
-```
-
-В ларавел вместо внедрения в конструкторе, можно привязать в провайдере.
-
-```php
-public function register() {
-  $this->app->bind(Interface1::class, Class1::class);
-  $this->app->bind(Interface1::class, Class2::class);
-}
 ```
 
 ## Singleton
