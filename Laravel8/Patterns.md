@@ -19,7 +19,7 @@
 
 - [Repository](#repository) - посредник между контроллером и хранилищами.
 
-- [Singleton](#singleton) - чтобы класс имел 1 объект. Используется для соединения с бд, ведения логов.
+- [Singleton](#singleton) - наличие только 1 объекта у класса.
 
 - [Strategy](#strategy) - выносить однообразные алгоритмы объекта в отдельные классы, легко их заменять как поведения.
 
@@ -530,34 +530,33 @@ $class->method();
 
 ## Singleton
 
-Чтобы класс имел 1 объект. Используется для соединения с бд, ведения логов.
+Наличие только 1 объекта у класса.
 
 ```php
 class Singleton {
 
+  //запрещаем создание
+  private function __construct() {}
+
+  //запрещаем клонирование
+  private function __clone() {}
+
+  //запрещаем десериализацию
+  private function __wakeup() {}
+
+  
   private static $instance;
-
-  //Запрещаем создание
-  private function __construct() {
-  }
-
-  //Запрещаем клонирование
-  private function __clone() {
-  }
-
-  //Запрещаем десериализацию
-  private function __wakeup() {
-  }
 
   public static function get() {
     if (empty(self::$instance)) {
       self::$instance = new self();
     }
+
     return self::$instance;
   }
 
-  public function do() {
-    echo 'do';
+  public function method() {
+    echo 'method';
   }
 }
 ```
